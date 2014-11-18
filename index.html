@@ -1,7 +1,80 @@
 <html>
 <head>
+  <style>
+  	#board td{
+  		border: 1px solid #000;
+  		margin: 0;
+  		width: 50px;
+  		height: 50px;
+  	}
+
+  	.inTransit {
+  		color: green;
+  	}
+
+  </style>
   <script src="js/character.js"></script>
+  <script src="js/jquery-1.11.0.min.js"></script>
+
+  <script>
+  var Game = {
+  	boardWidth : 10,
+  	boardHeight: 10,
+  	nCharacters : 10,
+  	characters : [],
+
+  	drawCharacters : function(characters){
+  		$("#board p").remove();
+  		for(var i = 0; i < characters.length; i++){
+  			characters[i].draw();
+  		}
+  	},
+
+  	moveCharacters : function(characters){
+  		for(var i = 0; i < characters.length; i++){
+  			characters[i].move();
+  		}
+  	}
+  }
+
+  function randomTile(){
+  	 var c = Math.floor(Math.random() * Game.boardWidth);
+  	 var r = Math.floor(Math.random() * Game.boardHeight);
+
+  	 return {col : c, row : r};
+  }
+
+  function ready(){
+
+  	for(var i = 0; i < Game.boardHeight; i++){
+  		$("#board").append("<tr></tr>");
+  		rows = $("#board tr");
+  		row = $(rows[rows.length-1]);
+		for(var j = 0; j < Game.boardWidth; j++){
+			row.append("<td id='"+i+"x"+j+"'></td>")		
+  		}
+  	}
+
+  	for(var i = 0; i < Game.nCharacters; i++){
+  		Game.characters.push(new Character(randomTile(), randomTile()));
+  	}
+
+  	Game.drawCharacters(Game.characters);
+
+  	$("#move").click(function(){
+  		Game.moveCharacters(Game.characters);
+  		Game.drawCharacters(Game.characters);
+  	})
+
+  }
+
+  
+  document.addEventListener("DOMContentLoaded", ready, false);
+
+  </script>
 </head>
 <body>
+	<table id="board"></table>
+	<a id="move" href="#">move</a>
 </body>
 </html>

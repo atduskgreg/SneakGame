@@ -6,12 +6,31 @@ tile = {col: 0, row: 3}
 
 */
 
+var names = ["joe", "bob", "jane", "cat", "pam", "kit", "van", "lin", "alice", "fin"];
+
+function getRandomName(){
+	var idx = Math.floor(Math.random() * names.length);
+ 	return names.splice(idx, 1)[0];
+}
+
 Character = function(startingTile, destinationTile){
 	this.position = startingTile;
 	this.destination = destinationTile;
+	this.name = getRandomName();
 }
 
 Character.prototype = {
+	squareSelector : function(){
+		return "#" + this.position.col + "x" + this.position.row;
+	},
+
+	draw : function(){
+		console.log(this.squareSelector() + " " + this.name);
+		var k = this.atDestination() ? "atDestination" : "inTransit";
+
+		$(this.squareSelector()).append("<p class='"+k+"'>"+this.name+"</p>");
+	},
+
 	heading : function(){
 		var colHeading = 0;
 		var rowHeading = 0;
