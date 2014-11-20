@@ -1,11 +1,3 @@
-/*
-
-assumption:
-
-tile = {col: 0, row: 3}
-
-*/
-
 var names = ["joe", "bob", "jane", "cat", "pam", "kit", "van", "lin", "alice", "fin"];
 
 function getRandomName(){
@@ -17,6 +9,7 @@ Character = function(startingTile, destinationTile){
 	this.position = startingTile;
 	this.destination = destinationTile;
 	this.name = getRandomName();
+	this.color = '#'+Math.floor(Math.random()*16777215).toString(16);
 }
 
 Character.prototype = {
@@ -25,10 +18,9 @@ Character.prototype = {
 	},
 
 	draw : function(){
-		console.log(this.squareSelector() + " " + this.name);
 		var k = this.atDestination() ? "atDestination" : "inTransit";
 
-		$(this.squareSelector()).append("<p class='"+k+"'>"+this.name+"</p>");
+		$(this.squareSelector()).append("<p style='background-color:"+this.color+";' class='"+k+"'>"+this.name+"</p>");
 	},
 
 	heading : function(){
@@ -52,10 +44,26 @@ Character.prototype = {
 		return {col : colHeading, row : rowHeading};
 	},
 
-	move : function(){
+	nextPosition : function(){
 		h = this.heading();
-		this.position.col += h.col;
-		this.position.row += h.row;
+		nCol = this.position.col + h.col;
+		nRow = this.position.row + h.row;
+		return {col : nCol, row: nRow};
+	},
+
+	move : function(){
+
+		if(this.atDestination()){
+			if(Math.random() < 0.05){
+
+				this.destination = {col : Math.floor(Math.random() * 10), row: Math.floor(Math.random() * 10)};
+			}
+
+		} else {
+			nextPosition = this.nextPosition();
+			this.position.col = nextPosition.col;
+			this.position.row = nextPosition.row;
+		}
 	},
 
 	atDestination : function(){
