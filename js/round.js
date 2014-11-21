@@ -37,6 +37,7 @@ Round.prototype = {
 		console.log(this.charIdx);
 		if(this.sameSquare(this.currentCharacter().position, this.currentCharacter().nextPosition())){
 			console.log("move is a no-op, skipping: " + this.moveDescription(this.currentCharacter()));
+			this.currentCharacter().move();
 			this.next(callback);
 		} else {
 			callback();
