@@ -5,14 +5,18 @@
   		border: 1px solid #000;
   		margin: 0;
   		min-width: 75;
-		width: 75;
-		height: 75;
+		  width: 75;
+		  height: 75;
   		min-height: 75;
   	}
 
   	.inTransit {
   		/*color: green;*/
   	}
+
+    .highlight {
+      background-color: #cfc;
+    }
 
   	table p {
   		margin: 0;
@@ -22,37 +26,40 @@
 
     #instruction{
       color: #000;
+      font-size: 24;
+    }
+
+    .squareDescription{
+      color: #aaa;
+    }
+
+    #move-input input {
+      width: 80px;
+    }
+
+    #move-input p{
+      margin:5px;
+      padding:5px;
+    }
+
+    #up, #down {
+      margin-left:84px;
+    }
+
+    #player-view{
+      width: 568;
+      height: 320px;
+      border: 5px solid #000;
     }
 
   </style>
+  <script src="js/jquery-1.11.0.min.js"></script>
   <script src="js/character.js"></script>
   <script src="js/round.js"></script>
-  <script src="js/jquery-1.11.0.min.js"></script>
+  <script src="js/game.js"></script>
 
   <script>
-  var Game = {
-  	boardWidth : 10,
-  	boardHeight: 10,
-  	nCharacters : 10,
-  	characters : [],
-    round : null,
-
-  	drawCharacters : function(characters){
-  		$("#board p").remove();
-  		for(var i = 0; i < characters.length; i++){
-  			characters[i].draw();
-  		}
-  	},
-
-  	moveCharacters : function(characters){
-  		for(var i = 0; i < characters.length; i++){
-  			characters[i].move();
-  		}
-  	},
-    updateInstruction : function(){
-      $("#instruction").html(Game.round.currentMoveDescription());
-    }
-  }
+  
 
   function randomTile(){
   	 var c = Math.floor(Math.random() * Game.boardWidth);
@@ -63,12 +70,16 @@
 
   function ready(){
 
+    $("#move-input").submit(function(e){
+      e.preventDefault();
+    });
+
   	for(var i = 0; i < Game.boardHeight; i++){
   		$("#board").append("<tr></tr>");
   		rows = $("#board tr");
   		row = $(rows[rows.length-1]);
-		for(var j = 0; j < Game.boardWidth; j++){
-			row.append("<td id='"+i+"x"+j+"'></td>")		
+		  for(var j = 0; j < Game.boardWidth; j++){
+			  row.append("<td id='"+i+"x"+j+"'><span class='squareDescription'>"+squareDescription({col: i, row: j})+"</span></td>")		
   		}
   	}
 
@@ -79,17 +90,20 @@
   	Game.drawCharacters(Game.characters);
 
     Game.round = new Round(Game.characters);
-
+    Game.round.highlightCurrentMove();
     Game.updateInstruction();
 
   	$("#move").click(function(e){
       e.preventDefault();
       Game.round.makeMove(function(){
+        Game.round.highlightCurrentMove();
         Game.updateInstruction();
         Game.drawCharacters(Game.characters);
       });
       
-  	})
+  	});
+
+
 
   }
 
@@ -99,6 +113,16 @@
   </script>
 </head>
 <body>
+  <div id="player-view">
+    <form id="move-input" action="#" method="POST">
+      <p><input id="up" type="submit" value="up"></input></p>
+      <p><input id="left" type="submit" value="left"></input>
+          <input id="hold" type="submit" value="hold"></input>
+          <input id="right" type="submit" value="right"></input></p>
+      <p><input id="down" type="submit" value="down"></input></p>
+
+    </form>
+  </div>
   <p><span id="instruction"></span> <a id="move" href="#">done</a></p>
 	<table id="board"></table>
 </body>

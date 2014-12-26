@@ -1,20 +1,29 @@
+function squareDescription(square){
+	letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m"];
+	return letters[square.col] + square.row;
+}
+
 Round = function(characters){
 	this.characters = characters;
 	this.charIdx = 0;
 }
 
 Round.prototype = {
-	squareDescription : function(square){
-		letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m"];
-		return letters[square.col] + square.row;
-	},
+
 
 	moveDescription : function(character){
-		return "move the piece on " + this.squareDescription(character.position) + " to " + this.squareDescription(character.nextPosition());
+		return "move the character on " + squareDescription(character.position) + " to " + squareDescription(character.nextPosition());
 	},
 
 	currentMoveDescription : function(){
 		return this.moveDescription(this.currentCharacter());
+	},
+
+	highlightCurrentMove : function(){
+		$("td").removeClass("highlight");
+		$(squareSelector(this.currentCharacter().position)).addClass("highlight");
+		$(squareSelector(this.currentCharacter().nextPosition())).addClass("highlight");
+
 	},
 
 	makeMove : function(callback){

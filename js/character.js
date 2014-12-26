@@ -5,6 +5,10 @@ function getRandomName(){
  	return names.splice(idx, 1)[0];
 }
 
+function squareSelector(sqr){
+	return "#" + sqr.col + "x" + sqr.row;
+}
+
 Character = function(startingTile, destinationTile){
 	this.position = startingTile;
 	this.destination = destinationTile;
@@ -14,7 +18,7 @@ Character = function(startingTile, destinationTile){
 
 Character.prototype = {
 	squareSelector : function(){
-		return "#" + this.position.col + "x" + this.position.row;
+		return squareSelector(this.position);
 	},
 
 	draw : function(){
@@ -56,7 +60,7 @@ Character.prototype = {
 		if(this.atDestination()){
 			if(Math.random() < 0.05){
 
-				this.destination = {col : Math.floor(Math.random() * 10), row: Math.floor(Math.random() * 10)};
+				this.destination = {col : Math.floor(Math.random() * Game.boardWidth), row: Math.floor(Math.random() * Game.boardHeight)};
 			}
 
 		} else {
