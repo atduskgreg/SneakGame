@@ -54,13 +54,10 @@
 
   </style>
   <script src="js/jquery-1.11.0.min.js"></script>
-    <script src="js/game.js"></script>
-
-    <script src="js/util.js"></script>
-
+  <script src="js/game.js"></script>
+  <script src="js/util.js"></script>
   <script src="js/character.js"></script>
   <script src="js/player.js"></script>
-
   <script src="js/round.js"></script>
 
   <script>
@@ -83,13 +80,10 @@
   	}
 
   	for(var i = 0; i < Game.getNumNPCs(); i++){
-      console.log(i);
   		Game.characters.push(new Character());
   	}
 
     for(var i = 0; i < Game.nPlayers; i++){
-      console.log(i);
-      console.log("player");
       Game.addPlayer(new Player());
     }
 
