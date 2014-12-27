@@ -1,24 +1,22 @@
-var names = ["joe", "bob", "jane", "cat", "pam", "kit", "van", "lin", "alice", "fin"];
 
-function getRandomName(){
-	var idx = Math.floor(Math.random() * names.length);
- 	return names.splice(idx, 1)[0];
-}
 
-function squareSelector(sqr){
-	return "#" + sqr.col + "x" + sqr.row;
-}
-
-Character = function(startingTile, destinationTile){
-	this.position = startingTile;
-	this.destination = destinationTile;
-	this.name = getRandomName();
+Character = function(){
+	this.position = Util.randomTile();
+	this.destination = Util.randomTile();
+	this.name = Util.getRandomName();
 	this.color = '#'+Math.floor(Math.random()*16777215).toString(16);
 }
 
 Character.prototype = {
+	init : function(){
+		this.position = Util.randomTile();
+		this.destination = Util.randomTile();
+		this.name = Util.getRandomName();
+		this.color = '#'+Math.floor(Math.random()*16777215).toString(16);
+	},
+
 	squareSelector : function(){
-		return squareSelector(this.position);
+		return Util.squareSelector(this.position);
 	},
 
 	draw : function(){
