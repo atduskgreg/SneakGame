@@ -62,7 +62,17 @@
 
   <script>
 
-  
+  var Move = {
+    "up-left"    : {col: -1, row: 1},
+    "up"         : {col: 0, row:  1},
+    "up-right"   : {col:  1, row:  1},
+    "left"       : {col: -1, row:  0},
+    "hold"       : {col:  0, row:  0},
+    "right"      : {col:  1, row:  0},
+    "down-left"  : {col:  -1, row: -1},
+    "down"       : {col:  -1, row:  0},
+    "down-right" : {col:  1, row:  -1}
+  }  
 
   function ready(){
 
@@ -73,82 +83,28 @@
       e.preventDefault();
       console.log($(this).attr('id'));
       console.log(Game.getClientPlayer());
-      move = {col: 0, row: 0};
-      switch($(this).attr('id')){
-        case "up-left":
-          move = {col: -1, row: -1};
-          break;
-        case "up":
-         move = {col: -1, row: 0};
-          break;
-        case "up-right":
-          move = {col: -1, row: 1};
-          break;
-        case "left":
-          move = {col: -1, row: 0};
-          break;
-        case "hold":
-          move = {col: 0, row: 0};
-          break;
-        case "right":
-          move = {col: 1, row: 0};
-          break;
-        case "down-left":
-          move = {col: 1, row: -1};
-          break;
-        case "down":
-          move = {col: 1, row: 0};
-          break;
-        case "down-right":
-          move = {col: 1, row: 1};
-          break;
-      }
-
-      Game.getClientPlayer().setNextMove(move);
+      Game.getClientPlayer().setNextMove(Move[$(this).attr('id')]);
 
     });
 
     function updateInputControls(){
       p = Game.getClientPlayer();
       $("#move-input input").show();
-      if(!p.isMoveLegal({col: -1, row: -1})){
-        $("#up-left").hide();
-      }
-      if(!p.isMoveLegal({col: -1, row: 0})){
-        $("#up").hide();
-      }
-      if(!p.isMoveLegal({col: -1, row: 1})){
-        $("#up-right").hide();
-      }
-
-      if(!p.isMoveLegal({col: -1, row: 0})){
-        $("#left").hide();
-      }
-      if(!p.isMoveLegal({col: 0, row: 0})){
-        $("#hold").hide();
-      }
-      if(!p.isMoveLegal({col: 1, row: 0})){
-        $("#right").hide();
-      }
-
-      if(!p.isMoveLegal({col: 1, row: -1})){
-        $("#down-left").hide();
-      }
-      if(!p.isMoveLegal({col: 1, row: 0})){
-        $("#down").hide();
-      }
-      if(!p.isMoveLegal({col: 1, row: 1})){
-        $("#down-right").hide();
+      for(move in Move){
+        if(!p.isMoveLegal(Move[move])){
+          $("#" + move).hide();
+        }
       }
 
     }
 
-  	for(var i = 0; i < Game.boardHeight; i++){
+  	for(var i = Game.boardHeight-1; i >= 0; i--){
+
   		$("#board").append("<tr></tr>");
   		rows = $("#board tr");
   		row = $(rows[rows.length-1]);
-		  for(var j = 0; j < Game.boardWidth; j++){
-			  row.append("<td id='"+i+"x"+j+"'><span class='squareDescription'>"+squareDescription({col: i, row: j})+"</span></td>")		
+		  for(var j = 0; j <= Game.boardWidth-1; j++){
+			  row.append("<td id='"+j+"x"+i+"'><span class='squareDescription'>"+squareDescription({col: i, row: j})+"</span></td>")		
   		}
   	}
 
@@ -167,6 +123,8 @@
     Game.round = new Round(Game.characters);
     Game.round.highlightCurrentMove();
     Game.updateInstruction();
+            updateInputControls();
+
 
   	$("#move").click(function(e){
       e.preventDefault();

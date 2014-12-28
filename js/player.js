@@ -12,22 +12,12 @@ Player.prototype.nextPosition = function(){
 }
 
 Player.prototype.isMoveLegal = function(move){
-	result = true;
-	if(this.position.col == 0){
-		result = (move.col > -1);
-	}
-	if(this.position.col == Game.boardWidth-1){
-		result = (move.col < 1);
-	}
+	off_left = (this.position.col + move.col < 0);
+	off_right = (this.position.col + move.col >= Game.boardWidth);
+	off_top = (this.position.row + move.row < 0);
+	off_bot = (this.position.row + move.row >= Game.boardHeight);
 
-	if(this.position.row == 0 ){
-		result = (move.row > -1);
-	}
-	if(this.position.row == Game.boardHeight-1 ){
-		result = (move.row < 1);
-	}
-
-	return result;
+	return (!off_left && !off_right && !off_top && !off_bot);
 }
 
 Player.prototype.move = function(){

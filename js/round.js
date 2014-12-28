@@ -1,6 +1,7 @@
 function squareDescription(square){
-	letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m"];
-	return letters[square.col] + square.row;
+	letters = ["a", "b", "c", "d", "e", "f", "g", "h"];
+	// letters.reverse();
+	return letters[square.row] + square.col;
 }
 
 Round = function(characters){

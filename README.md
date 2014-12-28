@@ -4,7 +4,6 @@
 
 #### Player control
 
-* Fix orientation of controls relative to cols/rows (i.e. right moves down ATM)
 * Show list of moves for all characters for the next round.
 * Prompt for new move choice at end of round
 
