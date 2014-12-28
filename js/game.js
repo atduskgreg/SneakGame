@@ -2,10 +2,11 @@ var Game = {
 	boardWidth : 8,
 	boardHeight: 8,
 	nCharacters : 10,
-  nPlayers : 2,
+  nPlayers : 1,
 	characters : [],
   players : [],
   round : null,
+  clientNum: 0, 
 
 	drawCharacters : function(characters){
 		$("#board p").remove();
@@ -17,6 +18,10 @@ var Game = {
   addPlayer : function(player){
     Game.characters.push(player);
     Game.players.push(player);
+  },
+
+  getClientPlayer : function(){
+    return this.players[this.clientNum];
   },
 
   getNumNPCs : function(){

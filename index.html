@@ -43,7 +43,7 @@
     }
 
     #up, #down {
-      margin-left:84px;
+      /*margin-left:84px;*/
     }
 
     #player-view{
@@ -66,8 +66,48 @@
 
   function ready(){
 
-    $("#move-input").submit(function(e){
+    // this should get set in some way when networking exists.
+    Game.clientNum = 0;
+
+    $("#move-input input").click(function(e){
       e.preventDefault();
+      console.log($(this).attr('id'));
+      console.log(Game.getClientPlayer());
+      move = {col: 0, row: 0};
+      switch($(this).attr('id')){
+        case "up-left":
+          move = {col: -1, row: -1};
+        break;
+        case "up":
+        move = {col: -1, row: 0};
+        break;
+        case "up-right":
+        move = {col: -1, row: 1};
+        break;
+        case "left":
+        move = {col: -1, row: 0};
+        break;
+        case "hold":
+        move = {col: 0, row: -0};
+        break;
+        case "right":
+        move = {col: 0, row: 1};
+        break;
+        case "down-left":
+        move = {col: 1, row: -1};
+        break;
+        case "down":
+        move = {col: 1, row: 0};
+        break;
+        case "down-right":
+        move = {col: 1, row: 1};
+        break;
+
+
+      }
+
+      Game.getClientPlayer().setNextMove(move);
+
     });
 
   	for(var i = 0; i < Game.boardHeight; i++){
@@ -86,6 +126,8 @@
     for(var i = 0; i < Game.nPlayers; i++){
       Game.addPlayer(new Player());
     }
+
+   
 
   	Game.drawCharacters(Game.characters);
 
@@ -115,11 +157,19 @@
 <body>
   <div id="player-view">
     <form id="move-input" action="#" method="POST">
-      <p><input id="up" type="submit" value="up"></input></p>
+      <p><input id="up-left" type="submit" value="up+left"></input>
+      <input id="up" type="submit" value="up"></input>
+      <input id="up-right" type="submit" value="up+right"></input>
+
+      </p>
       <p><input id="left" type="submit" value="left"></input>
           <input id="hold" type="submit" value="hold"></input>
           <input id="right" type="submit" value="right"></input></p>
-      <p><input id="down" type="submit" value="down"></input></p>
+      <p>
+<input id="down-left" type="submit" value="down+left">
+        <input id="down" type="submit" value="down"></input>
+        <input id="down-right" type="submit" value="down+right">
+</p>
 
     </form>
   </div>
