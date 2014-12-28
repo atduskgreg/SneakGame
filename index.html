@@ -77,38 +77,71 @@
       switch($(this).attr('id')){
         case "up-left":
           move = {col: -1, row: -1};
-        break;
+          break;
         case "up":
-        move = {col: -1, row: 0};
-        break;
+         move = {col: -1, row: 0};
+          break;
         case "up-right":
-        move = {col: -1, row: 1};
-        break;
+          move = {col: -1, row: 1};
+          break;
         case "left":
-        move = {col: -1, row: 0};
-        break;
+          move = {col: -1, row: 0};
+          break;
         case "hold":
-        move = {col: 0, row: -0};
-        break;
+          move = {col: 0, row: 0};
+          break;
         case "right":
-        move = {col: 0, row: 1};
-        break;
+          move = {col: 1, row: 0};
+          break;
         case "down-left":
-        move = {col: 1, row: -1};
-        break;
+          move = {col: 1, row: -1};
+          break;
         case "down":
-        move = {col: 1, row: 0};
-        break;
+          move = {col: 1, row: 0};
+          break;
         case "down-right":
-        move = {col: 1, row: 1};
-        break;
-
-
+          move = {col: 1, row: 1};
+          break;
       }
 
       Game.getClientPlayer().setNextMove(move);
 
     });
+
+    function updateInputControls(){
+      p = Game.getClientPlayer();
+      $("#move-input input").show();
+      if(!p.isMoveLegal({col: -1, row: -1})){
+        $("#up-left").hide();
+      }
+      if(!p.isMoveLegal({col: -1, row: 0})){
+        $("#up").hide();
+      }
+      if(!p.isMoveLegal({col: -1, row: 1})){
+        $("#up-right").hide();
+      }
+
+      if(!p.isMoveLegal({col: -1, row: 0})){
+        $("#left").hide();
+      }
+      if(!p.isMoveLegal({col: 0, row: 0})){
+        $("#hold").hide();
+      }
+      if(!p.isMoveLegal({col: 1, row: 0})){
+        $("#right").hide();
+      }
+
+      if(!p.isMoveLegal({col: 1, row: -1})){
+        $("#down-left").hide();
+      }
+      if(!p.isMoveLegal({col: 1, row: 0})){
+        $("#down").hide();
+      }
+      if(!p.isMoveLegal({col: 1, row: 1})){
+        $("#down-right").hide();
+      }
+
+    }
 
   	for(var i = 0; i < Game.boardHeight; i++){
   		$("#board").append("<tr></tr>");
@@ -141,6 +174,7 @@
         Game.round.highlightCurrentMove();
         Game.updateInstruction();
         Game.drawCharacters(Game.characters);
+        updateInputControls();
       });
       
   	});
