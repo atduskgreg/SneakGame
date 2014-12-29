@@ -15,3 +15,5 @@
 #### Questions?
 
 * Maybe player inputs destinations instead of step-by-step moves? Or we have a pathing assistant?
+* Rael-suggested move stack?
+* 

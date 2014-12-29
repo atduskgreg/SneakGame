@@ -13,7 +13,12 @@ Round.prototype = {
 
 
 	moveDescription : function(character){
-		return "move the character on " + squareDescription(character.position) + " to " + squareDescription(character.nextPosition());
+		if(this.sameSquare(character.position, character.nextPosition())){
+			return "the character on " + squareDescription(character.position) + " holds";
+		} else {
+			return "move the character on " + squareDescription(character.position) + " to " + squareDescription(character.nextPosition());
+		}
+
 	},
 
 	currentMoveDescription : function(){
@@ -34,6 +39,14 @@ Round.prototype = {
 
 	sameSquare : function(fromPos, toPos){
 		return (fromPos.col == toPos.col) && (fromPos.row == toPos.row);
+	},
+
+	allMoveDescriptions : function(){
+		result = [];
+		for(var i = 0; i < this.characters.length; i++){
+			result.push(this.moveDescription(this.characters[i]));
+		}
+		return result;
 	},
 
 	next : function(callback){
