@@ -84,6 +84,7 @@
       e.preventDefault();
       Game.getClientPlayer().setNextMove(Move[$(this).attr('id')]);
       updateMoveList(Game.round);
+      $("#move-input input").attr("disabled", true)
     });
 
     function updateInputControls(){
@@ -135,14 +136,20 @@
     updateInputControls();
 
 
+    function afterMove(){
+      Game.round.highlightCurrentMove();
+      Game.updateInstruction();
+      Game.drawCharacters(Game.characters);
+      updateInputControls();
+    }
+
+    function afterRound(){
+      $("#move-input input").attr("disabled", false)
+    }
+
   	$("#move").click(function(e){
       e.preventDefault();
-      Game.round.makeMove(function(){
-        Game.round.highlightCurrentMove();
-        Game.updateInstruction();
-        Game.drawCharacters(Game.characters);
-        updateInputControls();
-      });
+      Game.round.makeMove(afterMove, afterRound);
       
   	});
   }

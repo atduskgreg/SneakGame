@@ -6,6 +6,7 @@
 
 * Prompt for move choice at beginning of game
 * Prompt for new move choice at end of round
+* Shuffle order of character moves
 
 #### Other
 

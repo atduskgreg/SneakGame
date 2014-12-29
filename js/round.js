@@ -24,9 +24,9 @@ Round.prototype = {
 
 	},
 
-	makeMove : function(callback){
+	makeMove : function(moveCallback, roundCallback){
 		this.currentCharacter().move();
-		this.next(callback);
+		this.next(moveCallback, roundCallback);
 	},
 
 	sameSquare : function(fromPos, toPos){
@@ -41,21 +41,20 @@ Round.prototype = {
 		return result;
 	},
 
-	next : function(callback){
-		// use sameSquare to skip to the next actual move
+	next : function(moveCallback, roundCallback){
 
 		this.charIdx++;
 		if(this.charIdx >= this.characters.length){
 			this.charIdx = 0;
-			// end-of-round callback goes here
+			roundCallback()
 		}
 		console.log(this.charIdx);
 		if(this.sameSquare(this.currentCharacter().position, this.currentCharacter().nextPosition())){
 			console.log("move is a no-op, skipping: " + this.moveDescription(this.currentCharacter()));
 			this.currentCharacter().move();
-			this.next(callback);
+			this.next(moveCallback, roundCallback);
 		} else {
-			callback();
+			moveCallback();
 		}
 	},
 
