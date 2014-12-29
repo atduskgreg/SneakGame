@@ -9,6 +9,10 @@ var Util = {
   squareSelector : function(sqr){
     return "#" + sqr.col + "x" + sqr.row;
   },
+
+  squareDescription : function(sqr){
+    return ["a", "b", "c", "d", "e", "f","g","h"][sqr.col] + (sqr.row+1);
+  },
   
 
   randomTile : function(){

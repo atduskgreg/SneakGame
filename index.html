@@ -63,15 +63,15 @@
   <script>
 
   var Move = {
-    "up-left"    : {col: -1, row: 1},
-    "up"         : {col: 0, row:  1},
+    "up-left"    : {col: -1, row:  1},
+    "up"         : {col:  0, row:  1},
     "up-right"   : {col:  1, row:  1},
     "left"       : {col: -1, row:  0},
     "hold"       : {col:  0, row:  0},
     "right"      : {col:  1, row:  0},
-    "down-left"  : {col:  -1, row: -1},
-    "down"       : {col:  0, row:  -1},
-    "down-right" : {col:  1, row:  -1}
+    "down-left"  : {col: -1, row: -1},
+    "down"       : {col:  0, row: -1},
+    "down-right" : {col:  1, row: -1}
   }  
 
   function ready(){
@@ -81,9 +81,8 @@
 
     $("#move-input input").click(function(e){
       e.preventDefault();
-      console.log($(this).attr('id'));
-      console.log(Game.getClientPlayer());
       Game.getClientPlayer().setNextMove(Move[$(this).attr('id')]);
+      updateMoveList(Game.round);
 
     });
 
@@ -95,7 +94,15 @@
           $("#" + move).hide();
         }
       }
+    }
 
+    function updateMoveList(round){
+      $("#move-list").empty();
+      moves = round.allMoveDescriptions();
+      for(var i = 0; i < moves.length; i++){
+        console.log(i);
+        $("#move-list").append("<li>"+ moves[i] +"</li>")
+      }
     }
 
   	for(var i = Game.boardHeight-1; i >= 0; i--){
@@ -104,7 +111,7 @@
   		rows = $("#board tr");
   		row = $(rows[rows.length-1]);
 		  for(var j = 0; j <= Game.boardWidth-1; j++){
-			  row.append("<td id='"+j+"x"+i+"'><span class='squareDescription'>"+squareDescription({col: i, row: j})+"</span></td>")		
+			  row.append("<td id='"+j+"x"+i+"'><span class='squareDescription'>"+Util.squareDescription({col: j, row: i})+"</span></td>")		
   		}
   	}
 
@@ -169,5 +176,7 @@
   </div>
   <p><span id="instruction"></span> <a id="move" href="#">done</a></p>
 	<table id="board"></table>
+  <ul id="move-list">
+  </ul>
 </body>
 </html>

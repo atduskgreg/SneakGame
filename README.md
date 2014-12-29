@@ -5,6 +5,7 @@
 #### Player control
 
 * Show list of moves for all characters for the next round.
+* Show player who and where they are
 * Prompt for new move choice at end of round
 
 #### Other

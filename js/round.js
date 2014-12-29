@@ -1,22 +1,14 @@
-function squareDescription(square){
-	letters = ["a", "b", "c", "d", "e", "f", "g", "h"];
-	// letters.reverse();
-	return letters[square.row] + square.col;
-}
-
 Round = function(characters){
 	this.characters = characters;
 	this.charIdx = 0;
 }
 
 Round.prototype = {
-
-
 	moveDescription : function(character){
 		if(this.sameSquare(character.position, character.nextPosition())){
-			return "the character on " + squareDescription(character.position) + " holds";
+			return "the character on " + Util.squareDescription(character.position) + " holds";
 		} else {
-			return "move the character on " + squareDescription(character.position) + " to " + squareDescription(character.nextPosition());
+			return "move the character on " + Util.squareDescription(character.position) + " to " + Util.squareDescription(character.nextPosition());
 		}
 
 	},
