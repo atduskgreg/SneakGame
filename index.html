@@ -53,6 +53,20 @@
       padding: 5px;
     }
 
+    #alert p{
+      width: 100%;
+      background-color: #f00;
+      color: #fff;
+      padding: 5px;
+      margin-left:-5px;
+      margin-top:-5px;
+      display: none;
+    }
+
+    #move-instruction {
+      display: none;
+    }
+
   </style>
   <script src="js/jquery-1.11.0.min.js"></script>
   <script src="js/game.js"></script>
@@ -77,6 +91,11 @@
 
   function ready(){
 
+    function sendAlert(txt){
+      $("#alert p").html(txt);
+      $("#alert p").show();
+    }
+
     // this should get set in some way when networking exists.
     Game.clientNum = 0;
 
@@ -84,7 +103,9 @@
       e.preventDefault();
       Game.getClientPlayer().setNextMove(Move[$(this).attr('id')]);
       updateMoveList(Game.round);
-      $("#move-input input").attr("disabled", true)
+      $("#move-input input").attr("disabled", true);
+      $("#alert p").hide();
+      $("#move-instruction").show();
     });
 
     function updateInputControls(){
@@ -134,6 +155,7 @@
     Game.round.highlightCurrentMove();
     Game.updateInstruction();
     updateInputControls();
+    sendAlert("Input your first move to start the game");
 
 
     function afterMove(){
@@ -144,13 +166,14 @@
     }
 
     function afterRound(){
-      $("#move-input input").attr("disabled", false)
+      $("#move-input input").attr("disabled", false);
+      sendAlert("Input your move for this turn");
+      $("#move-instruction").hide();
     }
 
   	$("#move").click(function(e){
       e.preventDefault();
       Game.round.makeMove(afterMove, afterRound);
-      
   	});
   }
   
@@ -160,6 +183,7 @@
 </head>
 <body>
   <div id="player-view">
+    <div id="alert"><p>yo</p></div>
     <p><b>Name:</b> <span id="player-name"></span></p>
     <p><b>Position:</b> <span id="player-position"></span></p>
     <form id="move-input" action="#" method="POST">
@@ -178,8 +202,9 @@
 </p>
 
     </form>
+    <p id="move-instruction"><span id="instruction"></span> <a id="move" href="#">done</a></p>
   </div>
-  <p><span id="instruction"></span> <a id="move" href="#">done</a></p>
+  
 	  <ul id="move-list">
   </ul>
 

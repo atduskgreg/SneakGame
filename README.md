@@ -4,12 +4,12 @@
 
 #### Player control
 
-* Prompt for move choice at beginning of game
-* Prompt for new move choice at end of round
 * Shuffle order of character moves
+* Show count of moves in the turn "x/10"
 
 #### Other
 
+* Board setup instructions at start of game
 * Identify squares with multiple characters that need dialog
 * Dialog hello world
 
@@ -17,4 +17,3 @@
 
 * Maybe player inputs destinations instead of step-by-step moves? Or we have a pathing assistant?
 * Rael-suggested move stack?
-* 
