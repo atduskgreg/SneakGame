@@ -67,6 +67,14 @@
       display: none;
     }
 
+    #player-controls {
+      float: left;
+      margin-right: 20px;
+      width: 300px;
+      height: 280px;
+    }
+
+
   </style>
   <script src="js/jquery-1.11.0.min.js"></script>
   <script src="js/game.js"></script>
@@ -95,6 +103,13 @@
       $("#alert p").html(txt);
       $("#alert p").show();
     }
+
+
+    $("#setup-done").click(function(){
+      $("#setup").remove();
+      sendAlert("Input your first move to start the game");
+      $("#move-input input").attr("disabled", false);
+    });
 
     // this should get set in some way when networking exists.
     Game.clientNum = 0;
@@ -130,6 +145,15 @@
       }
     }
 
+    function showSetupInstructions(){
+      sendAlert("Setup these pieces of the board as shown below.");
+
+      for(var i = 0; i < Game.characters.length; i++){
+        $("#setup-instructions").append("<li>"+Game.characters[i].setupInstruction()+"</li>");
+      }
+      $("#setup-instructions").show();
+    }
+
   	for(var i = Game.boardHeight-1; i >= 0; i--){
 
   		$("#board").append("<tr></tr>");
@@ -155,7 +179,9 @@
     Game.round.highlightCurrentMove();
     Game.updateInstruction();
     updateInputControls();
-    sendAlert("Input your first move to start the game");
+
+    showSetupInstructions();
+    $("#move-input input").attr("disabled", true);
 
 
     function afterMove(){
@@ -184,6 +210,7 @@
 <body>
   <div id="player-view">
     <div id="alert"><p>yo</p></div>
+    <div id="player-controls">
     <p><b>Name:</b> <span id="player-name"></span></p>
     <p><b>Position:</b> <span id="player-position"></span></p>
     <form id="move-input" action="#" method="POST">
@@ -202,6 +229,15 @@
 </p>
 
     </form>
+  </div>
+  <div id="setup">
+  <p><b>Setup Instructions</b></p>
+    <ul id="setup-instructions">
+    </ul>
+      <p><a id="setup-done" href="#">Click here when done.</a></p>
+
+  </div>
+
     <p id="move-instruction"><span id="instruction"></span> <a id="move" href="#">done</a></p>
   </div>
   

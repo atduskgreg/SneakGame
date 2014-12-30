@@ -4,7 +4,10 @@ Character = function(){
 	this.position = Util.randomTile();
 	this.destination = Util.randomTile();
 	this.name = Util.getRandomName();
-	this.color = '#'+Math.floor(Math.random()*16777215).toString(16);
+
+	colors = ["red", "green", "yellow", "blue", "pink", "orange", "brown", "gray", "black", "brown"];
+
+	this.color =  colors[Math.floor(Math.random() * colors.length)];
 }
 
 Character.prototype = {
@@ -13,6 +16,10 @@ Character.prototype = {
 		this.destination = Util.randomTile();
 		this.name = Util.getRandomName();
 		this.color = '#'+Math.floor(Math.random()*16777215).toString(16);
+	},
+
+	setupInstruction : function(){
+		return "Place the " + this.color + " character on " + Util.squareDescription(this.position);
 	},
 
 	squareSelector : function(){

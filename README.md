@@ -9,7 +9,6 @@
 
 #### Other
 
-* Board setup instructions at start of game
 * Identify squares with multiple characters that need dialog
 * Dialog hello world
 
