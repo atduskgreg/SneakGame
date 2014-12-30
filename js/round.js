@@ -20,8 +20,7 @@ Round.prototype = {
 	highlightCurrentMove : function(){
 		$("td").removeClass("highlight");
 		$(Util.squareSelector(this.currentCharacter().position)).addClass("highlight");
-		$(Util.squareSelector(this.currentCharacter().nextPosition())).addClass("highlight");
-
+		$(Util.squareSelector(this.currentCharacter().nextPosition())).addClass("highlight");	
 	},
 
 	makeMove : function(moveCallback, roundCallback){

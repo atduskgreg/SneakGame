@@ -26,7 +26,7 @@
 
     #instruction{
       color: #000;
-      font-size: 24;
+      font-size: 18;
     }
 
     .squareDescription{
@@ -61,6 +61,11 @@
       margin-left:-5px;
       margin-top:-5px;
       display: none;
+      margin-bottom: 0;
+    }
+
+    #alert {
+      height: 20px;
     }
 
     #move-instruction {
@@ -69,10 +74,12 @@
 
     #player-controls {
       float: left;
-      margin-right: 20px;
-      width: 300px;
+      margin-right: 10px;
+      width: 280px;
       height: 280px;
     }
+
+
 
 
   </style>
@@ -105,7 +112,8 @@
     }
 
 
-    $("#setup-done").click(function(){
+    $("#setup-done").click(function(e){
+      e.preventDefault();
       $("#setup").remove();
       sendAlert("Input your first move to start the game");
       $("#move-input input").attr("disabled", false);
