@@ -24,17 +24,15 @@
   		color: #fff;
   	}
 
-    #instruction{
-      color: #000;
-      font-size: 18;
-    }
+   
 
     .squareDescription{
       color: #aaa;
     }
 
     #move-input input {
-      width: 80px;
+      width: 180px;
+      font-size:70px;
     }
 
     #move-input p{
@@ -42,26 +40,23 @@
       padding:5px;
     }
 
-    #up, #down {
-      /*margin-left:84px;*/
-    }
+
 
     #player-view{
       width: 568;
       height: 320px;
       border: 5px solid #000;
-      padding: 5px;
     }
 
     #alert p{
       width: 100%;
       background-color: #f00;
       color: #fff;
-      padding: 5px;
-      margin-left:-5px;
-      margin-top:-5px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+
       display: none;
-      margin-bottom: 0;
+      margin: 0;
     }
 
     #alert {
@@ -70,16 +65,44 @@
 
     #move-instruction {
       display: none;
+      text-align: center;
     }
 
-    #player-controls {
-      float: left;
-      margin-right: 10px;
-      width: 280px;
-      height: 280px;
+     #instruction{
+      background-color: #0f0;
+      color: #000;
+      font-size: 36;
+      margin-bottom: 0;
+    }
+    #move {
+      font-size: 30px;
     }
 
 
+    #player-info {
+      margin-top: 20px;
+      font-size: 28px;
+      border-bottom: 1px solid #aaa;
+      border-top: 1px solid #aaa;
+      margin-bottom: 20px;
+    }
+
+    .player-label{
+      background: #aaa;
+      color: #fff;
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+
+    .player-attribute{
+      width: 200px;
+    }
+
+    #setup-instructions {
+      margin: 0;
+      margin-left: 20px;
+      font-size: 16px;
+    }
 
 
   </style>
@@ -117,6 +140,8 @@
       $("#setup").remove();
       sendAlert("Input your first move to start the game");
       $("#move-input input").attr("disabled", false);
+      $("#move-input").show();
+
     });
 
     // this should get set in some way when networking exists.
@@ -189,6 +214,7 @@
     updateInputControls();
 
     showSetupInstructions();
+    $("#move-input").hide();
     $("#move-input input").attr("disabled", true);
 
 
@@ -219,8 +245,8 @@
   <div id="player-view">
     <div id="alert"><p>yo</p></div>
     <div id="player-controls">
-    <p><b>Name:</b> <span id="player-name"></span></p>
-    <p><b>Position:</b> <span id="player-position"></span></p>
+    <div id="player-info"><span class='player-label'>Name</span> <span class='player-attribute' id="player-name"></span>
+    <span class='player-label'>Position</span> <span class='player-attribute' id="player-position"></span></div>
     <form id="move-input" action="#" method="POST">
       <p><input id="up-left" type="submit" value="up+left"></input>
       <input id="up" type="submit" value="up"></input>
@@ -239,14 +265,16 @@
     </form>
   </div>
   <div id="setup">
-  <p><b>Setup Instructions</b></p>
+  <p style="margin:0"><b>Setup Instructions</b></p>
     <ul id="setup-instructions">
     </ul>
-      <p><a id="setup-done" href="#">Click here when done.</a></p>
+      <p style="margin:0"><a id="setup-done" href="#">Click here when done.</a></p>
 
   </div>
 
-    <p id="move-instruction"><span id="instruction"></span> <a id="move" href="#">done</a></p>
+    <div id="move-instruction"><p id="instruction"></p>
+    <p style="margin:0; margin-top: 5px"><button id="move">done</button></div>
+
   </div>
   
 	  <ul id="move-list">
