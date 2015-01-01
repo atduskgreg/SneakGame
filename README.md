@@ -4,10 +4,9 @@
 
 #### Player control
 
-* Shuffle order of character moves
 * Show count of moves in the turn "x/10"
-* Make the controls and move instructions full-screen and modal
-
+* Use arrows (and text of destination square) for move buttons
+ 
 #### Other
 
 * Identify squares with multiple characters that need dialog

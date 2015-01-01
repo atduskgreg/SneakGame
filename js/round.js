@@ -1,5 +1,6 @@
 Round = function(characters){
 	this.characters = characters;
+	Util.shuffle(this.characters);
 	this.charIdx = 0;
 }
 
@@ -45,6 +46,7 @@ Round.prototype = {
 		this.charIdx++;
 		if(this.charIdx >= this.characters.length){
 			this.charIdx = 0;
+			Util.shuffle(this.characters);
 			roundCallback()
 		}
 		console.log(this.charIdx);
