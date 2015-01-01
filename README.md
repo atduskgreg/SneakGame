@@ -4,7 +4,6 @@
 
 #### Player control
 
-* Show count of moves in the turn "x/10"
 * Use arrows (and text of destination square) for move buttons
  
 #### Other

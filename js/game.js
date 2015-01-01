@@ -34,6 +34,6 @@ var Game = {
 		}
 	},
   updateInstruction : function(){
-    $("#instruction").html(Game.round.currentMoveDescription());
+    $("#instruction").html((Game.round.currentCharacterNum() + 1) + "/" + Game.round.characters.length + " " + Game.round.currentMoveDescription());
   }
 }
