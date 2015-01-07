@@ -1,0 +1,112 @@
+<html>
+<head>
+	<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+	<script src="http://code.jquery.com/jquery-1.11.1.js"></script>	
+
+	<style>
+		.actor {
+			font-weight: bold;
+		}
+
+		.role {
+			font-weight: bold;
+		}
+
+		#instructions p {
+			font-style: italic;
+		}
+	</style>
+
+
+	<script>
+	 function ready(){
+		var socket = io();
+		$('form').submit(function(e){
+			e.preventDefault();
+			socket.emit('chat message', $('#m').val());
+			$('#m').val('');
+		});
+
+		socket.on('chat message', function(msg){
+  		  $('#messages').append($('<li>').text(msg));
+  		});
+
+		function showOptions(){
+  			$("#dialogue p").hide();
+  			$("ol").hide();
+  			$("#dialogue .question").show();
+  			$("#options").show();
+		}
+
+		function showScript(){
+			$(".response").show();
+  			$("#answers li").hide();
+  			$("#answers").show();
+  			$(".elipses").remove();
+
+  			$("p").show();
+		}
+
+		showOptions();
+
+  		$("#options li").click(function(e){
+  			i = $("#options li").index($(this));
+  			answer = $($("#answers li")[i]).text();
+	  		
+  			$("#options").remove();
+  			$(".question").append($(this).text());
+
+
+	  		$("#answers").remove();
+	  		$(".response").append(answer);
+	  		$("#options li").off("click");
+
+	  		showScript();
+
+  		})
+	}
+
+	 document.addEventListener("DOMContentLoaded", ready, false);
+
+	</script>
+</head>
+<body>
+	<div id="instructions">
+		<span class="role">Jim</span> talking to <span class="role">Bob</span> (<b>YOU</b>)
+		<p>Choose a question to ask...</p>
+	</div>
+	<div id="dialogue">
+		<p class="actor1">
+			<span class="actor">Jim</span> Howdy Bob.
+		</p>
+		<p class="actor2">
+			<span class="actor">Bob</span> How's it going, Jim?
+		</p>
+		<p>
+			<span class="actor">Jim</span> Can't complain, can't complain.
+		</p>
+		<p class="question actor2">
+			<span class="actor">Bob</span> Hey,<span class="elipses">...</span>
+			<ol id="options">
+				<li>have you seen the French amabassador?</li>
+				<li>do you know where the document safe is?</li>
+				<li>is the Japanese Prime Minister around here somewhere?</li>
+			</ol>
+		</p>
+		<p class="response actor1">
+			<span class="actor">Jim</span> 
+			<ol id="answers">
+				<li>Yeah sure, he was just in the lobby.</li>
+				<li>Should be on the second floor near the stairwell.</li>
+				<li>I dunno. Haven't seen him.</li>
+			</ol>
+		</p>
+		<p class="actor2">
+			<span class="actor">Bob</span> Ok well, thanks.
+		</p>
+		<p class="actor1">
+			<span class="actor">Jim</span> No problem, take it easy.
+		</p>
+	</div>
+</body>
+</html>
