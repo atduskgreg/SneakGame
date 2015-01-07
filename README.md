@@ -5,7 +5,13 @@
 #### Player control
 
 * Use arrows (and text of destination square) for move buttons
- 
+* Two players
+
+#### Dialog Prototype
+
+* Cards
+* Web-based with networking
+
 #### Other
 
 * Identify squares with multiple characters that need dialog
