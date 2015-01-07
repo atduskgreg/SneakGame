@@ -12,9 +12,10 @@
 
 #### Dialog Prototype
 
-* Write-up some conversation examples
-* Interface for picking in branching conversation
-* Network-synced conversation prototype
+* System for multiple scripts (including non-interactive lines)
+* Both sides ask and answer
+* Randomly decide if each player is an NPC or not.
+* Network syncing for two players
 * Lock-in timer
 
 #### Other
