@@ -31,63 +31,73 @@
 	<script>
 	 function ready(){
 	 	gameId = 'game ' + window.location.pathname.split("/")[2];
-	 	console.log(gameId);
+
+	 	var socket = io();
+		socket.emit('join', gameId);
 
 
-	 	names = ["Pam", "Kit", "Van", "Lin"];
-	 	name = names[Math.floor(Math.random() * names.length)];
-	 	character = {
-	 		knowledge : {},
-	 		name : name
-	 	}
 
-	 	maxKnowledge = 6;
-	 	nKnowledge = Math.floor(Math.random() * maxKnowledge) + 3;
 
-	 	for(var i = 0; i < nKnowledge; i++){
-	 		k = randomKnowledge();
-	 		character.knowledge[k.what] = {where: k.where, when: k.when};
-	 	}
+		function rollCharacter(){
+	 		names = ["Pam", "Kit", "Van", "Lin"];
+	 		name = names[Math.floor(Math.random() * names.length)];
+	 		player = {
+	 			knowledge : {},
+	 			name : name
+	 		}
+	
+	 		maxKnowledge = 6;
+	 		nKnowledge = Math.floor(Math.random() * maxKnowledge) + 3;
+	
+	 		for(var i = 0; i < nKnowledge; i++){
+	 			k = randomKnowledge();
+	 			player.knowledge[k.what] = {where: k.where, when: k.when};
+	 		}
 
-	 	console.log(character);
+	 		return player;
+		}
 
 	 	allSubjects = ["Joe", "Bob", "Jane", "Cat", "Alice", "Fin", "Mark", "the document safe", "the plans", "the exit", "the gun"];
 
-	 	// this should be a real character with knowledge
-	 	player = {
-	 		name: "Tim",
-	 		knowledge : {}
-	 	}
-
-	 	$("#instructions .actor2").html(player.name);
-	 	$("#instructions .actor1").html(character.name);
-
-	 	$(".actor1 .actor").html(character.name);
-	 	$(".actor2 .actor").html(player.name);
-	 	$(".actor1-name").html(character.name);
-	 	$(".actor2-name").html(player.name);
+	 	player = rollCharacter();
 
 
-		var socket = io();
-		socket.emit('join', gameId);
+	 	var characters = [];
+	 	var character = {};
+
+	 	socket.emit("register-character", player);
+
+	 	socket.on('update-characters',function(characterId, _characters){
+	 		console.log("update-characters");
+	 		characters = _characters;
+	 		console.log(characters);
+	 		for(var i = 0; i < characters.length; i++){
+	 			if(characters[i].name != player.name){
+	 				character = characters[i];
+	 			}
+	 		}
+	 	
+	 	
+
+
+
+
+	 		$("#instructions .actor1").html(character.name);
+	 		$(".actor1-name").html(character.name);
+	 		$(".actor1 .actor").html(character.name);
+	 	
+	 		$(".actor2 .actor").html(player.name);
+	 		$(".actor2-name").html(player.name);
+	 		$("#instructions .actor2").html(player.name);
+
+
+	 	});
+		
 
 		socket.on('receive-question', function(data){
 			console.log("received  question: " );
 			console.log(data);
 		});
-
-		// s.on("connection",function(socket){
-		// 	console.log("connected");
-		// 	socket.join("game " + gameId);
-		// })
-		// $('form').submit(function(e){
-		// 	e.preventDefault();
-		// 	socket.emit('game ' + gameId, "yoyoyo");
-		// });
-
-		// socket.on('game ' + gameId, function(msg){
-  // 		  console.log(msg);
-  // 		});
 
 		function showOptions(){
 			for(var i = 0; i < allSubjects.length; i++){
@@ -152,9 +162,10 @@
 	</script>
 </head>
 <body>
+
 	<div id="instructions">
 		<div id="who">
-		<p><span class="role actor1">Jim</span> talking to <span class="role actor2">Bob</span> (<b>YOU</b>)</p>
+			<p><span class="role actor1">Jim</span> talking to <span class="role actor2">Bob</span> (<b>YOU</b>)</p>
 		</div>
 		<form id="subject" action="">
 			<p><label>Choose a subject to ask about</label> <select name=""></select> <input type="submit" value="ask" /></p>
