@@ -12,7 +12,7 @@
 
 #### Dialog Prototype
 
-* Both sides ask and answer
+* Add features to script format to control who speaks.
 * Randomly decide if each player is an NPC or not.
 * Lock-in timer
 

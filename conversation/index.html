@@ -89,18 +89,24 @@
 	 		$(".actor2-name").html(player.name);
 	 		$("#instructions .actor2").html(player.name);
 
-	 		$("#subject").submit(function(e){
+
+	 	});
+
+	 	$("#subject").submit(function(e){
 				e.preventDefault();
 				subject = $("#subject select").val();
 	
 				question = {
-					subject : subject,
-					from : player
+					question : questionAbout(subject),
+					answer : answerFor(subject, character.knowledge[subject]),
+					from : player.name
 				}
 
-				questions[player] = subject;
 
-	
+				questions[player.name] = question;
+
+					console.log(player.name);
+
 				console.log(subject);
 	
 				socket.emit("submit-question", question);
@@ -111,14 +117,17 @@
 					questionsComplete();
 				}				
 			});
-	 	});
 
 		function questionsComplete(){
+
+			console.log("questions");
+			console.log(questions);
+
 			args = {
 				character1 : characters[0],
 				character2 : characters[1],
 				dialogue : dialogues[1],
-				subjects : [questions[characters[0]], questions[characters[1]]]
+				questions : questions
 			}
 			populateDialogue($("#dialogue"), args);
 			$("#subject").hide();
@@ -130,7 +139,7 @@
 			console.log("received  question: " );
 			console.log(data);
 			questionReceived = true;
-			questions[data.from] = data.subject;
+			questions[data.from] = {question : data.question, answer : data.answer};
 			if(questionSent){
 				questionsComplete();
 			}

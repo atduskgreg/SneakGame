@@ -11,14 +11,14 @@ var dialogues = [
 "Hello, sir. I hope this day finds you well.",
 "I am excellent, <character1.name>. Thank you.",
 {question: true},
-"My deepest gratitude.",
+"My deepest gratitude. Did you have a question for me as well?",
+{question: true},
 "Good luck on this day, sir."
 ]
 ];
 
 function populateDialogue(div, data){
 	lineCount = 0;
-	q = 0;
 	for(var i = 0; i < data.dialogue.length; i++){
 		lineCount++;
 		if(lineCount % 2){
@@ -30,8 +30,8 @@ function populateDialogue(div, data){
 		}
 
 		if(data.dialogue[i].question){
-			question = questionAbout(data.subjects[q]);
-			answer = answerFor(data.subjects[q], otherCharacter.knowledge[data.subjects[q]]);
+			question = data.questions[otherCharacter.name].question;
+			answer = data.questions[otherCharacter.name].answer;
 
 			div.append("<p class='question actor"+(lineCount%2 + 1)+"'> \
 					   		<span class='actor'>"+currentCharacter.name+"</span> \
@@ -42,7 +42,6 @@ function populateDialogue(div, data){
 					   		"+ answer +"\
 					    </p>");
 			lineCount++;
-			q++;
 		} else {
 			div.append("<p class='actor"+(lineCount%2 + 1)+"'> \
 				<span class='actor'>"+currentCharacter.name+"</span> "+renderLine(data.dialogue[i], data)+"</p>");
