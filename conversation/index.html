@@ -54,7 +54,7 @@
 	 	// this should be a real character with knowledge
 	 	player = {
 	 		name: "Tim",
-	 		knolwedge : {}
+	 		knowledge : {}
 	 	}
 
 	 	$("#instructions .actor2").html(player.name);
@@ -87,10 +87,17 @@
 			e.preventDefault();
 			subject = $("#subject select").val();
 
-			populateDialogue($("#dialogue"), dialogue, character, player);
 
-			$(".question").append(questionAbout(subject));
-			$(".response").append(answerFor(subject, character.knowledge[subject]));
+			args = {
+				dialogue: dialogues[1],
+				subject: subject,
+				character1: character,
+				character2: player
+			}
+
+			populateDialogue($("#dialogue"), args);
+
+			
 			$("#subject").hide();
 			showScript();
 		});
@@ -139,27 +146,6 @@
 		</form>
 	</div>
 	<div id="dialogue">
-		<!-- <p class="actor1">
-			<span class="actor">Jim</span> Howdy <span class="actor2-name">Bob</span>.
-		</p>
-		<p class="actor2">
-			<span class="actor">Bob</span> How's it going, <span class="actor1-name">Jim</span>?
-		</p>
-		<p>
-			<span class="actor">Jim</span> Can't complain, can't complain.
-		</p>
-		<p class="question actor2">
-			<span class="actor">Bob</span> Hey, 
-		</p>
-		<p class="response actor1">
-			<span class="actor">Jim</span> 
-		</p>
-		<p class="actor2">
-			<span class="actor">Bob</span> Ok well, thanks.
-		</p>
-		<p class="actor1">
-			<span class="actor">Jim</span> No problem, take it easy.
-		</p> -->
 	</div>
 </body>
 </html>

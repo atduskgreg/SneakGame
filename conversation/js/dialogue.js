@@ -1,34 +1,49 @@
-var dialogue = ["Howdy, <character2.name>.",
-				"How's it going, <character1.name>?",
-				"Can't complain. Can't complain.",
-				{question: true},
-				"Ok, well thanks.",
-				"No problem, take it easy."];
+var dialogues = [
+[
+"Howdy, <character2.name>.",
+"How's it going, <character1.name>?",
+"Can't complain. Can't complain.",
+{question: true},
+"Ok, well thanks.",
+"No problem, take it easy."
+],
+[
+"Hello, sir. I hope this day finds you well.",
+"I am excellent, <character1.name>. Thank you.",
+{question: true},
+"My deepest gratitude.",
+"Good luck on this day, sir."
+]
+];
 
-function populateDialogue(div, dialogue, character1, character2){
-	renderData = {character1:character1, character2:character2};
+function populateDialogue(div, data){
 	lineCount = 0;
-	for(var i = 0; i < dialogue.length; i++){
+	for(var i = 0; i < data.dialogue.length; i++){
 		lineCount++;
 		if(lineCount % 2){
-			currentCharacter = character1;
-			otherCharacter = character2;
+			currentCharacter = data.character1;
+			otherCharacter = data.character2;
 		} else {
-			currentCharacter = character2;
-			otherCharacter = character1;
+			currentCharacter = data.character2;
+			otherCharacter = data.character1;
 		}
 
-		if(dialogue[i].question){
+		if(data.dialogue[i].question){
+			question = questionAbout(data.subject);
+			answer = answerFor(data.subject, otherCharacter.knowledge[subject]);
+
 			div.append("<p class='question actor"+(lineCount%2 + 1)+"'> \
-					   		<span class='actor'>"+currentCharacter.name+"</span>\
+					   		<span class='actor'>"+currentCharacter.name+"</span> \
+					   		"+ question +"\
 					   	</p>\
 					    <p class='response actor"+(lineCount%2 + 1)+"'> \
-					   		<span class='actor'>"+otherCharacter.name+"</span>\
+					   		<span class='actor'>"+otherCharacter.name+"</span> \
+					   		"+ answer +"\
 					    </p>");
 			lineCount++;
 		} else {
 			div.append("<p class='actor"+(lineCount%2 + 1)+"'> \
-				<span class='actor'>"+currentCharacter.name+"</span> "+renderLine(dialogue[i], renderData)+"</p>");
+				<span class='actor'>"+currentCharacter.name+"</span> "+renderLine(data.dialogue[i], data)+"</p>");
 		}
 		
 	}
