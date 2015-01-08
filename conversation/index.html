@@ -2,8 +2,8 @@
 <head>
 	<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 	<script src="http://code.jquery.com/jquery-1.11.1.js"></script>	
-	<script src="js/knowledge.js"></script>	
-	<script src="js/dialogue.js"></script>	
+	<script src="/js/knowledge.js"></script>	
+	<script src="/js/dialogue.js"></script>	
 
 	<style>
 		.actor {
@@ -30,6 +30,8 @@
 
 	<script>
 	 function ready(){
+	 	gameId = 'game ' + window.location.pathname.split("/")[2];
+	 	console.log(gameId);
 
 
 	 	names = ["Pam", "Kit", "Van", "Lin"];
@@ -66,15 +68,25 @@
 	 	$(".actor2-name").html(player.name);
 
 
-		// var socket = io();
+		var socket = io();
+		socket.emit('join', gameId);
+
+		socket.on('receive-question', function(data){
+			console.log("received  question: " );
+			console.log(data);
+		});
+
+		// s.on("connection",function(socket){
+		// 	console.log("connected");
+		// 	socket.join("game " + gameId);
+		// })
 		// $('form').submit(function(e){
 		// 	e.preventDefault();
-		// 	socket.emit('chat message', $('#m').val());
-		// 	$('#m').val('');
+		// 	socket.emit('game ' + gameId, "yoyoyo");
 		// });
 
-		// socket.on('chat message', function(msg){
-  // 		  $('#messages').append($('<li>').text(msg));
+		// socket.on('game ' + gameId, function(msg){
+  // 		  console.log(msg);
   // 		});
 
 		function showOptions(){
@@ -94,6 +106,9 @@
 				character1: character,
 				character2: player
 			}
+
+			socket.emit("submit-question", args);
+
 
 			populateDialogue($("#dialogue"), args);
 
