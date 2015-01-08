@@ -18,6 +18,7 @@ var dialogues = [
 
 function populateDialogue(div, data){
 	lineCount = 0;
+	q = 0;
 	for(var i = 0; i < data.dialogue.length; i++){
 		lineCount++;
 		if(lineCount % 2){
@@ -29,8 +30,8 @@ function populateDialogue(div, data){
 		}
 
 		if(data.dialogue[i].question){
-			question = questionAbout(data.subject);
-			answer = answerFor(data.subject, otherCharacter.knowledge[subject]);
+			question = questionAbout(data.subjects[q]);
+			answer = answerFor(data.subjects[q], otherCharacter.knowledge[data.subjects[q]]);
 
 			div.append("<p class='question actor"+(lineCount%2 + 1)+"'> \
 					   		<span class='actor'>"+currentCharacter.name+"</span> \
@@ -41,6 +42,7 @@ function populateDialogue(div, data){
 					   		"+ answer +"\
 					    </p>");
 			lineCount++;
+			q++;
 		} else {
 			div.append("<p class='actor"+(lineCount%2 + 1)+"'> \
 				<span class='actor'>"+currentCharacter.name+"</span> "+renderLine(data.dialogue[i], data)+"</p>");

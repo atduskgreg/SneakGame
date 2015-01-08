@@ -59,11 +59,15 @@
 
 	 	allSubjects = ["Joe", "Bob", "Jane", "Cat", "Alice", "Fin", "Mark", "the document safe", "the plans", "the exit", "the gun"];
 
-	 	player = rollCharacter();
+	 	var player = rollCharacter();
 
 
 	 	var characters = [];
 	 	var character = {};
+	 	var questionReceived = false;
+	 	var questionSent = false;
+	 	var questions = {};
+	 	
 
 	 	socket.emit("register-character", player);
 
@@ -76,11 +80,6 @@
 	 				character = characters[i];
 	 			}
 	 		}
-	 	
-	 	
-
-
-
 
 	 		$("#instructions .actor1").html(character.name);
 	 		$(".actor1-name").html(character.name);
@@ -90,13 +89,51 @@
 	 		$(".actor2-name").html(player.name);
 	 		$("#instructions .actor2").html(player.name);
 
+	 		$("#subject").submit(function(e){
+				e.preventDefault();
+				subject = $("#subject select").val();
+	
+				question = {
+					subject : subject,
+					from : player
+				}
 
+				questions[player] = subject;
+
+	
+				console.log(subject);
+	
+				socket.emit("submit-question", question);
+				questionSent = true;
+				$("form").hide();
+
+				if(questionReceived){
+					questionsComplete();
+				}				
+			});
 	 	});
+
+		function questionsComplete(){
+			args = {
+				character1 : characters[0],
+				character2 : characters[1],
+				dialogue : dialogues[1],
+				subjects : [questions[characters[0]], questions[characters[1]]]
+			}
+			populateDialogue($("#dialogue"), args);
+			$("#subject").hide();
+			showScript();
+		}
 		
 
 		socket.on('receive-question', function(data){
 			console.log("received  question: " );
 			console.log(data);
+			questionReceived = true;
+			questions[data.from] = data.subject;
+			if(questionSent){
+				questionsComplete();
+			}
 		});
 
 		function showOptions(){
@@ -105,31 +142,12 @@
 			}
 		}
 
-		$("#subject").submit(function(e){
-			e.preventDefault();
-			subject = $("#subject select").val();
-
-
-			args = {
-				dialogue: dialogues[1],
-				subject: subject,
-				character1: character,
-				character2: player
-			}
-
-			socket.emit("submit-question", args);
-
-
-			populateDialogue($("#dialogue"), args);
-
-			
-			$("#subject").hide();
-			showScript();
-		});
+		
 
 
 
 		function showScript(){
+
 			$("#dialogue").show();
 			$(".response").show();
   			$("#answers li").hide();
@@ -139,22 +157,6 @@
 		}
 
 		showOptions();
-
-  		$("#options li").click(function(e){
-  			i = $("#options li").index($(this));
-  			answer = $($("#answers li")[i]).text();
-	  		
-  			$("#options").remove();
-  			$(".question").append($(this).text());
-
-
-	  		$("#answers").remove();
-	  		$(".response").append(answer);
-	  		$("#options li").off("click");
-
-	  		showScript();
-
-  		})
 	}
 
 	 document.addEventListener("DOMContentLoaded", ready, false);
