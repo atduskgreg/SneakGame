@@ -12,7 +12,6 @@
 
 #### Dialog Prototype
 
-* System for multiple scripts (including non-interactive lines)
 * Both sides ask and answer
 * Randomly decide if each player is an NPC or not.
 * Network syncing for two players

@@ -28,10 +28,10 @@ function squareDescription(sqr){
  }
 
 function questionAbout(thing){
-	phrases = ["do you know if <thing> is around here somewhere?",
-			   "have you seen <thing>?",
-			   "do you know where <thing> is?",
-			   "is <thing> around anywhere?"];
+	phrases = ["Do you know if <thing> is around here somewhere?",
+			   "Have you seen <thing>?",
+			   "Do you know where <thing> is?",
+			   "Is <thing> around anywhere?"];
 
 	phrase = phrases[Math.floor(Math.random() * phrases.length)];
 	
@@ -45,6 +45,8 @@ function answerFor(what, knowledge){
 				   "I think so. At least <thing.when> turns ago, <thing.what> was around <thing.where>."];	
 		phrase = phrases[Math.floor(Math.random() * phrases.length)];
 
+
+		console.log(knowledge);
 		if(knowledge.where.col){
 			where = squareDescription(knowledge.where);
 		} else {
@@ -62,7 +64,4 @@ function answerFor(what, knowledge){
 	}
 
 	return phrase;
-
-	
-
 }
