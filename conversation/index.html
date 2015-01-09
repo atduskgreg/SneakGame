@@ -36,6 +36,7 @@
 		socket.emit('join', gameId);
 
 
+	 	$("input").prop("disabled", true);
 
 
 		function rollCharacter(){
@@ -60,19 +61,18 @@
 	 	allSubjects = ["Joe", "Bob", "Jane", "Cat", "Alice", "Fin", "Mark", "the document safe", "the plans", "the exit", "the gun"];
 
 	 	var player = rollCharacter();
-
+	 	socket.emit("register-character", player);
 
 	 	var characters = [];
 	 	var character = {};
+	 	var questions = {};
 	 	var questionReceived = false;
 	 	var questionSent = false;
-	 	var questions = {};
-	 	
-
-	 	socket.emit("register-character", player);
+	 	var eventAttached = false;
 
 	 	socket.on('update-characters',function(characterId, _characters){
 	 		console.log("update-characters");
+			console.log(_characters.length);
 	 		characters = _characters;
 	 		console.log(characters);
 	 		for(var i = 0; i < characters.length; i++){
@@ -80,43 +80,46 @@
 	 				character = characters[i];
 	 			}
 	 		}
+	
+		 	if(_characters.length == 2 ){
+	 			$("input").prop("disabled", false);
+	 		}
 
 	 		$("#instructions .actor1").html(character.name);
 	 		$(".actor1-name").html(character.name);
-	 		$(".actor1 .actor").html(character.name);
-	 	
-	 		$(".actor2 .actor").html(player.name);
+	 		$(".actor1").html(character.name);
+
+
+	 		$(".actor2r").html(player.name);
 	 		$(".actor2-name").html(player.name);
 	 		$("#instructions .actor2").html(player.name);
-
 
 	 	});
 
 	 	$("#subject").submit(function(e){
-				e.preventDefault();
-				subject = $("#subject select").val();
+			e.preventDefault();
+			subject = $("#subject select").val();
 	
-				question = {
-					question : questionAbout(subject),
-					answer : answerFor(subject, character.knowledge[subject]),
-					from : player.name
-				}
+			question = {
+				question : questionAbout(subject),
+				answer : answerFor(subject, character.knowledge[subject]),
+				from : player.name
+			}
 
+			questions[player.name] = question;
 
-				questions[player.name] = question;
+			console.log(player.name);
 
-					console.log(player.name);
-
-				console.log(subject);
+			console.log(subject);
 	
-				socket.emit("submit-question", question);
-				questionSent = true;
-				$("form").hide();
+			socket.emit("submit-question", question);
+			questionSent = true;
+			$("form").hide();
 
-				if(questionReceived){
-					questionsComplete();
-				}				
-			});
+			if(questionReceived){
+				questionsComplete();
+			}				
+		});
 
 		function questionsComplete(){
 
@@ -151,12 +154,7 @@
 			}
 		}
 
-		
-
-
-
 		function showScript(){
-
 			$("#dialogue").show();
 			$(".response").show();
   			$("#answers li").hide();
@@ -168,7 +166,7 @@
 		showOptions();
 	}
 
-	 document.addEventListener("DOMContentLoaded", ready, false);
+	document.addEventListener("DOMContentLoaded", ready, false);
 
 	</script>
 </head>
@@ -176,7 +174,7 @@
 
 	<div id="instructions">
 		<div id="who">
-			<p><span class="role actor1">Jim</span> talking to <span class="role actor2">Bob</span> (<b>YOU</b>)</p>
+			<p><span class="role actor1"></span> talking to <span class="role actor2"></span> (<b>YOU</b>)</p>
 		</div>
 		<form id="subject" action="">
 			<p><label>Choose a subject to ask about</label> <select name=""></select> <input type="submit" value="ask" /></p>

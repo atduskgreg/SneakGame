@@ -29,6 +29,8 @@ io.on('connection', function(socket){
     characterId = games[socket.game].characters.length - 1;
     socket.characterIdx = characterId;
 
+    console.log(games[socket.game].characters.length);
+
     io.sockets.in(socket.game).emit('update-characters', characterId, games[socket.game].characters);
   })
 
