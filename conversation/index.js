@@ -29,6 +29,10 @@ io.on('connection', function(socket){
     characterId = games[socket.game].characters.length - 1;
     socket.characterIdx = characterId;
 
+    if(games[socket.game].characters.length == 2){
+      io.sockets.in(socket.game).emit('start-timer', {duration: 3000});
+    }
+
     console.log(games[socket.game].characters.length);
 
     io.sockets.in(socket.game).emit('update-characters', characterId, games[socket.game].characters);
@@ -36,7 +40,7 @@ io.on('connection', function(socket){
 
   socket.on("submit-question", function(data){
     console.log(socket.game);
-      console.log("queston submitted: " + data.subject);
+      console.log("queston submitted");
       socket.broadcast.to(socket.game).emit('receive-question', data);
   })
 

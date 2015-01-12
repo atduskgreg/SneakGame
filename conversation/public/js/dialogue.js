@@ -18,6 +18,8 @@ var dialogues = [
 ];
 
 function populateDialogue(div, data){
+	console.log("dialogue data");
+	console.log(data);
 	lineCount = 0;
 	for(var i = 0; i < data.dialogue.length; i++){
 		lineCount++;
