@@ -31,6 +31,9 @@ var Countdown = function(elem, options) {
     if (interval) {
       clearInterval(interval);
       interval = null;
+      if(options.onStop){
+        options.onStop();
+      }
     }
   }
 
@@ -44,9 +47,6 @@ var Countdown = function(elem, options) {
     if(clock >= options.duration){
       clock = options.duration;
       stop();
-      if(options.onStop){
-        options.onStop();
-      }
     }
     render();
   }

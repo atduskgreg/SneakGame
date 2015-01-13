@@ -8,6 +8,7 @@
 		  width: 75;
 		  height: 75;
   		min-height: 75;
+      display:none;
   	}
 
   	.inTransit {
@@ -30,9 +31,16 @@
       color: #aaa;
     }
 
-    #move-input input {
+    /*#move-input input {
       width: 180px;
       font-size:70px;
+    }
+*/
+
+    #move-input button {
+      width: 30%;
+      height: 15%;
+      font-size: 24px;
     }
 
     #move-input p{
@@ -43,9 +51,8 @@
 
 
     #player-view{
-      width: 568;
-      height: 320px;
-      border: 5px solid #000;
+      width: 100%;
+      height: 100%;
     }
 
     #alert p{
@@ -129,6 +136,11 @@
 
   function ready(){
 
+    setTimeout(function(){
+      // Hide the address bar!
+      window.scrollTo(0, 1);
+    }, 0);
+
     function sendAlert(txt){
       $("#alert p").html(txt);
       $("#alert p").show();
@@ -141,16 +153,18 @@
       sendAlert("Input your first move to start the game");
       $("#move-input input").attr("disabled", false);
       $("#move-input").show();
+      $("#move-list").remove();
 
     });
 
     // this should get set in some way when networking exists.
     Game.clientNum = 0;
 
-    $("#move-input input").click(function(e){
+    $("#move-input button").click(function(e){
       e.preventDefault();
       Game.getClientPlayer().setNextMove(Move[$(this).attr('id')]);
       updateMoveList(Game.round);
+      $("#move-input").hide();
       $("#move-input input").attr("disabled", true);
       $("#alert p").hide();
       $("#move-instruction").show();
@@ -226,9 +240,12 @@
     }
 
     function afterRound(){
+
       $("#move-input input").attr("disabled", false);
       sendAlert("Input your move for this turn");
       $("#move-instruction").hide();
+      $("#move-input").show();
+
     }
 
   	$("#move").click(function(e){
@@ -247,22 +264,26 @@
     <div id="player-controls">
     <div id="player-info"><span class='player-label'>Name</span> <span class='player-attribute' id="player-name"></span>
     <span class='player-label'>Position</span> <span class='player-attribute' id="player-position"></span></div>
-    <form id="move-input" action="#" method="POST">
-      <p><input id="up-left" type="submit" value="up+left"></input>
-      <input id="up" type="submit" value="up"></input>
-      <input id="up-right" type="submit" value="up+right"></input>
+    <!-- <form id="move-input" action="#" method="POST"> -->
+    <div id="move-input" />
+      <p><button id="up-left" type="submit" value="up+left">up+left</button>
+      <button id="up" type="submit" value="up">up</button>
+      <button id="up-right" type="submit" value="up+right">up+right</button>
 
       </p>
-      <p><input id="left" type="submit" value="left"></input>
-          <input id="hold" type="submit" value="hold"></input>
-          <input id="right" type="submit" value="right"></input></p>
+      <p><button id="left" type="submit" value="left">left</button>
+        <button id="hold" type="submit" value="hold" >hold</button>
+        <button id="right" type="submit" value="right">right</button>
+      </p>
       <p>
-<input id="down-left" type="submit" value="down+left">
-        <input id="down" type="submit" value="down"></input>
-        <input id="down-right" type="submit" value="down+right">
-</p>
+        <button id="down-left" type="submit" value="down+left">down+left</button>
+        <button id="down" type="submit" value="down">down</button>
+        <button id="down-right" type="submit" value="down+right">down+right</button>
+      </p>
+      </div>
 
-    </form>
+
+    <!-- </form> -->
   </div>
   <div id="setup">
   <p style="margin:0"><b>Setup Instructions</b></p>

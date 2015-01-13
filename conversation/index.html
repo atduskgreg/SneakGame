@@ -73,6 +73,32 @@
 	 	var questionSent = false;
 	 	var eventAttached = false;
 
+	 	var isNPC = false;
+	 	var npcSelection = null;
+
+	 	function rollNPC(){
+	 		if(Math.random() > 0.5){
+	 			isNPC = false;
+	 		} else {
+	 			isNPC = true;
+	 			
+	 			// $("#subject input").remove();
+	 			subjectIdx = Math.floor(Math.random() * allSubjects.length);
+	 			npcSelection =  allSubjects[subjectIdx];
+	 			$("#subject").remove();
+	 			// console.log("selected subject for id: " +subjectIdx);
+	 			// console.log(allSubjects[subjectIdx]);
+	 			// $("#subject select").val(allSubjects[subjectIdx]); 
+				// $('#subject select').attr('selected', false);
+				// $('#subject select').find('option[value="'+allSubjects[subjectIdx]+'"]').attr('selected', true );  
+
+	 		// 	console.log($("#subject select").val());
+	 			$("#instructions").append("<p><em>You are an NPC. Your conversation subject is: "+ allSubjects[subjectIdx] +"</em></p>")
+	 		}
+	 	}
+
+	 	rollNPC();
+
 	 	socket.on('update-characters',function(characterId, _characters){
 	 		console.log("update-characters");
 			console.log(_characters.length);
@@ -93,7 +119,7 @@
 	 		$(".actor1").html(character.name);
 
 
-	 		$(".actor2r").html(player.name);
+	 		$(".actor2").html(player.name);
 	 		$(".actor2-name").html(player.name);
 	 		$("#instructions .actor2").html(player.name);
 
@@ -101,8 +127,12 @@
 
 	 	$("#subject").submit(function(e){
 			e.preventDefault();
-			subject = $("#subject select").val();
-	
+			if(isNPC){
+				subject = npcSelection;
+			} else {
+				subject = $("#subject select").val();
+			}
+
 			question = {
 				question : questionAbout(subject),
 				answer : answerFor(subject, character.knowledge[subject]),
@@ -143,12 +173,12 @@
 		}
 		
 		socket.on('start-timer', function(data){
-			c = new Countdown($("#clock"), 
-							 {duration : data.duration,
-							  onStop : function(){
-							  	$("#subject").submit();
-							  }
-							 })
+			c = new Countdown($("#clock"), {
+								duration : data.duration,
+							 	onStop   : function(){
+							 		$("#subject").submit();
+							 	}
+							 });
 			c.start();
 
 		});
