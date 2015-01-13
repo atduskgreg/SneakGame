@@ -4,7 +4,6 @@
 
 #### Player control
 
-* try out on actual phone
 * Use arrows (and text of destination square) for move buttons
 * Two players
 * Add facts

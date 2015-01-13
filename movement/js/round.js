@@ -54,13 +54,13 @@ Round.prototype = {
 			roundCallback()
 		}
 		console.log(this.charIdx);
-		// if(this.sameSquare(this.currentCharacter().position, this.currentCharacter().nextPosition())){
-		// 	console.log("move is a no-op, skipping: " + this.moveDescription(this.currentCharacter()));
-		// 	this.currentCharacter().move();
-		// 	this.next(moveCallback, roundCallback);
-		// } else {
+		if(this.sameSquare(this.currentCharacter().position, this.currentCharacter().nextPosition())){
+			console.log("move is a no-op, skipping: " + this.moveDescription(this.currentCharacter()));
+			this.currentCharacter().move();
+			this.next(moveCallback, roundCallback);
+		} else {
 			moveCallback();
-		// }
+		}
 	},
 
 	currentCharacter : function(){
