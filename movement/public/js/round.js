@@ -1,6 +1,6 @@
 Round = function(characters){
 	this.characters = characters;
-	Util.shuffle(this.characters);
+	// Util.shuffle(this.characters);
 	this.charIdx = 0;
 }
 

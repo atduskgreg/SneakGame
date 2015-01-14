@@ -111,6 +111,9 @@
       font-size: 16px;
     }
 
+    #setup {
+      display: none;
+    }
 
   </style>
   <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
@@ -141,12 +144,25 @@
     Game.clientId = Game.generateClientId();
     player = new Player();
     Game.addPlayerForClient(player, Game.clientId);
+    
+    for(var i = 0; i < Game.getNumNPCs(); i++){
+      Game.characters.push(new Character());
+    }
 
-    console.log("my player");
-    console.log(player);
+   
+
+    sendAlert("Waiting for other player");
 
     var socket = io();
-    socket.emit('register-player', {gameId: gameId, clientId : Game.clientId, player : player.toData()});
+
+    npcData = [];
+    npcs = Game.getNPCs();
+    console.log("npcs: " + npcs.length);
+    for(var i = 0; i < npcs.length; i++){
+      npcData.push(npcs[i].toData());
+    }
+
+    socket.emit('register-player', {gameId: gameId, clientId : Game.clientId, player : player.toData(), npcs : npcData});
     
 
     socket.on('clients',function(data){
@@ -162,6 +178,11 @@
   
         Game.players[data[i].clientId].fromData(data[i].player);
       }
+
+      if(Object.keys(Game.players).length > 1){
+        showSetupInstructions();
+      }
+
       console.log(Game.players);
     });
 
@@ -243,6 +264,8 @@
         $("#setup-instructions").append("<li>"+Game.characters[i].setupInstruction()+"</li>");
       }
       $("#setup-instructions").show();
+      $("#setup").show();
+
     }
 
   	for(var i = Game.boardHeight-1; i >= 0; i--){
@@ -255,18 +278,14 @@
   		}
   	}
 
-  	for(var i = 0; i < Game.getNumNPCs(); i++){
-  		Game.characters.push(new Character());
-  	}
-
-   
+  
   	Game.drawCharacters(Game.characters);
 
     Game.round = new Round(Game.characters);
     Game.round.highlightCurrentMove();
     Game.updateInstruction();
     updateInputControls();
-    showSetupInstructions();
+    // showSetupInstructions();
 
     $("#move-input").hide();
     $("#move-input input").attr("disabled", true);
@@ -322,8 +341,7 @@
   <div id="setup">
     <ul id="setup-instructions">
     </ul>
-      <p style="margin:0"><a id="setup-done" href="#">Click here when done.</a></p>
-
+    <p style="margin:0"><a id="setup-done" href="#">Click here when done.</a></p>
   </div>
 
     <div id="move-instruction"><p id="instruction"></p>

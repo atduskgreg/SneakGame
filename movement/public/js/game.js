@@ -1,8 +1,7 @@
 var Game = {
 	boardWidth : 8,
 	boardHeight: 8,
-	nCharacters : 10,
-  nPlayers : 1,
+	numNPCs : 8,
 	characters : [],
   players : {},
   round : null,
@@ -33,8 +32,19 @@ var Game = {
     return result;
   },
 
+  getNPCs : function(){
+    result = [];
+    for(var i = 0; i < this.characters.length; i++){
+      if(!this.characters[i].isPlayer){
+        result.push(this.characters[i]);
+      }
+
+    }
+    return result;
+  },
+
   getNumNPCs : function(){
-    return (Game.nCharacters - Game.nPlayers);
+    return this.numNPCs;
   },
 
 	moveCharacters : function(characters){

@@ -1,6 +1,7 @@
 function Player(){
 	this.name = Util.getRandomName();
 	this.hasNextPos = false;
+	this.isPlayer = true;
 }
 
 Player.prototype = new Character();
