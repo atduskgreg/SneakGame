@@ -4,9 +4,9 @@ var Game = {
 	nCharacters : 10,
   nPlayers : 1,
 	characters : [],
-  players : [],
+  players : {},
   round : null,
-  clientNum: 0, 
+  clientId: 0, 
 
 	drawCharacters : function(characters){
 		$("#board p").remove();
@@ -17,7 +17,7 @@ var Game = {
 
   addPlayer : function(player){
     Game.characters.push(player);
-    Game.players.push(player);
+    Game.players[player.clientId] = player;
   },
 
   getClientPlayer : function(){
@@ -35,5 +35,15 @@ var Game = {
 	},
   updateInstruction : function(){
     $("#instruction").html(Game.round.currentMoveDescription());
+  },
+
+  generateClientId : function(){
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+    for( var i=0; i < 5; i++ ){
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
   }
 }

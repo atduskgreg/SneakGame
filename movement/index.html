@@ -113,12 +113,14 @@
 
 
   </style>
-  <script src="js/jquery-1.11.0.min.js"></script>
-  <script src="js/game.js"></script>
-  <script src="js/util.js"></script>
-  <script src="js/character.js"></script>
-  <script src="js/player.js"></script>
-  <script src="js/round.js"></script>
+  <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+
+  <script src="/js/jquery-1.11.0.min.js"></script>
+  <script src="/js/game.js"></script>
+  <script src="/js/util.js"></script>
+  <script src="/js/character.js"></script>
+  <script src="/js/player.js"></script>
+  <script src="/js/round.js"></script>
 
   <script>
 
@@ -135,6 +137,13 @@
   }  
 
   function ready(){
+
+    var gameId = 'game ' + window.location.pathname.split("/")[2];
+    Game.clientId = Game.generateClientId();
+
+    var socket = io();
+    socket.emit('register-player', {gameId: gameId, playerId : Game.clientId});
+
 
     setTimeout(function(){
       // Hide the address bar!
@@ -157,8 +166,7 @@
 
     });
 
-    // this should get set in some way when networking exists.
-    Game.clientNum = 0;
+
 
     $("#move-input button").click(function(e){
       e.preventDefault();
