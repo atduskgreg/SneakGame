@@ -48,6 +48,10 @@
       padding:5px;
     }
 
+    #move-input {
+      display: none;
+    }
+
 
 
     #player-view{
@@ -139,21 +143,22 @@
   }  
 
   function ready(){
+    var socket = io();
 
     var gameId = 'game ' + window.location.pathname.split("/")[2];
     Game.clientId = Game.generateClientId();
     player = new Player();
     Game.addPlayerForClient(player, Game.clientId);
-    
+    $("#player-name").html(player.name);
+    $("#player-position").html(Util.squareDescription(player.position));
+
     for(var i = 0; i < Game.getNumNPCs(); i++){
       Game.characters.push(new Character());
     }
-
-   
+    Game.round = new Round(Game.characters);
 
     sendAlert("Waiting for other player");
 
-    var socket = io();
 
     npcData = [];
     npcs = Game.getNPCs();
@@ -161,6 +166,9 @@
     for(var i = 0; i < npcs.length; i++){
       npcData.push(npcs[i].toData());
     }
+
+
+    
 
     socket.emit('register-player', {gameId: gameId, clientId : Game.clientId, player : player.toData(), npcs : npcData});
     
@@ -180,6 +188,8 @@
       }
 
       if(Object.keys(Game.players).length > 1){
+        Game.setNPCs(data[data.length-1].npcs);
+
         showSetupInstructions();
       }
 
@@ -230,6 +240,12 @@
     });
 
     function startMovePhase(){
+
+    // Game.drawCharacters(Game.characters);
+
+    // Game.round.highlightCurrentMove();
+      Game.updateInstruction();
+      updateInputControls();
       $("#alert p").hide();
 
       updateMoveList(Game.round);
@@ -244,9 +260,6 @@
           $("#" + move).hide();
         }
       }
-
-      $("#player-name").html(p.name);
-      $("#player-position").html(Util.squareDescription(p.position));
     }
 
     function updateMoveList(round){
@@ -278,14 +291,7 @@
   		}
   	}
 
-  
-  	Game.drawCharacters(Game.characters);
 
-    Game.round = new Round(Game.characters);
-    Game.round.highlightCurrentMove();
-    Game.updateInstruction();
-    updateInputControls();
-    // showSetupInstructions();
 
     $("#move-input").hide();
     $("#move-input input").attr("disabled", true);
@@ -295,6 +301,7 @@
       Game.updateInstruction();
       Game.drawCharacters(Game.characters);
       updateInputControls();
+      $("#player-position").html(Util.squareDescription(player.position));
     }
 
     function afterRound(){

@@ -47,6 +47,19 @@ var Game = {
     return this.numNPCs;
   },
 
+  setNPCs : function(data){
+    this.characters = [];
+    for(var i = 0; i < data.length; i++){
+      c = new Character();
+      c.fromData(data[i]);
+      this.characters.push(c);
+    }
+
+    for(key in this.players){
+      this.characters.push(this.players[key]);
+    }
+  },
+
 	moveCharacters : function(characters){
 		for(var i = 0; i < characters.length; i++){
 			characters[i].move();
