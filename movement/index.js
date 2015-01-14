@@ -30,6 +30,11 @@ io.on('connection', function(socket){
  	socket.broadcast.to(socket.game).emit('receive-move', data);
   });
 
+  socket.on('shuffle-characters', function(data){
+  	console.log("shuffle-characters");
+ 	socket.broadcast.to(socket.game).emit('receive-shuffle', data);
+  });
+
   socket.on('disconnect', function(){
     console.log('user disconnected');
     if(games[socket.game]){

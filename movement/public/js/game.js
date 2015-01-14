@@ -2,7 +2,7 @@ var Game = {
 	boardWidth : 8,
 	boardHeight: 8,
 	numNPCs : 8,
-	characters : [],
+	characters : {},
   players : {},
   round : null,
   clientId: 0, 
@@ -15,7 +15,7 @@ var Game = {
 	},
 
   addPlayerForClient : function(player, clientId){
-    Game.characters.push(player);
+    Game.characters[clientId] = player;
     Game.players[clientId] = player;
   },
 
@@ -33,10 +33,10 @@ var Game = {
   },
 
   getNPCs : function(){
-    result = [];
-    for(var i = 0; i < this.characters.length; i++){
+    result = {};
+    for(i in this.characters){
       if(!this.characters[i].isPlayer){
-        result.push(this.characters[i]);
+        result[i] = this.characters[i];
       }
 
     }
@@ -48,21 +48,21 @@ var Game = {
   },
 
   setNPCs : function(data){
-    this.characters = [];
-    for(var i = 0; i < data.length; i++){
+    this.characters = {};
+    for(i in data){
       c = new Character();
       c.fromData(data[i]);
-      this.characters.push(c);
+      this.characters[i] = c;
     }
 
     for(key in this.players){
-      this.characters.push(this.players[key]);
+      this.characters[key] = this.players[key];
     }
   },
 
 	moveCharacters : function(characters){
-		for(var i = 0; i < characters.length; i++){
-			characters[i].move();
+		for(i in this.characters){
+			this.characters[i].move();
 		}
 	},
   updateInstruction : function(){

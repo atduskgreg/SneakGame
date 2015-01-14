@@ -153,22 +153,23 @@
     $("#player-position").html(Util.squareDescription(player.position));
 
     for(var i = 0; i < Game.getNumNPCs(); i++){
-      Game.characters.push(new Character());
+      Game.characters[Game.generateClientId()] =  new Character();
     }
-    Game.round = new Round(Game.characters);
+
+    console.log(Game.characters);
+
+    // Game.round.shuffleOrder();
+    // console.log("local order");
+    // console.log(Game.round.order);
 
     sendAlert("Waiting for other player");
 
 
-    npcData = [];
+    npcData = {};
     npcs = Game.getNPCs();
-    console.log("npcs: " + npcs.length);
-    for(var i = 0; i < npcs.length; i++){
-      npcData.push(npcs[i].toData());
+    for(i in npcs){
+      npcData[i] = npcs[i].toData();
     }
-
-
-    
 
     socket.emit('register-player', {gameId: gameId, clientId : Game.clientId, player : player.toData(), npcs : npcData});
     
@@ -187,13 +188,31 @@
         Game.players[data[i].clientId].fromData(data[i].player);
       }
 
+
+      console.log("nPlayers: " + Object.keys(Game.players).length);
       if(Object.keys(Game.players).length > 1){
+        console.log(data[data.length-1].npcs);
         Game.setNPCs(data[data.length-1].npcs);
 
-        showSetupInstructions();
+        console.log("nCharacters: " +Object.keys(Game.characters).length);
+        Game.round = new Round(Game.characters);
+        
+        console.log(data[data.length - 1].clientId + "," + Game.clientId);
+        if(data[data.length - 1].clientId == Game.clientId){
+          Game.round.shuffleOrder();
+          socket.emit('shuffle-characters', Game.round.order);
+          showSetupInstructions();
+        }
+        
       }
 
-      console.log(Game.players);
+    });
+
+    socket.on('receive-shuffle', function(data){
+      console.log("receive-shuffle");
+      Game.round = new Round(Game.characters);
+      Game.round.order = data;
+      showSetupInstructions();
     });
 
     socket.on('receive-move', function(data){
@@ -273,8 +292,8 @@
     function showSetupInstructions(){
       sendAlert("Setup these pieces of the board as shown below.");
 
-      for(var i = 0; i < Game.characters.length; i++){
-        $("#setup-instructions").append("<li>"+Game.characters[i].setupInstruction()+"</li>");
+      for(i in Game.round.order){
+        $("#setup-instructions").append("<li>"+Game.characters[Game.round.order[i]].setupInstruction()+"</li>");
       }
       $("#setup-instructions").show();
       $("#setup").show();
