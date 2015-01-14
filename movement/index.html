@@ -114,7 +114,6 @@
 
   </style>
   <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
-
   <script src="/js/jquery-1.11.0.min.js"></script>
   <script src="/js/game.js"></script>
   <script src="/js/util.js"></script>
@@ -140,10 +139,40 @@
 
     var gameId = 'game ' + window.location.pathname.split("/")[2];
     Game.clientId = Game.generateClientId();
+    player = new Player();
+    Game.addPlayerForClient(player, Game.clientId);
+
+    console.log("my player");
+    console.log(player);
 
     var socket = io();
-    socket.emit('register-player', {gameId: gameId, playerId : Game.clientId});
+    socket.emit('register-player', {gameId: gameId, clientId : Game.clientId, player : player.toData()});
+    
 
+    socket.on('clients',function(data){
+      console.log("client data");
+      console.log(data);
+
+      // TODO: handle client disconnects in some sensible way
+      //       currently this adds clients but never drops them.
+      for(var i = 0; i < data.length; i++){
+        if(!Game.players[data[i].clientId]){ // create a player for the client
+          Game.addPlayerForClient(new Player(), data[i].clientId);
+        }
+  
+        Game.players[data[i].clientId].fromData(data[i].player);
+      }
+      console.log(Game.players);
+    });
+
+    socket.on('receive-move', function(data){
+      Game.players[data.clientId].setNextMove(data.move);
+      console.log(Game.players[data.clientId]);
+      console.log("all ready? " + Game.allPlayersReady());
+      if(Game.allPlayersReady()){
+        startMovePhase();
+      }
+    });
 
     setTimeout(function(){
       // Hide the address bar!
@@ -155,7 +184,6 @@
       $("#alert p").show();
     }
 
-
     $("#setup-done").click(function(e){
       e.preventDefault();
       $("#setup").remove();
@@ -163,20 +191,29 @@
       $("#move-input input").attr("disabled", false);
       $("#move-input").show();
       $("#move-list").remove();
-
     });
-
-
 
     $("#move-input button").click(function(e){
       e.preventDefault();
-      Game.getClientPlayer().setNextMove(Move[$(this).attr('id')]);
-      updateMoveList(Game.round);
+      move = Move[$(this).attr('id')];
+      Game.getClientPlayer().setNextMove(move);
+      socket.emit('send-move', {clientId : Game.clientId, move : move});
+
       $("#move-input").hide();
       $("#move-input input").attr("disabled", true);
-      $("#alert p").hide();
-      $("#move-instruction").show();
+      sendAlert("Waiting for other player");
+
+      if(Game.allPlayersReady()){
+        startMovePhase();
+      }
     });
+
+    function startMovePhase(){
+      $("#alert p").hide();
+
+      updateMoveList(Game.round);
+      $("#move-instruction").show();
+    }
 
     function updateInputControls(){
       p = Game.getClientPlayer();
@@ -195,7 +232,6 @@
       $("#move-list").empty();
       moves = round.allMoveDescriptions();
       for(var i = 0; i < moves.length; i++){
-        console.log(i);
         $("#move-list").append("<li>"+ moves[i] +"</li>")
       }
     }
@@ -223,10 +259,6 @@
   		Game.characters.push(new Character());
   	}
 
-    for(var i = 0; i < Game.nPlayers; i++){
-      Game.addPlayer(new Player());
-    }
-
    
   	Game.drawCharacters(Game.characters);
 
@@ -234,11 +266,10 @@
     Game.round.highlightCurrentMove();
     Game.updateInstruction();
     updateInputControls();
-
     showSetupInstructions();
+
     $("#move-input").hide();
     $("#move-input input").attr("disabled", true);
-
 
     function afterMove(){
       Game.round.highlightCurrentMove();
@@ -248,12 +279,10 @@
     }
 
     function afterRound(){
-
       $("#move-input input").attr("disabled", false);
       sendAlert("Input your move for this turn");
       $("#move-instruction").hide();
       $("#move-input").show();
-
     }
 
   	$("#move").click(function(e){
@@ -263,16 +292,16 @@
   }
   
   document.addEventListener("DOMContentLoaded", ready, false);
-
   </script>
 </head>
+
 <body>
   <div id="player-view">
     <div id="alert"><p>yo</p></div>
     <div id="player-controls">
     <div id="player-info"><span class='player-label'>Name</span> <span class='player-attribute' id="player-name"></span>
     <span class='player-label'>Position</span> <span class='player-attribute' id="player-position"></span></div>
-    <!-- <form id="move-input" action="#" method="POST"> -->
+
     <div id="move-input" />
       <p><button id="up-left" type="submit" value="up+left">up+left</button>
       <button id="up" type="submit" value="up">up</button>
@@ -288,10 +317,7 @@
         <button id="down" type="submit" value="down">down</button>
         <button id="down-right" type="submit" value="down+right">down+right</button>
       </p>
-      </div>
-
-
-    <!-- </form> -->
+    </div>
   </div>
   <div id="setup">
     <ul id="setup-instructions">

@@ -15,13 +15,22 @@ var Game = {
 		}
 	},
 
-  addPlayer : function(player){
+  addPlayerForClient : function(player, clientId){
     Game.characters.push(player);
-    Game.players[player.clientId] = player;
+    Game.players[clientId] = player;
   },
 
   getClientPlayer : function(){
-    return this.players[this.clientNum];
+    return this.players[this.clientId];
+  },
+
+  allPlayersReady : function(){
+    result = true;
+    for(clientId in this.players){
+      result = result && this.players[clientId].moveLoaded();
+    }
+
+    return result;
   },
 
   getNumNPCs : function(){

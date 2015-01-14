@@ -44,6 +44,7 @@ io.on('connection', function(socket){
       socket.broadcast.to(socket.game).emit('receive-question', data);
   })
 
+  // TODO: this is probably wrong because of array indexing
   socket.on('disconnect', function(){
     console.log('user disconnected');
     if(games[socket.game]){

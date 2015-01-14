@@ -4,8 +4,10 @@
 
 #### Player control
 
+* Synchronize generated characters between clients
+* Waiting screen
+* Alternate move instructions between players 
 * Use arrows (and text of destination square) for move buttons
-* Two players
 * Add facts
 * Simulate information flow
 

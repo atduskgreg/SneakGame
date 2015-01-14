@@ -18,6 +18,17 @@ Character.prototype = {
 		this.color = '#'+Math.floor(Math.random()*16777215).toString(16);
 	},
 
+	toData : function(){
+		return {position : this.position, destination : this.destination, name : this.name, color : this.color};
+	},
+
+	fromData : function(data){
+		this.position = data.position;
+		this.destination = data.destination;
+		this.name = data.name;
+		this.color = data.color;
+	},
+
 	setupInstruction : function(){
 		return "Place the " + this.color + " character on " + Util.squareDescription(this.position);
 	},
