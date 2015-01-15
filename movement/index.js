@@ -27,6 +27,7 @@ io.on('connection', function(socket){
   });
 
   socket.on('send-move', function(data){
+  	console.log("send-move: " + data.clientId);
  	socket.broadcast.to(socket.game).emit('receive-move', data);
   });
 

@@ -1,0 +1,321 @@
+<html>
+<head>
+  <style>
+    #board td{
+      border: 1px solid #000;
+      margin: 0;
+      min-width: 75;
+      width: 75;
+      height: 75;
+      min-height: 75;
+    }
+
+    .inTransit {
+      /*color: green;*/
+    }
+
+    .highlight {
+      background-color: #cfc;
+    }
+
+    table p {
+      margin: 0;
+      border: 1px solid #ccc;
+      color: #fff;
+    }
+
+   
+
+    .squareDescription{
+      color: #aaa;
+    }
+
+    #move-input input {
+      width: 180px;
+      font-size:70px;
+    }
+
+    #move-input p{
+      margin:5px;
+      padding:5px;
+    }
+
+
+
+    #player-view{
+      width: 568;
+      /*height: 320px;*/
+      border: 5px solid #000;
+    }
+
+    #alert p{
+      width: 100%;
+      background-color: #f00;
+      color: #fff;
+      padding-top: 5px;
+      padding-bottom: 5px;
+
+      display: none;
+      margin: 0;
+    }
+
+    #alert {
+      height: 20px;
+    }
+
+    #move-instruction {
+      display: none;
+      text-align: center;
+    }
+
+     #instruction{
+      background-color: #0f0;
+      color: #000;
+      font-size: 36;
+      margin-bottom: 0;
+    }
+    #move {
+      font-size: 30px;
+    }
+
+
+    #player-info {
+      margin-top: 20px;
+      font-size: 28px;
+      border-bottom: 1px solid #aaa;
+      border-top: 1px solid #aaa;
+      margin-bottom: 20px;
+    }
+
+    .player-label{
+      background: #aaa;
+      color: #fff;
+      padding-left: 5px;
+      padding-right: 5px;
+    }
+
+    .player-attribute{
+      width: 200px;
+    }
+
+    #setup-instructions {
+      margin: 0;
+      margin-left: 20px;
+      font-size: 16px;
+    }
+
+
+  </style>
+  <script src="/js/jquery-1.11.0.min.js"></script>
+  <script src="/js/game.js"></script>
+  <script src="/js/util.js"></script>
+  <script src="/js/character.js"></script>
+  <script src="/js/player.js"></script>
+  <script src="/js/round.js"></script>
+
+  <script>
+
+  var Move = {
+    "up-left"    : {col: -1, row:  1},
+    "up"         : {col:  0, row:  1},
+    "up-right"   : {col:  1, row:  1},
+    "left"       : {col: -1, row:  0},
+    "hold"       : {col:  0, row:  0},
+    "right"      : {col:  1, row:  0},
+    "down-left"  : {col: -1, row: -1},
+    "down"       : {col:  0, row: -1},
+    "down-right" : {col:  1, row: -1}
+  }  
+
+  function ready(){
+
+    function sendAlert(txt){
+      $("#alert p").html(txt);
+      $("#alert p").show();
+    }
+
+
+    $("#setup-done").click(function(e){
+      e.preventDefault();
+      $("#setup").remove();
+      sendAlert("Input your first move to start the game");
+      $("#move-input input").attr("disabled", false);
+      $("#move-input").show();
+
+    });
+
+    // this should get set in some way when networking exists.
+    Game.clientNum = 0;
+
+    $("#move-input input").click(function(e){
+      e.preventDefault();
+      selectedPlayer = Game.players[$("#playerSelect").val()];
+      selectedPlayer.setNextMove(Move[$(this).attr('id')]);
+      nextPlayer = Game.round.playerMoveNeeded();
+      console.log(nextPlayer);
+      if(nextPlayer){
+        updateInputControls(nextPlayer);
+        $("#playerSelect>option:eq(1)").prop("selected", true);
+      } else {
+        updateMoveList(Game.round);
+        $("#move-input input").attr("disabled", true);
+        $("#alert p").hide();
+        $("#move-instruction").show();
+      }
+    });
+
+
+    function updateInputControls(player){
+      $("#move-input input").show();
+      for(move in Move){
+        if(!player.isMoveLegal(Move[move])){
+          $("#" + move).hide();
+        }
+      }
+
+      $("#player-name").html(player.name);
+      $("#player-position").html(Util.squareDescription(player.position));
+    }
+
+    function updateMoveList(round){
+      $("#move-list").empty();
+      moves = round.allMoveDescriptions();
+      for(var i = 0; i < moves.length; i++){
+        console.log(i);
+        $("#move-list").append("<li>"+ moves[i] +"</li>")
+      }
+    }
+
+    function showSetupInstructions(){
+      sendAlert("Setup these pieces of the board as shown below.");
+
+      $("#setup-instructions").append("<p>Goal: "+Util.squareDescription(Util.randomTile()) + "</p>");
+      for(i in Game.players){
+        $("#setup-instructions").append("Players: " + Game.players[i].name + "( " + Game.players[i].color  +" "+ Util.squareDescription(Game.players[i].position) +")  ");
+      };
+
+      for(i in Game.characters){
+        $("#setup-instructions").append("<li>"+Game.characters[i].setupInstruction()+"</li>");
+      }
+      $("#setup-instructions").show();
+    }
+
+    for(var i = Game.boardHeight-1; i >= 0; i--){
+
+      $("#board").append("<tr></tr>");
+      rows = $("#board tr");
+      row = $(rows[rows.length-1]);
+      for(var j = 0; j <= Game.boardWidth-1; j++){
+        row.append("<td id='"+j+"x"+i+"'><span class='squareDescription'>"+Util.squareDescription({col: j, row: i})+"</span></td>")   
+      }
+    }
+
+    for(var i = 0; i < Game.getNumNPCs(); i++){
+      Game.addCharacter();
+    }
+
+    for(var i = 0; i < Game.nPlayers; i++){
+      var pid = Game.generateId();
+      var p = new Player();
+      p.init();
+      Game.addPlayerForClient(p, pid);
+      $("#playerSelect").append("<option value='"+pid+"'>"+pid + " " + p.name +"</option>");
+    }
+
+    $("#playerSelect").change(function(){
+      updateInputControls(Game.players[$("#playerSelect").val()]);
+    });
+
+    // function populatePlayerSelect(){
+    //   ps = Game.round.playersNeedingMoves();
+    //   for(var i = 0; i < ps.length; i++){
+    //   }
+
+    // }
+
+    console.log(Game.characters.length);
+    console.log(Game.characters);
+
+    Game.drawCharacters(Game.characters);
+
+    Game.round = new Round(Game.characters);
+    Game.round.shuffleOrder();
+    Game.round.highlightCurrentMove();
+    Game.updateInstruction();
+
+    // updateInputControls();
+
+    showSetupInstructions();
+    $("#move-input").hide();
+    $("#move-input input").attr("disabled", true);
+
+
+    function afterMove(){
+      Game.round.highlightCurrentMove();
+      Game.updateInstruction();
+      Game.drawCharacters(Game.characters);
+      // updateInputControls();
+    }
+
+    function afterRound(){
+      $("#move-input input").attr("disabled", false);
+      sendAlert("Input your move for this turn");
+      $("#move-instruction").hide();
+      $("#playerSelect>option:eq(0)").prop("selected", true);
+
+    }
+
+    $("#move").click(function(e){
+      e.preventDefault();
+      Game.round.makeMove(afterMove, afterRound);
+    });
+  }
+  
+  document.addEventListener("DOMContentLoaded", ready, false);
+
+  </script>
+</head>
+<body>
+  <div id="player-view">
+    <div id="alert"><p>yo</p></div>
+    <div id="player-controls">
+    <div id="player-info"><span class='player-label'>Name</span> <span class='player-attribute' id="player-name"></span>
+    <span class='player-label'>Position</span> <span class='player-attribute' id="player-position"></span></div>
+    <form id="move-input" action="#" method="POST">
+      <select id="playerSelect"></select>
+      <p>
+        <input id="up-left" type="submit" value="up+left"></input>
+        <input id="up" type="submit" value="up"></input>
+        <input id="up-right" type="submit" value="up+right"></input>
+      </p>
+      <p>
+        <input id="left" type="submit" value="left"></input>
+        <input id="hold" type="submit" value="hold"></input>
+        <input id="right" type="submit" value="right"></input></p>
+      <p>
+        <input id="down-left" type="submit" value="down+left">
+        <input id="down" type="submit" value="down"></input>
+        <input id="down-right" type="submit" value="down+right">
+      </p>
+
+    </form>
+  </div>
+  <div id="setup">
+  <p style="margin:0"><b>Setup Instructions</b></p>
+    <ul id="setup-instructions">
+    </ul>
+      <p style="margin:0"><a id="setup-done" href="#">Click here when done.</a></p>
+
+  </div>
+
+    <div id="move-instruction"><p id="instruction"></p>
+    <p style="margin:0; margin-top: 5px"><button id="move">done</button></div>
+
+  </div>
+  
+    <ul id="move-list">
+  </ul>
+
+  <table id="board"></table>
+</body>
+</html>
