@@ -58,12 +58,12 @@ Round.prototype = {
 	next : function(moveCallback, roundCallback){
 
 		this.charIdx++;
-		if(this.charIdx >= this.characters.length){
+		if(this.charIdx >= Object.keys(this.characters).length){
 			this.charIdx = 0;
 			this.shuffleOrder();
 			roundCallback()
 		}
-		console.log(this.charIdx + " >= " + this.characters.length);
+		// console.log(this.charIdx + " >= " + this.characters.length);
 		if(this.sameSquare(this.currentCharacter().position, this.currentCharacter().nextPosition())){
 			console.log("move is a no-op, skipping: " + this.moveDescription(this.currentCharacter()));
 			this.currentCharacter().move();
