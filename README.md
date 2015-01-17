@@ -4,11 +4,6 @@
 
 #### Movement Prototype
 
-* Assign plans to an NPC's inventory
-* Show players in GM view
-* Show plan-holder in GM view
-* Calculate dialogs
-* Integrate dialogs into interface
 * Implement information transfer on dialog
 
 #### Networking

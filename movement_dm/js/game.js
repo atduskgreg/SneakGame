@@ -21,9 +21,6 @@ var Game = {
     npcKeys = Object.keys(npcs);
     nid = Math.floor(Math.random() * npcKeys.length);
 
-    console.log("plans:");
-    console.log(npcKeys[nid]);
-
     npcs[npcKeys[nid]].inventory.push({name : "plans"});
   },
 
@@ -39,6 +36,20 @@ var Game = {
     }
 
     return result;
+  },
+
+  currentDialogs : function(){
+    results = {};
+    for(i in this.characters){
+      for(j in this.characters){
+        if(this.characters[i].name != this.characters[j].name 
+          && Util.sameSquare(this.characters[i].position, this.characters[j].position)){
+            pairKey = [this.characters[i].name, this.characters[j].name].sort().join("-");
+            results[pairKey] = {location : this.characters[i].position, characters : [this.characters[i], this.characters[j]]};
+        }
+      }
+    }
+    return results;
   },
 
   addPlayerForClient : function(player, clientId){

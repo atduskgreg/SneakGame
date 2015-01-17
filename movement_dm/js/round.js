@@ -10,7 +10,6 @@ Round.prototype = {
 	shuffleOrder : function(){
 		this.order = Object.keys(this.characters);
 		Util.shuffle(this.order);
-		console.log(this.order);
 	},
 
 	playerMoveNeeded : function(){
@@ -33,7 +32,7 @@ Round.prototype = {
 	},
 
 	moveDescription : function(character){
-		if(this.sameSquare(character.position, character.nextPosition())){
+		if(Util.sameSquare(character.position, character.nextPosition())){
 			return "the "+ character.color +" character on " + Util.squareDescription(character.position) + " holds";
 		} else {
 			return "move the "+ character.color + " character on " + Util.squareDescription(character.position) + " to " + Util.squareDescription(character.nextPosition());
@@ -59,18 +58,12 @@ Round.prototype = {
 		this.next(moveCallback, roundCallback);
 	},
 
-	sameSquare : function(fromPos, toPos){
-		return (fromPos.col == toPos.col) && (fromPos.row == toPos.row);
-	},
-
 	allMoveDescriptions : function(){
 		result = [];
 		for(var i = 0; i < this.order.length; i++){
-			console.log(this.order[i]);
 			result.push(this.moveDescription(this.characters[this.order[i]]));
 		}
-		console.log("move descriptions")
-		console.log(result);
+
 		return result;
 	},
 
@@ -83,7 +76,7 @@ Round.prototype = {
 			roundCallback()
 		}
 		// console.log(this.charIdx + " >= " + this.characters.length);
-		if(this.sameSquare(this.currentCharacter().position, this.currentCharacter().nextPosition())){
+		if(Util.sameSquare(this.currentCharacter().position, this.currentCharacter().nextPosition())){
 			console.log("move is a no-op, skipping: " + this.moveDescription(this.currentCharacter()));
 			this.currentCharacter().move();
 			this.next(moveCallback, roundCallback);

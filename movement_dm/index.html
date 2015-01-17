@@ -153,7 +153,6 @@
       sendAlert("Input your first move to start the game");
       $("#move-input input").attr("disabled", false);
       $("#move-input").show();
-
     });
 
     // this should get set in some way when networking exists.
@@ -164,7 +163,6 @@
       selectedPlayer = Game.players[$("#playerSelect").val()];
       selectedPlayer.setNextMove(Move[$(this).attr('id')]);
       nextPlayer = Game.round.playerMoveNeeded();
-      console.log(nextPlayer);
       if(nextPlayer){
         updateInputControls(nextPlayer);
         $("#playerSelect>option:eq(1)").prop("selected", true);
@@ -268,16 +266,28 @@
     $("#move-input input").attr("disabled", true);
 
     function updateDebug(){
+      console.log("updateDebug");
       for(i in Game.players){
         p = Game.players[i];
-        $("#players").append("<li>"+p.toString() + "</li>");
+        $("#players").append("<li>" + p.toString() + "</li>");
       }
 
       npcs = Game.getNPCs();
       for(i in npcs){
         $("#characters").append("<li>" + npcs[i].toString() + "</li>"); 
-
       }
+
+      dialogs = Game.currentDialogs();
+      for( i in dialogs){
+        locationString = Util.squareDescription(dialogs[i].location);
+        characterStrings = [];
+        for(var k = 0; k < dialogs[i].characters.length; k++){
+          characterStrings.push(dialogs[i].characters[k].toString());
+        }
+
+        $("#dialogs").append("<li>"+ locationString + " " + characterStrings.join(", ") +"</li>");
+      }
+
     }
 
 
@@ -293,12 +303,14 @@
       sendAlert("Input your move for this turn");
       $("#move-instruction").hide();
       $("#playerSelect>option:eq(0)").prop("selected", true);
+      updateDebug();
     }
 
     $("#move").click(function(e){
       e.preventDefault();
       Game.round.makeMove(afterMove, afterRound);
     });
+
   }
   
   document.addEventListener("DOMContentLoaded", ready, false);

@@ -24,6 +24,14 @@ Player.prototype.isMoveLegal = function(move){
 	return (!off_left && !off_right && !off_top && !off_bot);
 }
 
+Player.prototype.toString = function(){
+	inventory = [];
+	for(var k =0; k < this.inventory.length; k++){
+	  inventory.push(this.inventory[k].name);
+	}
+	return "P: " + this.name + " ("+this.color+") i:["+inventory.join(", ")+"] k:[" + Object.keys(this.knowledge).join(", ")+"]";
+}
+
 Player.prototype.move = function(){
 	this.position = this.nextPos;
 	this.hasNextPos = false;

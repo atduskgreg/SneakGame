@@ -14,6 +14,9 @@ var Util = {
     return ["a", "b", "c", "d", "e", "f","g","h"][sqr.col] + (sqr.row+1);
   },
   
+  sameSquare : function(sqrA, sqrB){
+    return (sqrA.col == sqrB.col) && (sqrA.row == sqrB.row);
+  },
 
   randomTile : function(){
   	 var c = Math.floor(Math.random() * Game.boardWidth);
