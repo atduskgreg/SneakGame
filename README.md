@@ -2,14 +2,20 @@
 
 ### TODO
 
-#### Player control
+#### Movement Prototype
+
+* Assign plans to an NPC's inventory
+* Show players in GM view
+* Show plan-holder in GM view
+* Calculate dialogs
+* Integrate dialogs into interface
+* Implement information transfer on dialog
+
+#### Networking
 
 * Synchronize generated characters between clients
 * Waiting screen
 * Alternate move instructions between players 
-* Use arrows (and text of destination square) for move buttons
-* Add facts
-* Simulate information flow
 
 #### Dialog Prototype
 
@@ -19,6 +25,7 @@
 
 #### Other
 
+* Use arrows (and text of destination square) for move buttons
 * Identify squares with multiple characters that need dialog
 
 #### Questions?

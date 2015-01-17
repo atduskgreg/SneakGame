@@ -8,6 +8,8 @@ Character = function(){
 	colors = ["red", "green", "yellow", "blue", "pink", "orange", "brown", "gray", "black", "brown"];
 
 	this.color =  colors[Math.floor(Math.random() * colors.length)];
+	this.knowledge = {};
+	this.inventory = [];
 }
 
 Character.prototype = {
@@ -18,6 +20,14 @@ Character.prototype = {
 		colors = ["red", "green", "yellow", "blue", "pink", "orange", "brown", "gray", "black", "brown"];
 
 		this.color =  colors[Math.floor(Math.random() * colors.length)];
+	},
+
+	toString : function(){
+		inventory = [];
+        for(var k =0; k < this.inventory.length; k++){
+          inventory.push(this.inventory[k].name);
+        }
+		return this.name + " ("+this.color+") i:["+inventory.join(", ")+"] k:[" + Object.keys(this.knowledge).join(", ")+"]";
 	},
 
 	toData : function(){

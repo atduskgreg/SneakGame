@@ -15,6 +15,32 @@ var Game = {
 		}
 	},
 
+  assignPlans : function(){
+    npcs = this.getNPCs();
+
+    npcKeys = Object.keys(npcs);
+    nid = Math.floor(Math.random() * npcKeys.length);
+
+    console.log("plans:");
+    console.log(npcKeys[nid]);
+
+    npcs[npcKeys[nid]].inventory.push({name : "plans"});
+  },
+
+  characterWithItem : function(item){
+    result = null;
+    for(var i in this.characters){
+      for(var k = 0; k < this.characters[i].inventory.length; k++){
+        if(this.characters[i].inventory[k].name == item){
+          result = this.characters[i];
+          break;
+        }
+      }
+    }
+
+    return result;
+  },
+
   addPlayerForClient : function(player, clientId){
     Game.characters[clientId] = player;
     Game.players[clientId] = player;

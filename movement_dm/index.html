@@ -1,6 +1,10 @@
 <html>
 <head>
   <style>
+  #board {
+    float :left;
+    margin-right: 20px;
+  }
     #board td{
       border: 1px solid #000;
       margin: 0;
@@ -102,6 +106,14 @@
       margin: 0;
       margin-left: 20px;
       font-size: 16px;
+    }
+
+    #gm-info{
+      float: left;
+    }
+
+    #gm-info h2{
+      border-bottom: 1px solid #000;
     }
 
 
@@ -214,6 +226,8 @@
       Game.addCharacter();
     }
 
+    Game.assignPlans();
+
     for(var i = 0; i < Game.nPlayers; i++){
       var pid = Game.generateId();
       var p = new Player();
@@ -222,9 +236,12 @@
       $("#playerSelect").append("<option value='"+pid+"'>"+pid + " " + p.name +"</option>");
     }
 
+
     $("#playerSelect").change(function(){
       updateInputControls(Game.players[$("#playerSelect").val()]);
     });
+
+
 
     // function populatePlayerSelect(){
     //   ps = Game.round.playersNeedingMoves();
@@ -242,12 +259,26 @@
     Game.round.shuffleOrder();
     Game.round.highlightCurrentMove();
     Game.updateInstruction();
+    updateDebug();
 
     // updateInputControls();
 
     showSetupInstructions();
     $("#move-input").hide();
     $("#move-input input").attr("disabled", true);
+
+    function updateDebug(){
+      for(i in Game.players){
+        p = Game.players[i];
+        $("#players").append("<li>"+p.toString() + "</li>");
+      }
+
+      npcs = Game.getNPCs();
+      for(i in npcs){
+        $("#characters").append("<li>" + npcs[i].toString() + "</li>"); 
+
+      }
+    }
 
 
     function afterMove(){
@@ -262,7 +293,6 @@
       sendAlert("Input your move for this turn");
       $("#move-instruction").hide();
       $("#playerSelect>option:eq(0)").prop("selected", true);
-
     }
 
     $("#move").click(function(e){
@@ -317,5 +347,15 @@
   </ul>
 
   <table id="board"></table>
+  <div id="gm-info">
+    <h2>GM Info</h2>
+    <h4>Players</h4>
+    <ul id="players"></ul>
+    <h4>Dialogs</h4>
+    <ul id="dialogs"></ul>
+    <h4>Characters</h4>
+    <ul id="characters"></ul>
+  </div>
+  <br style="clear:both" />
 </body>
 </html>
