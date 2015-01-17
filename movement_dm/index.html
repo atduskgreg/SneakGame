@@ -239,24 +239,11 @@
       updateInputControls(Game.players[$("#playerSelect").val()]);
     });
 
-
-
-    // function populatePlayerSelect(){
-    //   ps = Game.round.playersNeedingMoves();
-    //   for(var i = 0; i < ps.length; i++){
-    //   }
-
-    // }
-
-    console.log(Game.characters.length);
-    console.log(Game.characters);
-
-    Game.drawCharacters(Game.characters);
-
     Game.round = new Round(Game.characters);
     Game.round.shuffleOrder();
     Game.round.highlightCurrentMove();
     Game.updateInstruction();
+    Game.drawCharacters(Game.characters);
     updateDebug();
 
     // updateInputControls();
@@ -287,7 +274,6 @@
 
         $("#dialogs").append("<li>"+ locationString + " " + characterStrings.join(", ") +"</li>");
       }
-
     }
 
 
@@ -303,7 +289,11 @@
       sendAlert("Input your move for this turn");
       $("#move-instruction").hide();
       $("#playerSelect>option:eq(0)").prop("selected", true);
+      
+      Game.propagateKnowledge(Game.currentDialogs());
+
       updateDebug();
+
     }
 
     $("#move").click(function(e){

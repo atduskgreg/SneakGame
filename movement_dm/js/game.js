@@ -52,6 +52,11 @@ var Game = {
     return results;
   },
 
+  // HERE: execute knowledge propagation
+  propagateKnowledge : function(dialogs){
+    
+  },
+
   addPlayerForClient : function(player, clientId){
     Game.characters[clientId] = player;
     Game.players[clientId] = player;
