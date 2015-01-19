@@ -240,6 +240,8 @@
     });
 
     Game.round = new Round(Game.characters);
+    Game.propagateKnowledge(Game.currentDialogs());
+
     Game.round.shuffleOrder();
     Game.round.highlightCurrentMove();
     Game.updateInstruction();
@@ -254,16 +256,19 @@
 
     function updateDebug(){
       console.log("updateDebug");
+      $("#players").empty();
       for(i in Game.players){
         p = Game.players[i];
         $("#players").append("<li>" + p.toString() + "</li>");
       }
 
+      $("#characters").empty();
       npcs = Game.getNPCs();
       for(i in npcs){
         $("#characters").append("<li>" + npcs[i].toString() + "</li>"); 
       }
 
+      $("#dialogs").empty();
       dialogs = Game.currentDialogs();
       for( i in dialogs){
         locationString = Util.squareDescription(dialogs[i].location);

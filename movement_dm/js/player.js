@@ -26,10 +26,15 @@ Player.prototype.isMoveLegal = function(move){
 
 Player.prototype.toString = function(){
 	inventory = [];
-	for(var k =0; k < this.inventory.length; k++){
-	  inventory.push(this.inventory[k].name);
-	}
-	return "P: " + this.name + " ("+this.color+") i:["+inventory.join(", ")+"] k:[" + Object.keys(this.knowledge).join(", ")+"]";
+     for(var k =0; k < this.inventory.length; k++){
+       inventory.push(this.inventory[k].name);
+     }
+
+     knowledgeDescription = [];
+     for(i in this.knowledge){
+     	knowledgeDescription.push(this.knowledge[i].who + " had the "+ i + " " + (Game.round.num - this.knowledge[i].when) + " turns ago " );
+     }
+	return "P : " + this.name + " ("+this.color+") i:["+inventory.join(", ")+"] k:[" + knowledgeDescription.join(", ")+"]";
 }
 
 Player.prototype.move = function(){

@@ -22,12 +22,40 @@ Character.prototype = {
 		this.color =  colors[Math.floor(Math.random() * colors.length)];
 	},
 
+	// learn knowledge from other character's knowledge and items
+	learnFrom : function(other){
+		// learn about what they're carrying
+		for(var i = 0; i < other.inventory.length; i++){
+			this.knowledge[other.inventory[i].name] = {who : other.name, when : Game.round.num}
+		}
+
+		for(i in other.knowledge){
+
+			// if we know something about the item,
+			// only learn from them if their info is more recent
+			if(this.knowledge[i]){
+				if(this.knowledge[i].when < other.knowledge[i].when){
+					this.knowledge[i] = other.knowledge[i];
+				}
+			}
+			// if we know nothing, learn what they know
+			else {
+				this.knowledge[i] = other.knowledge[i];
+			}
+		}
+	},
+
 	toString : function(){
 		inventory = [];
         for(var k =0; k < this.inventory.length; k++){
           inventory.push(this.inventory[k].name);
         }
-		return this.name + " ("+this.color+") i:["+inventory.join(", ")+"] k:[" + Object.keys(this.knowledge).join(", ")+"]";
+
+        knowledgeDescription = [];
+        for(i in this.knowledge){
+        	knowledgeDescription.push(this.knowledge[i].who + " had the "+ i + " " + (Game.round.num - this.knowledge[i].when) + " turns ago " );
+        }
+		return this.name + " ("+this.color+") i:["+inventory.join(", ")+"] k:[" + knowledgeDescription.join(", ")+"]";
 	},
 
 	toData : function(){

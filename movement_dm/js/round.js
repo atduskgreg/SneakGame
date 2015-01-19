@@ -2,6 +2,7 @@ Round = function(characters){
 	this.characters = characters;
 	// Util.shuffle(this.characters);
 	this.charIdx = 0;
+	this.num = 0;
 }
 
 Round.prototype = {
@@ -72,8 +73,9 @@ Round.prototype = {
 		this.charIdx++;
 		if(this.charIdx >= Object.keys(this.characters).length){
 			this.charIdx = 0;
+			this.num++;
 			this.shuffleOrder();
-			roundCallback()
+			roundCallback();
 		}
 		// console.log(this.charIdx + " >= " + this.characters.length);
 		if(Util.sameSquare(this.currentCharacter().position, this.currentCharacter().nextPosition())){

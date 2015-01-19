@@ -53,8 +53,21 @@ var Game = {
   },
 
   // HERE: execute knowledge propagation
+  //       -> Notify player of knowledge transfer
   propagateKnowledge : function(dialogs){
-    
+    for( i in dialogs){
+      for(var j = 0; j < dialogs[i].characters.length; j++){
+        char1 = dialogs[i].characters[j];
+        for(var k = 0; k < dialogs[i].characters.length; k++){
+            if(j != k){
+              char2 = dialogs[i].characters[k];
+              console.log(char1.name + " learning from " + char2.name);
+              char1.learnFrom(char2);
+            }
+        }
+
+      }
+    }
   },
 
   addPlayerForClient : function(player, clientId){
