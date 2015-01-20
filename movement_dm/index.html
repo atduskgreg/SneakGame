@@ -116,6 +116,11 @@
       border-bottom: 1px solid #000;
     }
 
+    #exit {
+      background-color: #000;
+      color: #fff;
+      border: none;
+    }
 
   </style>
   <script src="/js/jquery-1.11.0.min.js"></script>
@@ -225,6 +230,7 @@
     }
 
     Game.assignPlans();
+    Game.generateExit();
 
     for(var i = 0; i < Game.nPlayers; i++){
       var pid = Game.generateId();
@@ -245,7 +251,8 @@
     Game.round.shuffleOrder();
     Game.round.highlightCurrentMove();
     Game.updateInstruction();
-    Game.drawCharacters(Game.characters);
+    // Game.drawCharacters(Game.characters);
+    Game.drawDebug();
     updateDebug();
 
     // updateInputControls();
@@ -285,7 +292,8 @@
     function afterMove(){
       Game.round.highlightCurrentMove();
       Game.updateInstruction();
-      Game.drawCharacters(Game.characters);
+      // Game.drawCharacters(Game.characters);
+      Game.drawDebug();
       // updateInputControls();
     }
 

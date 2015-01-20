@@ -4,7 +4,6 @@
 
 #### Movement Prototype
 
-* At start of game generate an exit on one of the peripheral squares
 * Convert dialog GM screen into something more readable
 
 #### Networking

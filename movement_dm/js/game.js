@@ -6,7 +6,15 @@ var Game = {
 	characters : {},
   players : {},
   round : null,
-  clientId: 0, 
+  clientId: 0,
+  exit : null, 
+
+  drawDebug : function(){
+    this.drawCharacters(this.characters);
+    console.log("exit");
+    console.log(this.exit);
+    this.drawExit();
+  },
 
 	drawCharacters : function(characters){
 		$("#board p").remove();
@@ -14,6 +22,11 @@ var Game = {
 			characters[i].draw();
 		}
 	},
+
+  drawExit : function(){
+    $(Util.squareSelector(this.exit)).css("background-color", "pink");
+    $(Util.squareSelector(this.exit)).append("<p id='exit'>exit</p>")
+  },
 
   assignPlans : function(){
     npcs = this.getNPCs();
@@ -68,6 +81,43 @@ var Game = {
 
       }
     }
+  },
+
+  generateExit : function(){
+    
+      
+    options = [];
+
+    //a-h8
+    for(var i = 0; i < 8; i++){
+     options.push("abcdefgh".slice(i,i+1) + "8");
+    }
+
+    //h7-1
+    for(var i = 0; i < 7; i++){
+     options.push("h" + (i+1));
+    }
+
+    //a-g1
+    for(var i = 0; i < 7; i++){
+     options.push("abcdefgh".slice(i,i+1) + 1);
+    }
+
+    //a8-2
+    for(var i = 0; i < 7; i++){
+     options.push("a" + (i+1));
+    }
+
+
+
+    exitSquare = options[Math.floor(Math.random() * options.length)];
+
+    parts = exitSquare.split("");
+
+    col = "abcdefgh".split("").indexOf(parts[0]);
+    row = parseInt(parts[1]) - 1;
+
+    this.exit = {col : col, row : row};
   },
 
   addPlayerForClient : function(player, clientId){

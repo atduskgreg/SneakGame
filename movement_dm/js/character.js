@@ -79,7 +79,6 @@ Character.prototype = {
 
 	draw : function(){
 		var k = this.atDestination() ? "atDestination" : "inTransit";
-
 		$(this.squareSelector()).append("<p style='background-color:"+this.color+";' class='"+k+"'>"+this.name+"</p>");
 	},
 
