@@ -122,6 +122,10 @@
       border: none;
     }
 
+    #move-list {
+      display: none;
+    }
+
   </style>
   <script src="/js/jquery-1.11.0.min.js"></script>
   <script src="/js/game.js"></script>
@@ -204,7 +208,7 @@
     function showSetupInstructions(){
       sendAlert("Setup these pieces of the board as shown below.");
 
-      $("#setup-instructions").append("<p>Goal: "+Util.squareDescription(Util.randomTile()) + "</p>");
+      $("#setup-instructions").append("<p>Exit: "+Util.squareDescription(Game.exit) + "</p>");
       for(i in Game.players){
         $("#setup-instructions").append("Players: " + Game.players[i].name + "( " + Game.players[i].color  +" "+ Util.squareDescription(Game.players[i].position) +")  ");
       };

@@ -45,6 +45,23 @@ Character.prototype = {
 		}
 	},
 
+	acquireItemsFrom : function(other){
+		itemsToRemove = [];
+		for(var i = 0; i < other.inventory.length; i++){
+			this.inventory.push(other.inventory[i]);
+			itemsToRemove.push(other.inventory[i]);
+		}
+		console.log(other.inventory);
+		console.log(itemsToRemove.length + " items to remove");
+		for(var i = 0; i < itemsToRemove.length; i++){
+			console.log("removing " + itemsToRemove[i]);
+			index = other.inventory.indexOf(itemsToRemove[i]);
+			other.inventory.splice(index,1);
+		}
+		console.log(other.inventory);
+
+	},
+
 	toString : function(){
 		inventory = [];
         for(var k =0; k < this.inventory.length; k++){

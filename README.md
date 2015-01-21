@@ -4,6 +4,7 @@
 
 #### Movement Prototype
 
+* Implement inventory item transfer to player
 * Convert dialog GM screen into something more readable
 
 #### Networking
