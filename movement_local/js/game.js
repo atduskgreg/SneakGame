@@ -28,6 +28,36 @@ var Game = {
     $(Util.squareSelector(this.exit)).append("<p id='exit'>exit</p>")
   },
 
+  setup : function(){
+    Game.createNPCs();
+    Game.createPlayers();
+    Game.assignPlans();
+    Game.generateExit();
+  },
+
+  setupInstructions : function(){
+    var setupInstructions = [];
+    for(i in this.characters){
+      setupInstructions.push({"id" : i, "instruction" : this.characters[i].setupInstruction()});
+    }
+    return setupInstructions;
+  }, 
+
+  createPlayers : function(){
+    for(var i = 0; i < Game.nPlayers; i++){
+      var pid = Game.generateId();
+      var p = new Player();
+      p.init();
+      Game.addPlayerForClient(p, pid);
+    }
+  },
+
+  createNPCs : function(){
+    for(var i = 0; i < Game.getNumNPCs(); i++){
+      Game.addCharacter();
+    }
+  },
+
   assignPlans : function(){
     npcs = this.getNPCs();
 
