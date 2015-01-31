@@ -8,7 +8,9 @@ App.Router.map(function(){
 App.SetupRoute = Ember.Route.extend({
   setupController : function(controller, model){
     GameManager.transitionTo("setup");
-    controller.set('model', Game.setupInstructions());
+    controller.set('exit', Game.exit);
+
+    controller.set('instructions', Game.setupInstructions());
   }
 });
 
@@ -29,3 +31,6 @@ var GameManager = Ember.StateManager.create({
   })
 });
 
+Ember.Handlebars.helper('format-square',function(square){
+  return Util.squareDescription(square);
+});

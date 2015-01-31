@@ -38,7 +38,7 @@ var Game = {
   setupInstructions : function(){
     var setupInstructions = [];
     for(i in this.characters){
-      setupInstructions.push({"id" : i, "instruction" : this.characters[i].setupInstruction()});
+      setupInstructions.push({"instruction" : this.characters[i].setupInstruction()});
     }
     return setupInstructions;
   }, 
