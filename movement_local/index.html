@@ -25,7 +25,8 @@
       {{#if PassManager.isPassing}}
         {{partial 'pass'}}
       {{else}}
-        <p></p>
+        <p>You are {{current-player-color}}</p>
+        <p><button {{action 'next'}}>Got it</button></p>
       {{/if}}
     </script>
 
