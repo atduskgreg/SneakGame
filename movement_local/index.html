@@ -17,6 +17,21 @@
         <li>{{item.instruction}}</li>
       {{/each}}
       </ul>
+      <p>{{#link-to 'characterAssignment'}}Assign Characters{{/link-to}}</p>
+    </script>
+    
+    <script type="text/x-handlebars" id="characterAssignment">
+      <h1>Player character assignments</h1>
+      {{#if PassManager.isPassing}}
+        {{partial 'pass'}}
+      {{else}}
+        <p></p>
+      {{/if}}
+    </script>
+
+    <script type="text/x-handlebars" id="_pass">
+      <p>Pass the screen to {{ current-player-public }}</p>
+      <p><button {{action 'next'}}>Done</button></p>
     </script>
   
     <script src="js/libs/jquery-1.10.2.js"></script>
