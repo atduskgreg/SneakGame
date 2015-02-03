@@ -11,8 +11,6 @@ var Game = {
 
   drawDebug : function(){
     this.drawCharacters(this.characters);
-    console.log("exit");
-    console.log(this.exit);
     this.drawExit();
   },
 
@@ -159,7 +157,10 @@ var Game = {
   },
 
   addCharacter : function(){
-    this.characters[this.generateId()] = new Character();
+    character = new Character();
+    character.init();
+    this.characters[this.generateId()] = character;
+
   },
 
   getClientPlayer : function(){

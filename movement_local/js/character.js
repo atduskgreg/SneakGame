@@ -1,25 +1,16 @@
 
 
 Character = function(){
-	this.position = Util.randomTile();
-	this.destination = Util.randomTile();
-	this.name = Util.getRandomName();
-
-	colors = ["red", "green", "yellow", "blue", "pink", "orange", "brown", "gray", "black", "brown"];
-
-	this.color =  colors[Math.floor(Math.random() * colors.length)];
-	this.knowledge = {};
-	this.inventory = [];
 }
 
 Character.prototype = {
+	knowledge : {},
+	inventory : [],
 	init : function(){
 		this.position = Util.randomTile();
 		this.destination = Util.randomTile();
 		this.name = Util.getRandomName();
-		colors = ["red", "green", "yellow", "blue", "pink", "orange", "brown", "gray", "black", "brown"];
-
-		this.color =  colors[Math.floor(Math.random() * colors.length)];
+		this.color =  Util.getRandomColor();
 	},
 
 	// learn knowledge from other character's knowledge and items

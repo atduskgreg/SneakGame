@@ -1,5 +1,6 @@
 function Player(){
 	this.name = Util.getRandomName();
+  // this.color = Util.getRandomColor();
 	this.hasNextPos = false;
 	this.isPlayer = true;
 }
