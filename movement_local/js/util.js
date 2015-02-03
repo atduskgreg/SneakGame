@@ -1,9 +1,16 @@
 var Util = {
   names : ["joe", "bob", "jane", "cat", "pam", "kit", "van", "lin", "alice", "fin", "mark", "kevin", "max", "june", "tim"],
+  colors : ["red", "green", "yellow", "blue", "pink", "orange", "gray", "black", "brown", "white"],
+
 
   getRandomName : function(){
     var idx = Math.floor(Math.random() * Util.names.length);
     return Util.names.splice(idx, 1)[0];
+  },
+
+  getRandomColor : function(){
+    var idx = Math.floor(Math.random() * Util.colors.length);
+    return Util.colors.splice(idx, 1)[0];
   },
   
   squareSelector : function(sqr){
