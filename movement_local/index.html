@@ -25,8 +25,34 @@
       {{#if PassManager.isPassing}}
         {{partial 'pass'}}
       {{else}}
-        <p>You are {{current-player-color}}</p>
+        <p>You are {{current-player-color}}.</p>
         <p><button {{action 'next'}}>Got it</button></p>
+      {{/if}}
+    </script>
+
+
+    <script type="text/x-handlebars" id="moves">
+      <h1>Input moves</h1>
+      {{#if PassManager.isPassing}}
+        {{partial 'pass'}}
+      {{else}}
+        <div id="moveInpt">
+        <p>        
+          <button {{action "up-left" }}>up+left</button>
+          <button {{action "up" }}>up</button>
+          <button {{action "up-right" }}>up+right</button>
+        </p>
+        <p>        
+          <button {{action "left" }}>left</button>
+          <button {{action "hold" }}>hold</button>
+          <button {{action "right" }}>right</button>
+        </p>
+        <p>        
+          <button {{action "down-left" }}>down+left</button>
+          <button {{action "down" }}>down</button>
+          <button {{action "down-right" }}>down+right</button>
+        </p>
+        </div>
       {{/if}}
     </script>
 
