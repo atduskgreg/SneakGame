@@ -1,7 +1,17 @@
 var Util = {
   names : ["joe", "bob", "jane", "cat", "pam", "kit", "van", "lin", "alice", "fin", "mark", "kevin", "max", "june", "tim"],
   colors : ["red", "green", "yellow", "blue", "pink", "orange", "gray", "black", "brown", "white"],
-
+  moves : {
+    nw   : {col: -1, row:  1},
+    n    : {col:  0, row:  1},
+    ne   : {col:  1, row:  1},
+    w    : {col: -1, row:  0},
+    hold : {col:  0, row:  0},
+    e    : {col:  1, row:  0},
+    sw   : {col: -1, row: -1},
+    s    : {col:  0, row: -1},
+    se   : {col:  1, row: -1}
+  },  
 
   getRandomName : function(){
     var idx = Math.floor(Math.random() * Util.names.length);
