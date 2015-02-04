@@ -1,7 +1,24 @@
 <html>
   <head>
+    <style>
+    #board td{
+      border: 1px solid #000;
+      margin: 0;
+      min-width: 75;
+      width: 75;
+      height: 75;
+      min-height: 75;
+    }
+
+    .squareDescription{
+      color: #aaa;
+    }
+
+    </style>
+
     <script type="text/x-handlebars">
       {{outlet}}
+      {{partial 'debug'}}
     </script>
   
     <script type="text/x-handlebars" id ="index">
@@ -59,6 +76,14 @@
     <script type="text/x-handlebars" id="_pass">
       <p>Pass the screen to {{ current-player-public }}</p>
       <p><button {{action 'next'}}>Done</button></p>
+    </script>
+
+    <script type="text/x-handlebars" id="_debug">
+      <h4>Debug view <a href="#" {{action "toggle"}}>toggle</a></h4>
+
+      {{#view "debug" isVisibleBinding="debugIsVisible"}}
+        {{board-table}}
+      {{/view}}
     </script>
   
     <script src="js/libs/jquery-1.10.2.js"></script>

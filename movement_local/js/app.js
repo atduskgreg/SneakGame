@@ -56,6 +56,19 @@ App.MovesController = Ember.ObjectController.extend({
   }
 });
 
+App.ApplicationController = Em.ObjectController.extend({ 
+  debugIsVisible : false,
+
+  actions : {
+    toggle : function(){
+      this.toggleProperty('debugIsVisible');
+    }
+  }
+});
+
+App.DebugView = Ember.View.extend();
+
+
 var PassManager = Ember.StateManager.create({
   initialState : 'pass',
   playerIdx : 0,
@@ -147,4 +160,17 @@ Ember.Handlebars.helper('current-player-public',function(){
 
 Ember.Handlebars.helper('current-player-color',function(){
   return Game.players[Object.keys(Game.players)[PassManager.playerIdx]].color;
+});
+
+Ember.Handlebars.helper('board-table',function(){
+  var result = "<table id='board'>"
+  for(var i = Game.boardHeight-1; i >= 0; i--){
+      result += "<tr>";
+      for(var j = 0; j <= Game.boardWidth-1; j++){
+        result += "<td id='"+j+"x"+i+"'><span class='squareDescription'>"+Util.squareDescription({col: j, row: i})+"</span></td>";  
+      }
+     result += "</tr>";
+    }
+
+  return new Handlebars.SafeString(result);
 });
