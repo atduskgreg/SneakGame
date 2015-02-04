@@ -41,6 +41,20 @@ var Game = {
     return setupInstructions;
   }, 
 
+  moveInstructions : function(){
+    // shuffle order of players
+    orderedKeys = Object.keys(this.characters);
+    Util.shuffle(orderedKeys);
+
+    var result = [];
+    for(var i = 0 ; i < orderedKeys.length; i++){
+      currentCharacter = this.characters[orderedKeys[i]];
+      result.push(Util.moveDescription(currentCharacter));
+    }
+
+    return result;
+  },
+
   createPlayers : function(){
     for(var i = 0; i < Game.nPlayers; i++){
       var pid = Game.generateId();

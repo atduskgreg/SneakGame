@@ -88,6 +88,15 @@
         </div>
       {{/if}}
     </script>
+    
+    <script type="text/x-handlebars" id="moveInstructions">
+    <h1>Move Instructions</h1>
+    <ul>
+    {{#each instruction in instructions}}
+      <li>{{ instruction }}</li>
+    {{/each}}
+    </ul>
+    </script>
 
     <script type="text/x-handlebars" id="_pass">
       <p>Pass the screen to {{ current-player-public }}</p>

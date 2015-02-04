@@ -5,6 +5,7 @@ App.Router.map(function(){
   this.resource("setup");
   this.resource("characterAssignment");
   this.resource("moves");
+  this.resource("moveInstructions");
 });
 
 App.SetupRoute = Ember.Route.extend({
@@ -28,6 +29,14 @@ App.MovesRoute = Ember.Route.extend({
   }
 });
 
+App.MoveInstructionsRoute = Ember.Route.extend({
+  setupController : function(controller, model){
+    GameManager.transitionTo("moveInstructions");
+
+    controller.set('instructions', Game.moveInstructions());
+  }
+});
+
 App.CharacterAssignmentController = Ember.ObjectController.extend({
   actions : {
     next : function(){
@@ -48,10 +57,14 @@ App.MovesController = Ember.ObjectController.extend({
       console.log(currPlayerKey);
       Game.players[currPlayerKey].setNextMove(Util.moves[move]);
       PassManager.next();
+      if(PassManager.get("currentState.name") == "done"){
+        this.transitionToRoute("moveInstructions");
+      }
     },
 
     next : function(){
       PassManager.next();
+
     }
   }
 });
@@ -155,6 +168,12 @@ var GameManager = Ember.StateManager.create({
     enter: function(stateManager) {
       console.log("begin moveInput");
       PassManager.reset();
+    }
+  }),
+
+  moveInstructions : Ember.State.create({
+    enter: function(stateManager) {
+      console.log("begin moveInstructions");
     }
   })
 });
