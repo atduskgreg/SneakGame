@@ -41,6 +41,15 @@ App.CharacterAssignmentController = Ember.ObjectController.extend({
 
 App.MovesController = Ember.ObjectController.extend({
   actions : {
+    submitMove : function(move){
+      console.log("submit move: " + move);
+      // HERE: apply move to player
+      currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
+      console.log(currPlayerKey);
+      Game.players[currPlayerKey].setNextMove(Util.moves[move]);
+      PassManager.next();
+    },
+
     next : function(){
       PassManager.next();
     }

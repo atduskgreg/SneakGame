@@ -36,21 +36,21 @@
       {{#if PassManager.isPassing}}
         {{partial 'pass'}}
       {{else}}
-        <div id="moveInpt">
+        <div id="moveInput">
         <p>        
-          <button {{action "up-left" }}>up+left</button>
-          <button {{action "up" }}>up</button>
-          <button {{action "up-right" }}>up+right</button>
+          <button {{action "submitMove" "nw" }}>nw</button>
+          <button {{action "submitMove" "n" }}>n</button>
+          <button {{action "submitMove" "ne" }}>ne</button>
         </p>
         <p>        
-          <button {{action "left" }}>left</button>
-          <button {{action "hold" }}>hold</button>
-          <button {{action "right" }}>right</button>
+          <button {{action "submitMove" "w" }}>w</button>
+          <button {{action "submitMove" "hold" }}>hold</button>
+          <button {{action "submitMove" "e" }}>e</button>
         </p>
         <p>        
-          <button {{action "down-left" }}>down+left</button>
-          <button {{action "down" }}>down</button>
-          <button {{action "down-right" }}>down+right</button>
+          <button {{action "submitMove" "sw" }}>sw</button>
+          <button {{action "submitMove" "s" }}>s</button>
+          <button {{action "submitMove" "se" }}>se</button>
         </p>
         </div>
       {{/if}}
