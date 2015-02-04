@@ -55,6 +55,12 @@ var Game = {
     return result;
   },
 
+  makeMoves : function(){
+    for( key in this.characters){
+      this.characters[key].move();
+    }
+  },
+
   createPlayers : function(){
     for(var i = 0; i < Game.nPlayers; i++){
       var pid = Game.generateId();

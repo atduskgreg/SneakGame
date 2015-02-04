@@ -69,6 +69,16 @@ App.MovesController = Ember.ObjectController.extend({
   }
 });
 
+App.MoveInstructionsController = Ember.ObjectController.extend({
+  instructions : null,
+  actions : {
+    confirm : function(){
+      console.log("confirm moves");
+      Game.makeMoves();
+    }
+  }
+});
+
 App.ApplicationController = Em.ObjectController.extend({ 
   debugIsVisible : false,
 
