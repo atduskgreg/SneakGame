@@ -35,9 +35,22 @@ var Util = {
   //  change move description to use cardinal directions
   moveDescription : function(character){
     if(Util.sameSquare(character.position, character.nextPosition())){
-      return "the "+ character.color +" character on " + Util.squareDescription(character.position) + " holds";
+      return "the "+ character.color +" character holds";
     } else {
-      return "move the "+ character.color + " character on " + Util.squareDescription(character.position) + " to " + Util.squareDescription(character.nextPosition());
+      return "move the "+ character.color  + " " + Util.cardinalDescription(character.position,character.nextPosition());
+    }
+  },
+
+  cardinalDescription : function(fromPos, toPos){
+    col = toPos.col - fromPos.col;
+    row = toPos.row - fromPos.row;
+
+    move = {col : col, row : row};
+
+    for( key in this.moves ){
+      if(this.moves[key].col == move.col && this.moves[key].row == move.row){
+        return key;
+      }
     }
   },
 
