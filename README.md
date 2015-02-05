@@ -2,11 +2,6 @@
 
 ### TODO
 
-
-#### Questions for Rael
-
-* Finished vs Delivered vs Accepted
-
 #### Movement Prototype
 
 * Implement inventory item transfer to player
