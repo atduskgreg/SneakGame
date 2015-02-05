@@ -25,18 +25,18 @@ Player.prototype.isMoveLegal = function(move){
 	return (!off_left && !off_right && !off_top && !off_bot);
 }
 
-// Player.prototype.toString = function(){
-// 	inventory = [];
-//      for(var k =0; k < this.inventory.length; k++){
-//        inventory.push(this.inventory[k].name);
-//      }
+Player.prototype.displayString = function(){
+	inventory = [];
+     for(var k =0; k < this.inventory.length; k++){
+       inventory.push(this.inventory[k].name);
+     }
 
-//      knowledgeDescription = [];
-//      for(i in this.knowledge){
-//      	knowledgeDescription.push(this.knowledge[i].who + " had the "+ i + " " + (Game.round.num - this.knowledge[i].when) + " turns ago " );
-//      }
-// 	return "P : " + this.name + " ("+this.color+") i:["+inventory.join(", ")+"] k:[" + knowledgeDescription.join(", ")+"]";
-// }
+     knowledgeDescription = [];
+     for(i in this.knowledge){
+     	knowledgeDescription.push(this.knowledge[i].who + " had the "+ i + " " + (Game.round.num - this.knowledge[i].when) + " turns ago " );
+     }
+	return "P : " + this.name + " ("+this.color+") i:["+inventory.join(", ")+"] k:[" + knowledgeDescription.join(", ")+"]";
+}
 
 Player.prototype.move = function(){
 	this.position = this.nextPos;

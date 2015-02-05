@@ -235,7 +235,10 @@ Ember.Handlebars.helper('current-player-color',function(){
   return Game.players[Object.keys(Game.players)[PassManager.playerIdx]].color;
 });
 
-Ember.Handlebars.helper('board-table',function(){
+// TODO:
+//  Horrible hack that should go away when Game
+//  and Player become proper model objects.
+Ember.Handlebars.helper('debug-view',function(){
   var result = "<table id='board'>"
   for(var i = Game.boardHeight-1; i >= 0; i--){
       result += "<tr>";
@@ -244,6 +247,19 @@ Ember.Handlebars.helper('board-table',function(){
       }
      result += "</tr>";
     }
+  result += "</table>";
+  result += "<div id='players'><h3>Players</h3>";
+  result += "<ul>";
+
+  var keys = Object.keys(Game.players);
+  console.log(keys.length);
+  for(var i = 0; i < keys.length; i++){
+    console.log(i);
+    player = Game.players[keys[i]];
+    result += "<li>" + player.displayString() + "</li>";
+  }
+
+  result += "</ul></div>";
 
   return new Handlebars.SafeString(result);
 });

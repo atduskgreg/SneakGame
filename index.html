@@ -1,6 +1,11 @@
 <html>
   <head>
     <style>
+    #board {
+      float: left;
+      margin-right: 20px;
+    }
+
     #board td{
       border: 1px solid #000;
       margin: 0;
@@ -12,6 +17,10 @@
 
     .squareDescription{
       color: #aaa;
+    }
+
+    #players {
+      float: left;
     }
 
     table p {
@@ -26,14 +35,17 @@
 
     </style>
 
+
+
     <script type="text/x-handlebars">
       {{outlet}}
 
       <p><em><a href="#" {{action "toggleDebug"}}>Toggle debug view</a></em></p>
 
+      <br style="clear:both" />
       {{#view "debug" isVisibleBinding="debugIsVisible"}}
         <button {{action 'refreshDebug'}}>refresh</button> <!-- temporary hack until game is an ember model -->
-        {{board-table}}
+        {{debug-view}}
       {{/view}}
     </script>
   
