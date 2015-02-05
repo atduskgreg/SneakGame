@@ -1,7 +1,120 @@
 <html>
-<head></head>
-<body>
-<h1>Prototypes</h1>
-<h2><a href="movement">Movement</a></h2>
-</body>
+  <head>
+    <style>
+    #board td{
+      border: 1px solid #000;
+      margin: 0;
+      min-width: 75;
+      width: 75;
+      height: 75;
+      min-height: 75;
+    }
+
+    .squareDescription{
+      color: #aaa;
+    }
+
+    table p {
+      margin: 0;
+      border: 1px solid #ccc;
+      color: #fff;
+    }
+
+    .highlight {
+      background-color: #cfc;
+    }
+
+    </style>
+
+    <script type="text/x-handlebars">
+      {{outlet}}
+
+      <p><em><a href="#" {{action "toggleDebug"}}>Toggle debug view</a></em></p>
+
+      {{#view "debug" isVisibleBinding="debugIsVisible"}}
+        <button {{action 'refreshDebug'}}>refresh</button> <!-- temporary hack until game is an ember model -->
+        {{board-table}}
+      {{/view}}
+    </script>
+  
+    <script type="text/x-handlebars" id ="index">
+      <h1>Sneak</h1>
+      <p>{{#link-to 'setup'}}Start game{{/link-to}}</p>
+    </script>
+  
+    <script type="text/x-handlebars" id="setup">
+      <h1>Setup</h1>
+      <p>Exit is: {{format-square exit}}</p>
+      <ul>
+      {{#each item in instructions}}
+        <li>{{item.instruction}}</li>
+      {{/each}}
+      </ul>
+      <p>{{#link-to 'characterAssignment'}}Find out your characters{{/link-to}}</p>
+    </script>
+    
+    <script type="text/x-handlebars" id="characterAssignment">
+      <h1>Player character assignments</h1>
+      {{#if PassManager.isPassing}}
+        {{partial 'pass'}}
+      {{else}}
+        <p>You are {{current-player-color}}.</p>
+        <p><button {{action 'next'}}>Got it</button></p>
+      {{/if}}
+    </script>
+
+
+    <script type="text/x-handlebars" id="moves">
+      <h1>Input moves</h1>
+      {{#if PassManager.isPassing}}
+        {{partial 'pass'}}
+      {{else}}
+        <div id="moveInput">
+        <p>        
+          <button {{action "submitMove" "nw" }}>nw</button>
+          <button {{action "submitMove" "n" }}>n</button>
+          <button {{action "submitMove" "ne" }}>ne</button>
+        </p>
+        <p>        
+          <button {{action "submitMove" "w" }}>w</button>
+          <button {{action "submitMove" "hold" }}>hold</button>
+          <button {{action "submitMove" "e" }}>e</button>
+        </p>
+        <p>        
+          <button {{action "submitMove" "sw" }}>sw</button>
+          <button {{action "submitMove" "s" }}>s</button>
+          <button {{action "submitMove" "se" }}>se</button>
+        </p>
+        </div>
+      {{/if}}
+    </script>
+    
+    <script type="text/x-handlebars" id="moveInstructions">
+    <h1>Move Instructions</h1>
+    <ul>
+    {{#each instruction in instructions}}
+      <li>{{ instruction }}</li>
+    {{/each}}
+    </ul>
+    <button {{action "confirm"}}>Done moving</button>
+    </script>
+
+    <script type="text/x-handlebars" id="_pass">
+      <p>Pass the screen to {{ current-player-public }}</p>
+      <p><button {{action 'next'}}>Done</button></p>
+    </script>
+  
+    <script src="js/libs/jquery-1.10.2.js"></script>
+    <script src="js/libs/handlebars-v2.0.0.js"></script>
+    <script src="js/libs/ember-1.9.1.js"></script>
+    <script src="js/libs/ember-states.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/util.js"></script>
+    <script src="js/character.js"></script>
+    <script src="js/player.js"></script>
+
+    <script src="js/app.js"></script>
+  </head>
+  <body>
+  </body>
 </html>
