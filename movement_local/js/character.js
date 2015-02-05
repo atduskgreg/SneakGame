@@ -7,10 +7,13 @@ Character.prototype = {
 	knowledge : {},
 	inventory : [],
 	init : function(){
-		this.position = Util.randomTile();
 		this.destination = Util.randomTile();
 		this.name = Util.getRandomName();
 		this.color =  Util.getRandomColor();
+
+		startSqrIdx = Math.floor(Math.random() * Game.seedSquares.length);
+		console.log(startSqrIdx + " " + Game.seedSquares.length);
+		this.position = Game.seedSquares[startSqrIdx];
 	},
 
 	// learn knowledge from other character's knowledge and items
@@ -134,7 +137,12 @@ Character.prototype = {
 	},
 
 	atDestination : function(){
-		return (this.position.col == this.destination.col) && (this.position.row == this.destination.row);
+		if(this.destination){
+			return (this.position.col == this.destination.col) && (this.position.row == this.destination.row);
+
+		} else {
+			return false;
+		}
 	}
 
 }
