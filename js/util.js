@@ -31,13 +31,11 @@ var Util = {
     return ["a", "b", "c", "d", "e", "f","g","h"][sqr.col] + (sqr.row+1);
   },
   
-  // TODO:
-  //  change move description to use cardinal directions
   moveDescription : function(character){
     if(Util.sameSquare(character.position, character.nextPosition())){
       return "the "+ character.color +" character holds";
     } else {
-      return "move the "+ character.color  + " " + Util.cardinalDescription(character.position,character.nextPosition());
+      return "move the "+ character.color  + " character " + Util.cardinalDescription(character.position,character.nextPosition());
     }
   },
 

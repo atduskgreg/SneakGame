@@ -56,18 +56,18 @@ Character.prototype = {
 
 	},
 
-	toString : function(){
-		inventory = [];
-        for(var k =0; k < this.inventory.length; k++){
-          inventory.push(this.inventory[k].name);
-        }
+	// toString : function(){
+	// 	inventory = [];
+ //        for(var k =0; k < this.inventory.length; k++){
+ //          inventory.push(this.inventory[k].name);
+ //        }
 
-        knowledgeDescription = [];
-        for(i in this.knowledge){
-        	knowledgeDescription.push(this.knowledge[i].who + " had the "+ i + " " + (Game.round.num - this.knowledge[i].when) + " turns ago " );
-        }
-		return this.name + " ("+this.color+") i:["+inventory.join(", ")+"] k:[" + knowledgeDescription.join(", ")+"]";
-	},
+ //        knowledgeDescription = [];
+ //        for(i in this.knowledge){
+ //        	knowledgeDescription.push(this.knowledge[i].who + " had the "+ i + " " + (Game.round.num - this.knowledge[i].when) + " turns ago " );
+ //        }
+	// 	return this.name + " ("+this.color+") i:["+inventory.join(", ")+"] k:[" + knowledgeDescription.join(", ")+"]";
+	// },
 
 	toData : function(){
 		return {position : this.position, destination : this.destination, name : this.name, color : this.color};

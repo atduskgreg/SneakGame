@@ -6,6 +6,7 @@ App.Router.map(function(){
   this.resource("characterAssignment");
   this.resource("moves");
   this.resource("moveInstructions");
+  this.resource("dialogs");
 });
 
 App.SetupRoute = Ember.Route.extend({
@@ -35,6 +36,33 @@ App.MoveInstructionsRoute = Ember.Route.extend({
 
     controller.set('instructions', Game.moveInstructions());
   }
+});
+
+App.DialogsRoute = Ember.Route.extend({
+
+  setupController : function(controller, model){
+    GameManager.transitionTo("dialogs");
+
+    var dialogs = Game.currentDialogs();
+    var result = [];
+    var keys = Object.keys(dialogs);
+    for(var i = 0; i < keys.length; i++){
+      result.push(dialogs[keys[i]]);
+    }
+
+    controller.set("model", result);
+  }
+});
+
+App.DialogsController = Ember.ArrayController.extend({
+    itemController : 'dialog'
+});
+
+App.DialogController = Ember.ObjectController.extend({
+
+  summary : function(){
+    return this.get("characters")[0].color + " (" + this.get("characters")[0].name + ") and " + this.get("characters")[1].color+ " (" + this.get("characters")[1].name + ")";
+  }.property("characters")
 });
 
 App.CharacterAssignmentController = Ember.ObjectController.extend({
@@ -75,6 +103,7 @@ App.MoveInstructionsController = Ember.ObjectController.extend({
     confirm : function(){
       console.log("confirm moves");
       Game.makeMoves();
+      this.transitionToRoute("dialogs");
     }
   }
 });
@@ -185,7 +214,13 @@ var GameManager = Ember.StateManager.create({
     enter: function(stateManager) {
       console.log("begin moveInstructions");
     }
-  })
+  }),
+
+  dialogs : Ember.State.create({
+    enter: function(stateManager) {
+      console.log("begin dialogs");
+    }
+  }),
 });
 
 Ember.Handlebars.helper('format-square',function(square){
