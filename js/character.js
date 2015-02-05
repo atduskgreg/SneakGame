@@ -1,11 +1,11 @@
 
 
 Character = function(){
+	this.inventory = [];
+	this.knowledge = {};
 }
 
 Character.prototype = {
-	knowledge : {},
-	inventory : [],
 	init : function(){
 		this.destination = Util.randomTile();
 		this.name = Util.getRandomName();
