@@ -106,20 +106,13 @@
 
     <script type="text/x-handlebars" id="dialogs">
       <h1>Dialogs ({{length}})</h1>
-      <ul>
-        {{#each dialog in dialogs}}
+      <ul> 
+        {{#each item in controller}}
         <li>
-        bar 
-        {{#each character in dialog.characters}}
-          foo {{partial 'character' character}}
-        {{/each}}
+          {{item.summary}}
         </li>
         {{/each}}
       </ul>
-    </script>
-
-    <script type="text/x-handlebars" id="_character">
-      {{character.name}}
     </script>
   
     <script src="js/libs/jquery-1.10.2.js"></script>
