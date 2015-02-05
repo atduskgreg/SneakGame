@@ -9,7 +9,7 @@ var Game = {
   clientId: 0,
   exit : null, 
   seedSquares : [],
-  numSeedSquares : 5,
+  numSeedSquares : 6,
 
   drawDebug : function(){
     this.drawCharacters(this.characters);
@@ -112,6 +112,15 @@ var Game = {
     }
 
     return result;
+  },
+
+
+  characterWithAttribute : function(key, value){
+    for(var i in this.characters){
+      if(this.characters[i][key] == value){
+        return this.characters[i];
+      }
+    }
   },
 
   currentDialogs : function(){
