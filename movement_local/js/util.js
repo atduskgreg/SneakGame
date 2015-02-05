@@ -58,6 +58,18 @@ var Util = {
     return (sqrA.col == sqrB.col) && (sqrA.row == sqrB.row);
   },
 
+  indexOfSquare : function(sqr, sqrs){
+    var result = -1;
+
+    for(var i = 0; i < sqrs.length; i++){
+      if(Util.sameSquare(sqr,sqrs[i])){
+        result = i;
+      }
+    }
+
+    return result;
+  },
+
   randomTile : function(){
   	 var c = Math.floor(Math.random() * Game.boardWidth);
   	 var r = Math.floor(Math.random() * Game.boardHeight);

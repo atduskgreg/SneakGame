@@ -8,6 +8,8 @@ var Game = {
   round : null,
   clientId: 0,
   exit : null, 
+  seedSquares : [],
+  numSeedSquares : 5,
 
   drawDebug : function(){
     this.drawCharacters(this.characters);
@@ -27,10 +29,23 @@ var Game = {
   },
 
   setup : function(){
+    // these are order dependent
+    Game.generateExit();
+    Game.pickSeedSquares();
+
     Game.createNPCs();
     Game.createPlayers();
     Game.assignPlans();
-    Game.generateExit();
+  },
+
+  pickSeedSquares : function(){
+
+    while(this.seedSquares.length < this.numSeedSquares){
+      t = Util.randomTile();
+      if(!Util.sameSquare(t, this.exit) && Util.indexOfSquare(t, this.seedSquares) < 0){
+        this.seedSquares.push(t);
+      }
+    }
   },
 
   setupInstructions : function(){
