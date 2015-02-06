@@ -10,10 +10,25 @@ var Game = {
   exit : null, 
   seedSquares : [],
   numSeedSquares : 6,
+  roundNum : 0,
 
   drawDebug : function(){
     this.drawCharacters(this.characters);
     this.drawExit();
+    this.drawPlayerDebug();
+  },
+
+  drawPlayerDebug : function(){
+    result = "<h3>Players</h3><ul>";
+
+    var keys = Object.keys(Game.players);
+    for(var i = 0; i < keys.length; i++){
+      player = Game.players[keys[i]];
+      result += "<li>" + player.displayString() + "</li>";
+    }
+  
+    result += "</ul>";
+    $("#playerDebug").html(result)
   },
 
 	drawCharacters : function(characters){
@@ -26,6 +41,10 @@ var Game = {
   drawExit : function(){
     $(Util.squareSelector(this.exit)).css("background-color", "pink");
     $(Util.squareSelector(this.exit)).append("<p id='exit'>exit</p>")
+  },
+
+  endRound : function(){
+    roundNum++;
   },
 
   setup : function(){
@@ -71,6 +90,7 @@ var Game = {
   },
 
   makeMoves : function(){
+    console.log("makeMoves");
     for( key in this.characters){
       this.characters[key].move();
     }
@@ -235,18 +255,18 @@ var Game = {
     return this.numNPCs;
   },
 
-  setNPCs : function(data){
-    this.characters = {};
-    for(i in data){
-      c = new Character();
-      c.fromData(data[i]);
-      this.characters[i] = c;
-    }
+  // setNPCs : function(data){
+  //   this.characters = {};
+  //   for(i in data){
+  //     c = new Character();
+  //     c.fromData(data[i]);
+  //     this.characters[i] = c;
+  //   }
 
-    for(key in this.players){
-      this.characters[key] = this.players[key];
-    }
-  },
+  //   for(key in this.players){
+  //     this.characters[key] = this.players[key];
+  //   }
+  // },
 
 	moveCharacters : function(characters){
 		for(i in this.characters){

@@ -125,8 +125,23 @@
         </li>
         {{/each}}
       </ul>
+      <p>{{#link-to 'dialogReveals'}}Reveal dialog results{{/link-to}}</p>
     </script>
   
+     <script type="text/x-handlebars" id="dialogReveals">
+      <h1>Dialog Reveal</h1>
+      {{#if PassManager.isPassing}}
+        {{partial 'pass'}}
+      {{else}}
+        <ul>
+        {{#each item in controller}}
+          <li>item.knowledge</li>
+        {{/each}}
+        </ul>
+        <p><button {{action 'next'}}>Got it</button></p>
+      {{/if}}
+    </script>
+
     <script src="js/libs/jquery-1.10.2.js"></script>
     <script src="js/libs/handlebars-v2.0.0.js"></script>
     <script src="js/libs/ember-1.9.1.js"></script>
