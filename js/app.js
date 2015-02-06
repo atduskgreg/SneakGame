@@ -67,42 +67,37 @@ App.DialogController = Ember.ObjectController.extend({
 });
 
 App.DialogRevealsRoute = Ember.Route.extend({
+
+
   setupController : function(controller, model){
     GameManager.transitionTo("dialogReveal");
+    // controller.set("model", currentPlayerKnowledge());
   }
 });
 
 App.DialogRevealsController = Ember.ArrayController.extend({
     itemController : 'dialogReveal',
     actions : {
-    next : function(){
-      PassManager.next();
-      if(PassManager.get("currentState.name") == "done"){
-        this.transitionToRoute("moves");
+      next : function(){
+        PassManager.next();
+        if(PassManager.get("currentState.name") == "done"){
+          this.transitionToRoute("moves");
+        }
       }
     }
-  }
 });
 
 App.DialogRevealController = Ember.ObjectController.extend({
 
   knowledge : function(){
-    // use PassManager to get the current player
-    currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
-    currPalyer = Game.players[currPlayerKey];
-    // itemize (highlight) new knowledge gained
-    // show total knowledge
-    var result = "";
-    for(i in currPlayer.knowledge){
-      result += Util.knowledgeDescription(currPlayer.knowledge[i]) +",";
-    }
-    return result;
-  },
+    console.log("knowledge helper");
+    // return Util.knowledgeDescription(this.get("k"));
+  }.property(),
 
   inventory : function(){
     // use PassManager to get the current player
-    currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
-    currPlayer = Game.players[currPlayerKey];
+    // currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
+    // currPlayer = Game.players[currPlayerKey];
     // itemize (highlight) new items gained
     // show all itms
     
@@ -268,15 +263,26 @@ var GameManager = Ember.StateManager.create({
   dialogs : Ember.State.create({
     enter: function(stateManager) {
       console.log("begin dialogs");
+            PassManager.reset();
+
+    },
+    exit : function(stateManager){
+      PassManager.reset();
+
     }
   }),
 
   dialogReveal : Ember.State.create({
     enter: function(stateManager) {
       console.log("begin dialogReveal");
+      Game.propagateKnowledge(Game.currentDialogs());
+
       PassManager.reset();
-    }
-  }),
+    }, 
+    exit : function(stateManager) {
+      Game.endRound();
+    } 
+  }), 
 
 
 });
@@ -292,6 +298,37 @@ Ember.Handlebars.helper('current-player-public',function(){
 Ember.Handlebars.helper('current-player-color',function(){
   return Game.players[Object.keys(Game.players)[PassManager.playerIdx]].color;
 });
+
+Ember.Handlebars.helper('current-player-knowledge',function(player){
+  console.log(PassManager.playerIdx);
+  console.log(Object.keys(Game.players));
+  currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
+  currPlayer = Game.players[currPlayerKey];
+  console.log("key: " + currPlayerKey);
+  console.log(currPlayer);
+  // itemize (highlight) new knowledge gained
+  // show total knowledge
+  var result = "";
+
+  if(Object.keys(currPlayer.knowledge).length > 0){
+
+    for(i in currPlayer.knowledge){
+  
+       result += "<li>"
+      if(currPlayer.knowledge[i].acquired == Game.roundNum ){
+        result += "<b>NEW</b> "
+      }
+      result += Util.knowledgeDescription(currPlayer.knowledge[i]) + "</li>";
+    }
+  } else {
+    result += "<li>You know nothing.</li>"
+  }
+
+  return new Handlebars.SafeString(result);
+});
+
+
+
 
 // TODO:
 //  Horrible hack that should go away when Game

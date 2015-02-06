@@ -10,6 +10,7 @@ Character.prototype = {
 	init : function(){
 		this.name = Util.getRandomName();
 		this.color =  Util.getRandomColor();
+		// this.knowledge["name"] = {what : "name", who : this.color, when : Game.roundNum, acquired : Game.roundNum};
 		startSqrIdx = Math.floor(Math.random() * Game.seedSquares.length);
 		startSqr = Game.seedSquares[startSqrIdx];
 		this.position = {col : startSqr.col, row : startSqr.row};
@@ -29,11 +30,13 @@ Character.prototype = {
 			if(this.knowledge[i]){
 				if(this.knowledge[i].when < other.knowledge[i].when){
 					this.knowledge[i] = other.knowledge[i];
+					this.knowledge[i].acquired = Game.roundNum;
 				}
 			}
 			// if we know nothing, learn what they know
 			else {
 				this.knowledge[i] = other.knowledge[i];
+				this.knowledge[i].acquired = Game.roundNum;
 			}
 		}
 	},

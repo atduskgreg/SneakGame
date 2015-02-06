@@ -44,7 +44,7 @@ var Game = {
   },
 
   endRound : function(){
-    roundNum++;
+    this.roundNum++;
   },
 
   setup : function(){

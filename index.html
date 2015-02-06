@@ -134,9 +134,7 @@
         {{partial 'pass'}}
       {{else}}
         <ul>
-        {{#each item in controller}}
-          <li>item.knowledge</li>
-        {{/each}}
+        {{ current-player-knowledge }}
         </ul>
         <p><button {{action 'next'}}>Got it</button></p>
       {{/if}}
