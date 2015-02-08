@@ -299,13 +299,10 @@ Ember.Handlebars.helper('current-player-color',function(){
   return Game.players[Object.keys(Game.players)[PassManager.playerIdx]].color;
 });
 
-Ember.Handlebars.helper('current-player-knowledge',function(player){
-  console.log(PassManager.playerIdx);
-  console.log(Object.keys(Game.players));
+Ember.Handlebars.helper('current-player-knowledge',function(){
   currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
   currPlayer = Game.players[currPlayerKey];
-  console.log("key: " + currPlayerKey);
-  console.log(currPlayer);
+
   // itemize (highlight) new knowledge gained
   // show total knowledge
   var result = "";
@@ -327,6 +324,22 @@ Ember.Handlebars.helper('current-player-knowledge',function(player){
   return new Handlebars.SafeString(result);
 });
 
+Ember.Handlebars.helper('current-player-inventory',function(){
+  currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
+  currPlayer = Game.players[currPlayerKey];
+
+  var result = "";
+
+  if(currPlayer.inventory.length > 0){
+    for(var k =0; k < currPlayer.inventory.length; k++){
+      result += "<li>" + currPlayer.inventory[k].name + "</li>";
+    }
+  } else {
+    result += "<li>You have no items</li>";
+  }
+  
+  return new Handlebars.SafeString(result);
+});
 
 
 
