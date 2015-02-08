@@ -10,7 +10,6 @@ Character.prototype = {
 	init : function(){
 		this.name = Util.getRandomName();
 		this.color =  Util.getRandomColor();
-		// this.knowledge["name"] = {what : "name", who : this.color, when : Game.roundNum, acquired : Game.roundNum};
 		startSqrIdx = Math.floor(Math.random() * Game.seedSquares.length);
 		startSqr = Game.seedSquares[startSqrIdx];
 		this.position = {col : startSqr.col, row : startSqr.row};
@@ -20,7 +19,7 @@ Character.prototype = {
 	learnFrom : function(other){
 		// learn about what they're carrying
 		for(var i = 0; i < other.inventory.length; i++){
-			this.knowledge[other.inventory[i].name] = {what : other.inventory[i].name, who : other.name, when : Game.roundNum, acquired : Game.roundNum}
+			this.knowledge[other.inventory[i].name] = {what : other.inventory[i].name, who : other, when : Game.roundNum, acquired : Game.roundNum}
 		}
 
 		for(i in other.knowledge){
