@@ -54,11 +54,7 @@ var Util = {
 
   knowledgeDescription : function(knowledge){
     result = "";
-    // if(knowledge.acquired == Game.roundNum){
-    //   result += "(NEW)";
-    // }
-
-    result += knowledge.who + " had the " + knowledge.what + " " + (Game.roundNum - knowledge.when) + " turns ago";
+    result += knowledge.who.color + " (" + knowledge.who.name + ") had the " + knowledge.what + " " + (Game.roundNum - knowledge.when) + " turns ago";
 
     return result;
   },
