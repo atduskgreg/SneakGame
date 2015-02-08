@@ -3,24 +3,24 @@
 Character = function(){
 	this.inventory = [];
 	this.knowledge = {};
+	this.destination = Util.randomTile();
 }
 
 Character.prototype = {
 	init : function(){
-		this.destination = Util.randomTile();
 		this.name = Util.getRandomName();
 		this.color =  Util.getRandomColor();
-
+		// this.knowledge["name"] = {what : "name", who : this.color, when : Game.roundNum, acquired : Game.roundNum};
 		startSqrIdx = Math.floor(Math.random() * Game.seedSquares.length);
-		console.log(startSqrIdx + " " + Game.seedSquares.length);
-		this.position = Game.seedSquares[startSqrIdx];
+		startSqr = Game.seedSquares[startSqrIdx];
+		this.position = {col : startSqr.col, row : startSqr.row};
 	},
 
 	// learn knowledge from other character's knowledge and items
 	learnFrom : function(other){
 		// learn about what they're carrying
 		for(var i = 0; i < other.inventory.length; i++){
-			this.knowledge[other.inventory[i].name] = {who : other.name, when : Game.round.num}
+			this.knowledge[other.inventory[i].name] = {what : other.inventory[i].name, who : other.name, when : Game.roundNum, acquired : Game.roundNum}
 		}
 
 		for(i in other.knowledge){
@@ -30,11 +30,13 @@ Character.prototype = {
 			if(this.knowledge[i]){
 				if(this.knowledge[i].when < other.knowledge[i].when){
 					this.knowledge[i] = other.knowledge[i];
+					this.knowledge[i].acquired = Game.roundNum;
 				}
 			}
 			// if we know nothing, learn what they know
 			else {
 				this.knowledge[i] = other.knowledge[i];
+				this.knowledge[i].acquired = Game.roundNum;
 			}
 		}
 	},
@@ -122,6 +124,7 @@ Character.prototype = {
 	},
 
 	move : function(){
+		console.log(this.color + " moving from " + Util.squareDescription(this.position) +"["+this.position.col+"x"+this.position.row+"]" + " to " + Util.squareDescription(this.nextPosition()));
 
 		if(this.atDestination()){
 			if(Math.random() < 0.05){
@@ -130,9 +133,13 @@ Character.prototype = {
 			}
 
 		} else {
-			nextPosition = this.nextPosition();
-			this.position.col = nextPosition.col;
-			this.position.row = nextPosition.row;
+
+			var np = this.nextPosition();
+			console.log(this.color + " " + np.col + "x" + np.row);
+			this.position.col = np.col;
+			this.position.row = np.row;
+
+			console.log("now at: " + Util.squareDescription(this.position));
 		}
 	},
 

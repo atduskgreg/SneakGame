@@ -1,6 +1,11 @@
 <html>
   <head>
     <style>
+    #board {
+      float: left;
+      margin-right: 20px;
+    }
+
     #board td{
       border: 1px solid #000;
       margin: 0;
@@ -12,6 +17,10 @@
 
     .squareDescription{
       color: #aaa;
+    }
+
+    #players {
+      float: left;
     }
 
     table p {
@@ -26,14 +35,17 @@
 
     </style>
 
+
+
     <script type="text/x-handlebars">
       {{outlet}}
 
       <p><em><a href="#" {{action "toggleDebug"}}>Toggle debug view</a></em></p>
 
+      <br style="clear:both" />
       {{#view "debug" isVisibleBinding="debugIsVisible"}}
         <button {{action 'refreshDebug'}}>refresh</button> <!-- temporary hack until game is an ember model -->
-        {{board-table}}
+        {{debug-view}}
       {{/view}}
     </script>
   
@@ -113,8 +125,26 @@
         </li>
         {{/each}}
       </ul>
+      <p>{{#link-to 'dialogReveals'}}Reveal dialog results{{/link-to}}</p>
     </script>
   
+     <script type="text/x-handlebars" id="dialogReveals">
+      <h1>Dialog Reveal</h1>
+      {{#if PassManager.isPassing}}
+        {{partial 'pass'}}
+      {{else}}
+        <h3>Your Knowledge</h3>
+        <ul>
+        {{ current-player-knowledge }}
+        </ul>
+        <h3>Your Inventory</h3>
+        <ul>
+        {{current-player-inventory}}
+        </ul>
+        <p><button {{action 'next'}}>Got it</button></p>
+      {{/if}}
+    </script>
+
     <script src="js/libs/jquery-1.10.2.js"></script>
     <script src="js/libs/handlebars-v2.0.0.js"></script>
     <script src="js/libs/ember-1.9.1.js"></script>

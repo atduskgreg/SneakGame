@@ -52,6 +52,17 @@ var Util = {
     }
   },
 
+  knowledgeDescription : function(knowledge){
+    result = "";
+    // if(knowledge.acquired == Game.roundNum){
+    //   result += "(NEW)";
+    // }
+
+    result += knowledge.who + " had the " + knowledge.what + " " + (Game.roundNum - knowledge.when) + " turns ago";
+
+    return result;
+  },
+
   sameSquare : function(sqrA, sqrB){
     return (sqrA.col == sqrB.col) && (sqrA.row == sqrB.row);
   },

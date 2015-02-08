@@ -7,6 +7,7 @@ App.Router.map(function(){
   this.resource("moves");
   this.resource("moveInstructions");
   this.resource("dialogs");
+  this.resource("dialogReveals");
 });
 
 App.SetupRoute = Ember.Route.extend({
@@ -65,6 +66,45 @@ App.DialogController = Ember.ObjectController.extend({
   }.property("characters")
 });
 
+App.DialogRevealsRoute = Ember.Route.extend({
+
+
+  setupController : function(controller, model){
+    GameManager.transitionTo("dialogReveal");
+    // controller.set("model", currentPlayerKnowledge());
+  }
+});
+
+App.DialogRevealsController = Ember.ArrayController.extend({
+    itemController : 'dialogReveal',
+    actions : {
+      next : function(){
+        PassManager.next();
+        if(PassManager.get("currentState.name") == "done"){
+          this.transitionToRoute("moves");
+        }
+      }
+    }
+});
+
+App.DialogRevealController = Ember.ObjectController.extend({
+
+  knowledge : function(){
+    console.log("knowledge helper");
+    // return Util.knowledgeDescription(this.get("k"));
+  }.property(),
+
+  inventory : function(){
+    // use PassManager to get the current player
+    // currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
+    // currPlayer = Game.players[currPlayerKey];
+    // itemize (highlight) new items gained
+    // show all itms
+    
+  }
+});
+
+
 App.CharacterAssignmentController = Ember.ObjectController.extend({
   actions : {
     next : function(){
@@ -102,7 +142,11 @@ App.MoveInstructionsController = Ember.ObjectController.extend({
   actions : {
     confirm : function(){
       console.log("confirm moves");
+      for(i in Game.characters){
+        console.log(Game.characters[i].color + " from " + Util.squareDescription(Game.characters[i].position) +"["+Game.characters[i].position.col+"x"+Game.characters[i].position.row+"]" + " to " + Util.squareDescription(Game.characters[i].nextPosition()) +" [" + Game.characters[i].heading().col +"x" +Game.characters[i].heading().row + "]")
+      }
       Game.makeMoves();
+
       this.transitionToRoute("dialogs");
     }
   }
@@ -219,8 +263,28 @@ var GameManager = Ember.StateManager.create({
   dialogs : Ember.State.create({
     enter: function(stateManager) {
       console.log("begin dialogs");
+            PassManager.reset();
+
+    },
+    exit : function(stateManager){
+      PassManager.reset();
+
     }
   }),
+
+  dialogReveal : Ember.State.create({
+    enter: function(stateManager) {
+      console.log("begin dialogReveal");
+      Game.propagateKnowledge(Game.currentDialogs());
+
+      PassManager.reset();
+    }, 
+    exit : function(stateManager) {
+      Game.endRound();
+    } 
+  }), 
+
+
 });
 
 Ember.Handlebars.helper('format-square',function(square){
@@ -235,8 +299,55 @@ Ember.Handlebars.helper('current-player-color',function(){
   return Game.players[Object.keys(Game.players)[PassManager.playerIdx]].color;
 });
 
-Ember.Handlebars.helper('board-table',function(){
-  var result = "<table id='board'>"
+Ember.Handlebars.helper('current-player-knowledge',function(){
+  currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
+  currPlayer = Game.players[currPlayerKey];
+
+  // itemize (highlight) new knowledge gained
+  // show total knowledge
+  var result = "";
+
+  if(Object.keys(currPlayer.knowledge).length > 0){
+
+    for(i in currPlayer.knowledge){
+  
+       result += "<li>"
+      if(currPlayer.knowledge[i].acquired == Game.roundNum ){
+        result += "<b>NEW</b> "
+      }
+      result += Util.knowledgeDescription(currPlayer.knowledge[i]) + "</li>";
+    }
+  } else {
+    result += "<li>You know nothing.</li>"
+  }
+
+  return new Handlebars.SafeString(result);
+});
+
+Ember.Handlebars.helper('current-player-inventory',function(){
+  currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
+  currPlayer = Game.players[currPlayerKey];
+
+  var result = "";
+
+  if(currPlayer.inventory.length > 0){
+    for(var k =0; k < currPlayer.inventory.length; k++){
+      result += "<li>" + currPlayer.inventory[k].name + "</li>";
+    }
+  } else {
+    result += "<li>You have no items</li>";
+  }
+  
+  return new Handlebars.SafeString(result);
+});
+
+
+
+// TODO:
+//  Horrible hack that should go away when Game
+//  and Player become proper model objects.
+Ember.Handlebars.helper('debug-view',function(){
+  var result = "<div id='debug'><table id='board'>"
   for(var i = Game.boardHeight-1; i >= 0; i--){
       result += "<tr>";
       for(var j = 0; j <= Game.boardWidth-1; j++){
@@ -244,6 +355,7 @@ Ember.Handlebars.helper('board-table',function(){
       }
      result += "</tr>";
     }
+  result += "</table><div id='playerDebug'></div></div>";
 
   return new Handlebars.SafeString(result);
 });
