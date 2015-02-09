@@ -33,6 +33,16 @@
       background-color: #cfc;
     }
 
+    #moveInput button {
+      width: 200px;
+      height: 30px;
+    }
+
+    #moveInput .buttonSpacer {
+      min-width: 200px;
+      min-height: 30px;
+    }
+
     </style>
 
 
@@ -82,20 +92,56 @@
         {{partial 'pass'}}
       {{else}}
         <div id="moveInput">
-        <p>        
-          <button {{action "submitMove" "nw" }}>nw</button>
-          <button {{action "submitMove" "n" }}>n</button>
-          <button {{action "submitMove" "ne" }}>ne</button>
+        <p>      
+          {{#if nw}}  
+            <button {{action "submitMove" "nw" }}>nw</button>
+          {{ else }}
+            <span class="buttonSpacer"></span>
+          {{/if}}
+          {{#if n}}
+            <button {{action "submitMove" "n" }}>n</button>
+          {{ else }}
+            <span class="buttonSpacer"></span>
+          {{/if}}
+          {{#if ne }}
+            <button {{action "submitMove" "ne" }}>ne</button>
+          {{ else }}
+            <span class="buttonSpacer"></span>
+          {{/if}}
         </p>
         <p>        
-          <button {{action "submitMove" "w" }}>w</button>
-          <button {{action "submitMove" "hold" }}>hold</button>
+          {{#if w }}
+            <button {{action "submitMove" "w" }}>w</button>
+          {{ else }}
+            <span class="buttonSpacer"></span>
+          {{/if }}
+          {{#if hold}}
+            <button {{action "submitMove" "hold" }}>hold</button>
+          {{ else }}
+            <span class="buttonSpacer"></span>
+          {{/if }}
+          {{#if e }}
           <button {{action "submitMove" "e" }}>e</button>
+          {{ else }}
+            <span class="buttonSpacer"></span>
+          {{/if }}
         </p>
         <p>        
-          <button {{action "submitMove" "sw" }}>sw</button>
-          <button {{action "submitMove" "s" }}>s</button>
+          {{#if sw}}
+            <button {{action "submitMove" "sw" }}>sw</button>
+          {{ else }}
+            <span class="buttonSpacer"></span>
+          {{/if }}
+          {{#if s}}
+           <button {{action "submitMove" "s" }}>s</button>
+          {{ else }}
+            <span class="buttonSpacer"></span>
+          {{/if }}
+          {{#if se}}
           <button {{action "submitMove" "se" }}>se</button>
+          {{ else }}
+            <span class="buttonSpacer"></span>
+          {{/if }}
         </p>
         </div>
       {{/if}}

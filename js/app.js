@@ -28,6 +28,11 @@ App.CharacterAssignmentRoute = Ember.Route.extend({
 App.MovesRoute = Ember.Route.extend({
   setupController : function(controller, model){
     GameManager.transitionTo("moveInput");
+    currPlayer = Game.players[Object.keys(Game.players)[PassManager.playerIdx]];
+    console.log("moves route");
+    console.log("playerIdx: " + PassManager.playerIdx);
+    console.log(currPlayer);
+    controller.set("model", currPlayer.legalMoves());
   }
 });
 
@@ -120,13 +125,19 @@ App.MovesController = Ember.ObjectController.extend({
   actions : {
     submitMove : function(move){
       console.log("submit move: " + move);
-      // HERE: apply move to player
+      // apply move to player
       currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
       console.log(currPlayerKey);
       Game.players[currPlayerKey].setNextMove(Util.moves[move]);
       PassManager.next();
+
       if(PassManager.get("currentState.name") == "done"){
         this.transitionToRoute("moveInstructions");
+      } else {
+        // load up the model so we can hide illegal move inputs
+        // for the next player
+        currPlayer = Game.players[Object.keys(Game.players)[PassManager.playerIdx]];
+        this.set("model", currPlayer.legalMoves());
       }
     },
 
