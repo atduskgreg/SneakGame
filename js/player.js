@@ -31,6 +31,15 @@ Player.prototype.isMoveLegal = function(move){
 	return (!off_left && !off_right && !off_top && !off_bot);
 }
 
+Player.prototype.legalMoves = function(){
+  result = {}
+  for(i in Util.moves){
+    result[i] = this.isMoveLegal(Util.moves[i]);
+  }
+
+  return result;
+}
+
 Player.prototype.displayString = function(){
 	inventory = [];
      for(var k =0; k < this.inventory.length; k++){
