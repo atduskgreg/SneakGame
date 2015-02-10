@@ -57,6 +57,12 @@ Character.prototype = {
 
 	},
 
+	pickupItem : function(item){
+		this.inventory.push(item);
+		index = Game.inventory.indexOf(item);
+		Game.inventory.splice(index, 1);
+	},
+
 	// toString : function(){
 	// 	inventory = [];
  //        for(var k =0; k < this.inventory.length; k++){
