@@ -310,6 +310,10 @@ Ember.Handlebars.helper('current-player-color',function(){
   return Game.players[Object.keys(Game.players)[PassManager.playerIdx]].color;
 });
 
+Ember.Handlebars.helper('current-player-name',function(){
+  return Game.players[Object.keys(Game.players)[PassManager.playerIdx]].name;
+});
+
 Ember.Handlebars.helper('current-player-knowledge',function(){
   currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
   currPlayer = Game.players[currPlayerKey];
