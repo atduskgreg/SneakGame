@@ -22,6 +22,22 @@ var Util = {
     var idx = Math.floor(Math.random() * Util.colors.length);
     return Util.colors.splice(idx, 1)[0];
   },
+
+  getRandomSquare : function(range){
+    // default to full width of board
+    var c = Math.floor(Math.random() * Game.boardWidth);
+    var r = Math.floor(Math.random() * Game.boardHeight);
+    
+    // apply range limits if present
+    if(range && range.col){
+      c = range.col.start + Math.floor(Math.random() * range.col.width);
+    }
+    if(range && range.row){
+      r = range.row.start + Math.floor(Math.random() * range.row.width);
+    }
+    
+    return {col : c, row : r};
+  },
   
   squareSelector : function(sqr){
     return "#" + sqr.col + "x" + sqr.row;
@@ -73,13 +89,6 @@ var Util = {
     }
 
     return result;
-  },
-
-  randomTile : function(){
-  	 var c = Math.floor(Math.random() * Game.boardWidth);
-  	 var r = Math.floor(Math.random() * Game.boardHeight);
-
-  	 return {col : c, row : r};
   },
 
   shuffle : function(array) {

@@ -3,7 +3,7 @@
 Character = function(){
 	this.inventory = [];
 	this.knowledge = {};
-	this.destination = Util.randomTile();
+	this.destination = Util.getRandomSquare();
 }
 
 Character.prototype = {
