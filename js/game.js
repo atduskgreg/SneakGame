@@ -157,8 +157,6 @@ var Game = {
     return results;
   },
 
-  // HERE: why does what affects one player
-  //       seem to also affect the other?
   propagateKnowledge : function(dialogs){
     for( i in dialogs){
       for(var j = 0; j < dialogs[i].characters.length; j++){
