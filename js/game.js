@@ -49,7 +49,7 @@ var Game = {
   drawInventory : function(){
     $("#board td").removeClass('gun');
     for(var i = 0; i < this.inventory.length; i++){
-      $(Util.squareSelector(this.inventory[i].where)).addClass('gun');
+      $(Util.squareSelector(this.inventory[i].position)).addClass('gun');
     }
   },
 
@@ -69,14 +69,14 @@ var Game = {
   },
 
   placeGuns : function(){
-    gunLocations = [];
-    gunLocations.push(Util.getRandomSquare({col : {start : 0, width: 4}, row : {start: 0, width: 4}}));
-    gunLocations.push(Util.getRandomSquare({col : {start : 4, width: 4}, row : {start: 0, width: 4}}));
-    gunLocations.push(Util.getRandomSquare({col : {start : 0, width: 4}, row : {start: 4, width: 4}}));
-    gunLocations.push(Util.getRandomSquare({col : {start : 4, width: 4}, row : {start: 4, width: 4}}));
+    gunPositions = [];
+    gunPositions.push(Util.getRandomSquare({col : {start : 0, width: 4}, row : {start: 0, width: 4}}));
+    gunPositions.push(Util.getRandomSquare({col : {start : 4, width: 4}, row : {start: 0, width: 4}}));
+    gunPositions.push(Util.getRandomSquare({col : {start : 0, width: 4}, row : {start: 4, width: 4}}));
+    gunPositions.push(Util.getRandomSquare({col : {start : 4, width: 4}, row : {start: 4, width: 4}}));
 
-    for(var i = 0; i < gunLocations.length; i++){
-      Game.inventory.push({name : "gun", where : gunLocations[i]});
+    for(var i = 0; i < gunPositions.length; i++){
+      Game.inventory.push({name : "gun", position : gunPositions[i]});
     }
   },
 
@@ -99,7 +99,7 @@ var Game = {
     console.log("place " + Game.inventory.length + " inventory items");
 
     for(var i = 0; i < Game.inventory.length; i++){
-      setupInstructions.push({"instruction" : "Place a " + Game.inventory[i].name + " on " + Util.squareDescription(Game.inventory[i].where)});
+      setupInstructions.push({"instruction" : "Place a " + Game.inventory[i].name + " on " + Util.squareDescription(Game.inventory[i].position)});
     }
     return setupInstructions;
   }, 
@@ -195,12 +195,25 @@ var Game = {
               char2 = dialogs[i].characters[k];
               console.log(char1.name + " learning from " + char2.name);
               char1.learnFrom(char2);
-              if(char1.isPlayer){
+              if(char1.isPlayer){ // shouldn't plans be able to move amongst characters?
                 char1.acquireItemsFrom(char2);
               }
             }
         }
 
+      }
+    }
+  },
+
+  pickupItems : function(){
+    charKeys = Object.keys(Game.characters);
+    for(var i = 0; i < this.inventory.length; i++){
+      for(var c = 0; c < charKeys.length; c++){
+        charKey = charKeys[c]
+        if(Util.sameSquare(Game.characters[charKey].position, this.inventory[i].position)){
+          console.log("character on gun square")
+          Game.characters[charKey].pickupItem(this.inventory[i]);
+        }
       }
     }
   },
