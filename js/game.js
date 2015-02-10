@@ -11,11 +11,14 @@ var Game = {
   seedSquares : [],
   numSeedSquares : 6,
   roundNum : 0,
+  numGuns : 4,
+  inventory : [],
 
   drawDebug : function(){
     this.drawCharacters(this.characters);
     this.drawExit();
     this.drawPlayerDebug();
+    this.drawInventory();
   },
 
   drawPlayerDebug : function(){
@@ -43,6 +46,13 @@ var Game = {
     $(Util.squareSelector(this.exit)).append("<p id='exit'>exit</p>")
   },
 
+  drawInventory : function(){
+    $("#board td").removeClass('gun');
+    for(var i = 0; i < this.inventory.length; i++){
+      $(Util.squareSelector(this.inventory[i].where)).addClass('gun');
+    }
+  },
+
   endRound : function(){
     this.roundNum++;
   },
@@ -55,12 +65,25 @@ var Game = {
     Game.createNPCs();
     Game.createPlayers();
     Game.assignPlans();
+    Game.placeGuns();
+  },
+
+  placeGuns : function(){
+    gunLocations = [];
+    gunLocations.push(Util.getRandomSquare({col : {start : 0, width: 4}, row : {start: 0, width: 4}}));
+    gunLocations.push(Util.getRandomSquare({col : {start : 4, width: 4}, row : {start: 0, width: 4}}));
+    gunLocations.push(Util.getRandomSquare({col : {start : 0, width: 4}, row : {start: 4, width: 4}}));
+    gunLocations.push(Util.getRandomSquare({col : {start : 4, width: 4}, row : {start: 4, width: 4}}));
+
+    for(var i = 0; i < gunLocations.length; i++){
+      Game.inventory.push({name : "gun", where : gunLocations[i]});
+    }
   },
 
   pickSeedSquares : function(){
 
     while(this.seedSquares.length < this.numSeedSquares){
-      t = Util.randomTile();
+      t = Util.getRandomSquare();
       if(!Util.sameSquare(t, this.exit) && Util.indexOfSquare(t, this.seedSquares) < 0){
         this.seedSquares.push(t);
       }
@@ -71,6 +94,12 @@ var Game = {
     var setupInstructions = [];
     for(i in this.characters){
       setupInstructions.push({"instruction" : this.characters[i].setupInstruction()});
+    }
+
+    console.log("place " + Game.inventory.length + " inventory items");
+
+    for(var i = 0; i < Game.inventory.length; i++){
+      setupInstructions.push({"instruction" : "Place a " + Game.inventory[i].name + " on " + Util.squareDescription(Game.inventory[i].where)});
     }
     return setupInstructions;
   }, 
