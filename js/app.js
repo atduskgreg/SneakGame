@@ -29,9 +29,6 @@ App.MovesRoute = Ember.Route.extend({
   setupController : function(controller, model){
     GameManager.transitionTo("moveInput");
     currPlayer = Game.players[Object.keys(Game.players)[PassManager.playerIdx]];
-    console.log("moves route");
-    console.log("playerIdx: " + PassManager.playerIdx);
-    console.log(currPlayer);
     controller.set("model", currPlayer.legalMoves());
   }
 });
@@ -125,10 +122,17 @@ App.MovesController = Ember.ObjectController.extend({
   actions : {
     submitMove : function(move){
       console.log("submit move: " + move);
-      // apply move to player
       currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
-      console.log(currPlayerKey);
-      Game.players[currPlayerKey].setNextMove(Util.moves[move]);
+      currPlayer = Game.players[currPlayerKey];
+      // here's where we resolve gun actions
+      if(move == "shoot"){
+        // todo
+      } else if(move == "drop"){
+        currPlayer.dropItem(currPlayer.itemWithAttribute("name", "gun"));
+      } else {
+        currPlayer.setNextMove(Util.moves[move]);
+      }
+
       PassManager.next();
 
       if(PassManager.get("currentState.name") == "done"){

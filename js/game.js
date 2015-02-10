@@ -205,15 +205,39 @@ var Game = {
     }
   },
 
-  pickupItems : function(){
-    charKeys = Object.keys(Game.characters);
-    for(var i = 0; i < this.inventory.length; i++){
-      for(var c = 0; c < charKeys.length; c++){
-        charKey = charKeys[c]
-        if(Util.sameSquare(Game.characters[charKey].position, this.inventory[i].position)){
-          console.log("character on gun square")
-          Game.characters[charKey].pickupItem(this.inventory[i]);
+  takeItemFromSquare : function(item, square){
+    var result = null;
+    var removedIndex = null;
+    for(var i = 0; i < Game.inventory.length; i++){
+      if(Util.sameSquare(Game.inventory[i].position, square)){
+        if(Game.inventory[i].name == item){
+          result = Game.inventory[i];
+          removedIndex = i;
+          break;
         }
+      }
+    }
+
+    console.log("removedIndex: " + removedIndex);
+    console.log("result: " + result );
+
+    if(result){
+      Game.inventory.splice(removedIndex, 1);
+    }
+
+    return result;
+  },
+
+  pickupItems : function(){
+    console.log(Game.inventory.length + " game items on the board");
+    charKeys = Object.keys(Game.characters);
+
+    for(var c = 0; c < charKeys.length; c++){
+      currCharacter = Game.characters[charKeys[c]];
+
+      gun = Game.takeItemFromSquare("gun", currCharacter.position);
+      if(gun){
+        currCharacter.gainItem(gun);
       }
     }
   },
