@@ -95,6 +95,12 @@ var Game = {
     for(i in this.characters){
       setupInstructions.push({"instruction" : this.characters[i].setupInstruction()});
     }
+
+    console.log("place " + Game.inventory.length + " inventory items");
+
+    for(var i = 0; i < Game.inventory.length; i++){
+      setupInstructions.push({"instruction" : "Place a " + Game.inventory[i].name + " on " + Util.squareDescription(Game.inventory[i].where)});
+    }
     return setupInstructions;
   }, 
 
