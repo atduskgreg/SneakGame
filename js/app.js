@@ -9,7 +9,6 @@ App.Router.map(function(){
   this.resource("dialogs");
   this.resource("dialogReveals");
   this.resource("shoot");
-  this.resource("killCharacter");
   this.resource("victory");
 });
 
@@ -41,6 +40,7 @@ App.MoveInstructionsRoute = Ember.Route.extend({
     GameManager.transitionTo("moveInstructions");
 
     controller.set('instructions', Game.moveInstructions());
+    controller.set('victims', Game.newShootingVictims());
   }
 });
 
@@ -151,40 +151,19 @@ App.ShootController = Ember.ObjectController.extend({
         this.transitionToRoute("victory");
       } else {
         console.log("hit NPC");
-        Game.killCharacter(targetCharacter);
+        Game.killCharacter(targetCharacter, {killer : currPlayer});
 
         gun = currPlayer.itemWithAttribute("name", "gun");
         currPlayer.dropItem(gun);
         Game.removeItem(gun);
 
         Game.drawDebug();
-        this.transitionToRoute("killCharacter");
-      }
-    }
-  }
-});
-
-App.KillCharacterRoute = Ember.Route.extend({
-  setupController : function(controller, model){
-    controller.set("victim", Game.shootingVictims[Game.shootingVictims.length - 1]);
-  }
-});
-
-App.KillCharacterController = Ember.ObjectController.extend({
-  model : {},
-  actions : {
-    continueMoves : function(){
-      console.log("killCharController: continueMoves enter w/PM state: " + PassManager.get("currentState.name") + " playerIdx: " + PassManager.playerIdx);
-      PassManager.next();
-      // HERE:
-      //  shooting should count as a move and continue the
-      //  natural pass manager flow
-      console.log("kill char after PM.next(): " + PassManager.get("currentState.name") + " playerIdx: " + PassManager.playerIdx);
-
-      if(PassManager.get("currentState.name") == "done"){
-        this.transitionToRoute("moveInstructions");
-      } else {
-        this.transitionToRoute("moves");
+        PassManager.next();
+        if(PassManager.get("currentState.name") == "done"){
+          this.transitionToRoute("moveInstructions");
+        } else {
+          this.transitionToRoute("moves");
+        }
       }
     }
   }
@@ -237,6 +216,7 @@ App.MovesController = Ember.ObjectController.extend({
 });
 
 App.MoveInstructionsController = Ember.ObjectController.extend({
+  model : {},
   instructions : null,
   actions : {
     confirm : function(){

@@ -267,7 +267,7 @@ var Game = {
     return result;
   },
 
-  killCharacter : function(character){
+  killCharacter : function(character, opts){
     charKeys = Object.keys(Game.characters);
     removeKey = null;
     for(var i = 0; i < charKeys.length; i++){
@@ -278,9 +278,19 @@ var Game = {
       }
     }
 
-    Game.shootingVictims.push({name : character.name, color : character.color, position : character.position, when : Game.roundNum});
+    Game.shootingVictims.push({killer : opts.killer, name : character.name, color : character.color, position : character.position, when : Game.roundNum});
 
     delete Game.characters[removeKey];
+  },
+
+  newShootingVictims : function(){
+    var result = [];
+    for(var i = 0; i < Game.shootingVictims.length; i++){
+      if(Game.shootingVictims[i].when == Game.roundNum){
+        result.push(Game.shootingVictims[i]);
+      }
+    }
+    return result;
   },
 
   generateExit : function(){

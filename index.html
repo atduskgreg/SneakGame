@@ -169,17 +169,17 @@
       </form>
     </script>
     
-    <script type="text/x-handlebars" id="killCharacter">
-      <h1>Character Killed!</h1>
-      <p>Lie the corpse of {{victim.color}} ({{victim.name}}) down on the board.</p>
-      <p><button {{action "continueMoves"}}>Continue</button></p>
-    </script>
-
     <script type="text/x-handlebars" id="moveInstructions">
       <h1>Move Instructions</h1>
       <ul>
       {{#each instruction in instructions}}
         <li>{{ instruction }}</li>
+      {{/each}}
+      </ul>
+      <h2>Shooting Victims</h2>
+      <ul>
+      {{#each victim in victims}}
+        <li>{{ victim.color }} was shot by {{victim.killer.color}}</li>
       {{/each}}
       </ul>
       <button {{action "confirm"}}>Done moving</button>
