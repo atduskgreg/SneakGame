@@ -139,10 +139,15 @@ Character.prototype = {
 	},
 
 	nextPosition : function(){
-		h = this.heading();
-		nCol = this.position.col + h.col;
-		nRow = this.position.row + h.row;
-		return {col : nCol, row: nRow};
+		// if you have a gun hold
+		if(this.itemWithAttribute("name", "gun")){
+			return this.position;
+		} else {
+			h = this.heading();
+			nCol = this.position.col + h.col;
+			nRow = this.position.row + h.row;
+			return {col : nCol, row: nRow};
+		}
 	},
 
 	move : function(){
