@@ -9,6 +9,8 @@ App.Router.map(function(){
   this.resource("dialogs");
   this.resource("dialogReveals");
   this.resource("shoot");
+  this.resource("killCharacter");
+  this.resource("victory");
 });
 
 App.SetupRoute = Ember.Route.extend({
@@ -114,6 +116,8 @@ App.CharacterAssignmentController = Ember.ObjectController.extend({
       PassManager.next();
       if(PassManager.get("currentState.name") == "done"){
         this.transitionToRoute("moves");
+      } else {
+
       }
     }
   }
@@ -125,21 +129,57 @@ App.ShootRoute = Ember.Route.extend({
     currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
     currPlayer = Game.players[currPlayerKey];
     targets = Game.targetsFor(currPlayer);
-    targetNames = [];
+    targetColors = [];
     for(var i = 0; i < targets.length; i++){
-      targetNames.push(targets[i].name);
+      targetColors.push(targets[i].color);
     }
 
-    controller.set("targets", targetNames);
+    controller.set("targets", targetColors);
   }
 });
 
 App.ShootController = Ember.ObjectController.extend({
-  content : {},
+  model : {},
   actions : {
     fire : function(){
-      targetCharacter = Game.characterWithAttribute("name", this.get("targetName"));
+      targetCharacter = Game.characterWithAttribute("color", this.get("targetColor"));
+      if(targetCharacter.isPlayer){
+        currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
+        Game.winner = Game.players[currPlayerKey];
+        this.transitionToRoute("victory");
+      } else {
+        console.log("hit NPC");
+        Game.killCharacter(targetCharacter);
+        Game.drawDebug();
+        this.transitionToRoute("killCharacter");
+      }
     }
+  }
+});
+
+App.KillCharacterRoute = Ember.Route.extend({
+  setupController : function(controller, model){
+    controller.set("victim", Game.shootingVictims[Game.shootingVictims.length - 1]);
+  }
+});
+
+App.KillCharacterController = Ember.ObjectController.extend({
+  model : {},
+  actions : {
+    continueMoves : function(){
+      if(PassManager.get("currentState.name") == "done"){
+        this.transitionToRoute("moveInstructions");
+      } else {
+        this.transitionToRoute("moves");
+      }
+    }
+  }
+});
+
+App.VictoryRoute = Ember.Route.extend({
+  setupController : function(controller, model){
+    controller.set("winner", Game.winner);
+
   }
 });
 
@@ -187,9 +227,6 @@ App.MoveInstructionsController = Ember.ObjectController.extend({
   actions : {
     confirm : function(){
       console.log("confirm moves");
-      for(i in Game.characters){
-        console.log(Game.characters[i].color + " from " + Util.squareDescription(Game.characters[i].position) +"["+Game.characters[i].position.col+"x"+Game.characters[i].position.row+"]" + " to " + Util.squareDescription(Game.characters[i].nextPosition()) +" [" + Game.characters[i].heading().col +"x" +Game.characters[i].heading().row + "]")
-      }
       Game.makeMoves();
 
       this.transitionToRoute("dialogs");
