@@ -13,6 +13,7 @@ Character.prototype = {
 		startSqrIdx = Math.floor(Math.random() * Game.seedSquares.length);
 		startSqr = Game.seedSquares[startSqrIdx];
 		this.position = {col : startSqr.col, row : startSqr.row};
+		this.prevPosition = {col : null, row: null};
 	},
 
 	// learn knowledge from other character's knowledge and items
@@ -57,8 +58,15 @@ Character.prototype = {
 
 	},
 
-	gainItem : function(item){
-		this.inventory.push(item);
+	pickupItem : function(item){
+		console.log("gainItem | sameSquare: " + Util.sameSquare(this.prevPosition, this.position));
+		// don't pick up the item if you dropped or fired the gun last turn
+		if(!Util.sameSquare(this.prevPosition, this.position)){
+			this.inventory.push(item);
+			return true;
+		} else {
+			return false;
+		}
 	},
 
 	dropItem : function(item){
@@ -152,13 +160,15 @@ Character.prototype = {
 			}
 
 		} else {
-
 			var np = this.nextPosition();
-			console.log(this.color + " " + np.col + "x" + np.row);
+
+			if(this.position){
+				this.prevPosition.col = this.position.col;
+				this.prevPosition.row = this.position.row;
+			}
+
 			this.position.col = np.col;
 			this.position.row = np.row;
-
-			console.log("now at: " + Util.squareDescription(this.position));
 		}
 	},
 

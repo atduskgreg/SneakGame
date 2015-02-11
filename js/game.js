@@ -239,7 +239,12 @@ var Game = {
 
       gun = Game.takeItemFromSquare("gun", currCharacter.position);
       if(gun){
-        currCharacter.gainItem(gun);
+        // if the character refuses to pick up the item
+        // (for example because they just declined to use it)
+        if(!currCharacter.pickupItem(gun)){
+          // put the item back
+          Game.inventory.push(gun);
+        } 
       }
     }
   },
