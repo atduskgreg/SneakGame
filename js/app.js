@@ -9,6 +9,7 @@ App.Router.map(function(){
   this.resource("dialogs");
   this.resource("dialogReveals");
   this.resource("shoot");
+  this.resource("killCharacter");
   this.resource("victory");
 });
 
@@ -115,6 +116,8 @@ App.CharacterAssignmentController = Ember.ObjectController.extend({
       PassManager.next();
       if(PassManager.get("currentState.name") == "done"){
         this.transitionToRoute("moves");
+      } else {
+
       }
     }
   }
@@ -146,8 +149,28 @@ App.ShootController = Ember.ObjectController.extend({
         this.transitionToRoute("victory");
       } else {
         console.log("hit NPC");
-        // TODO:
-          // kill npc
+        Game.killCharacter(targetCharacter);
+        Game.drawDebug();
+        this.transitionToRoute("killCharacter");
+      }
+    }
+  }
+});
+
+App.KillCharacterRoute = Ember.Route.extend({
+  setupController : function(controller, model){
+    controller.set("victim", Game.shootingVictims[Game.shootingVictims.length - 1]);
+  }
+});
+
+App.KillCharacterController = Ember.ObjectController.extend({
+  model : {},
+  actions : {
+    continueMoves : function(){
+      if(PassManager.get("currentState.name") == "done"){
+        this.transitionToRoute("moveInstructions");
+      } else {
+        this.transitionToRoute("moves");
       }
     }
   }
@@ -204,9 +227,6 @@ App.MoveInstructionsController = Ember.ObjectController.extend({
   actions : {
     confirm : function(){
       console.log("confirm moves");
-      for(i in Game.characters){
-        console.log(Game.characters[i].color + " from " + Util.squareDescription(Game.characters[i].position) +"["+Game.characters[i].position.col+"x"+Game.characters[i].position.row+"]" + " to " + Util.squareDescription(Game.characters[i].nextPosition()) +" [" + Game.characters[i].heading().col +"x" +Game.characters[i].heading().row + "]")
-      }
       Game.makeMoves();
 
       this.transitionToRoute("dialogs");

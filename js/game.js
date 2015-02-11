@@ -14,6 +14,7 @@ var Game = {
   numGuns : 4,
   inventory : [],
   winner : null,
+  shootingVictims : [],
 
   drawDebug : function(){
     this.drawCharacters(this.characters);
@@ -258,6 +259,22 @@ var Game = {
     }
 
     return result;
+  },
+
+  killCharacter : function(character){
+    charKeys = Object.keys(Game.characters);
+    removeKey = null;
+    for(var i = 0; i < charKeys.length; i++){
+      currChar = Game.characters[charKeys[i]];
+      if(currChar.name == character.name){
+        removeKey = charKeys[i];
+        break;
+      }
+    }
+
+    Game.shootingVictims.push({name : character.name, color : character.color, position : character.position, when : Game.roundNum});
+
+    delete Game.characters[removeKey];
   },
 
   generateExit : function(){
