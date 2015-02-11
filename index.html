@@ -159,15 +159,24 @@
         </div>
       {{/if}}
     </script>
+
+    <script type="text/x-handlebars" id="shoot">
+      <h1>Pick Target</h1>
+      <p>You are {{current-player-color}} ({{current-player-name}}).</p>
+      <form {{action "fire" on="submit"}}>
+        {{view "select" content=targets valueBinding='targetName'}}
+        <button type="submit">Shoot</button>
+      </form>
+    </script>
     
     <script type="text/x-handlebars" id="moveInstructions">
-    <h1>Move Instructions</h1>
-    <ul>
-    {{#each instruction in instructions}}
-      <li>{{ instruction }}</li>
-    {{/each}}
-    </ul>
-    <button {{action "confirm"}}>Done moving</button>
+      <h1>Move Instructions</h1>
+      <ul>
+      {{#each instruction in instructions}}
+        <li>{{ instruction }}</li>
+      {{/each}}
+      </ul>
+      <button {{action "confirm"}}>Done moving</button>
     </script>
 
     <script type="text/x-handlebars" id="_pass">
@@ -177,6 +186,7 @@
 
     <script type="text/x-handlebars" id="dialogs">
       <h1>Dialogs ({{length}})</h1>
+      <p>You are {{current-player-color}} ({{current-player-name}}).</p>
       <ul> 
         {{#each item in controller}}
         <li>

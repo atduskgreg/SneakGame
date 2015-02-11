@@ -48,8 +48,6 @@ var Game = {
 
   drawInventory : function(){
     $("#board td").removeClass('gun');
-    console.log("drawInventory: " + this.inventory.length + " items");
-    console.log(this.inventory);
     for(var i = 0; i < this.inventory.length; i++){
       $(Util.squareSelector(this.inventory[i].position)).addClass(this.inventory[i].name);
     }
@@ -220,9 +218,6 @@ var Game = {
       }
     }
 
-    console.log("removedIndex: " + removedIndex);
-    console.log("result: " + result );
-
     if(result){
       Game.inventory.splice(removedIndex, 1);
     }
@@ -247,6 +242,21 @@ var Game = {
         } 
       }
     }
+  },
+
+  targetsFor : function(character){
+    var result = [];
+    charKeys = Object.keys(Game.characters);
+
+    for(var i = 0; i < charKeys.length; i++){
+      currChar = Game.characters[charKeys[i]];
+
+      if(currChar.name != character.name){
+        result.push(currChar);
+      }
+    }
+
+    return result;
   },
 
   generateExit : function(){

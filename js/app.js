@@ -8,6 +8,7 @@ App.Router.map(function(){
   this.resource("moveInstructions");
   this.resource("dialogs");
   this.resource("dialogReveals");
+  this.resource("shoot");
 });
 
 App.SetupRoute = Ember.Route.extend({
@@ -89,22 +90,22 @@ App.DialogRevealsController = Ember.ArrayController.extend({
     }
 });
 
-App.DialogRevealController = Ember.ObjectController.extend({
+// App.DialogRevealController = Ember.ObjectController.extend({
 
-  knowledge : function(){
-    console.log("knowledge helper");
-    // return Util.knowledgeDescription(this.get("k"));
-  }.property(),
+//   knowledge : function(){
+//     console.log("knowledge helper");
+//     // return Util.knowledgeDescription(this.get("k"));
+//   }.property(),
 
-  inventory : function(){
-    // use PassManager to get the current player
-    // currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
-    // currPlayer = Game.players[currPlayerKey];
-    // itemize (highlight) new items gained
-    // show all itms
+//   inventory : function(){
+//     // use PassManager to get the current player
+//     // currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
+//     // currPlayer = Game.players[currPlayerKey];
+//     // itemize (highlight) new items gained
+//     // show all itms
     
-  }
-});
+//   }
+// });
 
 
 App.CharacterAssignmentController = Ember.ObjectController.extend({
@@ -118,6 +119,30 @@ App.CharacterAssignmentController = Ember.ObjectController.extend({
   }
 });
 
+App.ShootRoute = Ember.Route.extend({
+  setupController : function(controller, model){
+    GameManager.transitionTo("pickTarget");
+    currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
+    currPlayer = Game.players[currPlayerKey];
+    targets = Game.targetsFor(currPlayer);
+    targetNames = [];
+    for(var i = 0; i < targets.length; i++){
+      targetNames.push(targets[i].name);
+    }
+
+    controller.set("targets", targetNames);
+  }
+});
+
+App.ShootController = Ember.ObjectController.extend({
+  content : {},
+  actions : {
+    fire : function(){
+      targetCharacter = Game.characterWithAttribute("name", this.get("targetName"));
+    }
+  }
+});
+
 App.MovesController = Ember.ObjectController.extend({
   actions : {
     submitMove : function(move){
@@ -126,7 +151,9 @@ App.MovesController = Ember.ObjectController.extend({
       currPlayer = Game.players[currPlayerKey];
       // here's where we resolve gun actions
       if(move == "shoot"){
-        // todo
+        console.log("shoot");
+        this.transitionToRoute("shoot");
+        return;
       } else if(move == "drop"){
         console.log("drop");
         gun = currPlayer.itemWithAttribute("name", "gun");
@@ -135,6 +162,7 @@ App.MovesController = Ember.ObjectController.extend({
         currPlayer.setNextMove(Util.moves[move]);
       }
 
+      console.log("moves pass next");
       PassManager.next();
 
       if(PassManager.get("currentState.name") == "done"){
@@ -300,9 +328,15 @@ var GameManager = Ember.StateManager.create({
     exit : function(stateManager) {
       Game.endRound();
     } 
-  }), 
+  }),
 
-
+  pickTarget : Ember.State.create({
+    enter: function(stateManager) {
+      console.log("begin pickTarget");
+    }, 
+    exit : function(stateManager) {
+    } 
+  })
 });
 
 Ember.Handlebars.helper('format-square',function(square){

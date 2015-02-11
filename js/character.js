@@ -47,19 +47,14 @@ Character.prototype = {
 			this.inventory.push(other.inventory[i]);
 			itemsToRemove.push(other.inventory[i]);
 		}
-		console.log(other.inventory);
-		console.log(itemsToRemove.length + " items to remove");
-		for(var i = 0; i < itemsToRemove.length; i++){
-			console.log("removing " + itemsToRemove[i]);
+ 		for(var i = 0; i < itemsToRemove.length; i++){
 			index = other.inventory.indexOf(itemsToRemove[i]);
 			other.inventory.splice(index,1);
 		}
-		console.log(other.inventory);
 
 	},
 
 	pickupItem : function(item){
-		console.log("gainItem | sameSquare: " + Util.sameSquare(this.prevPosition, this.position));
 		// don't pick up the item if you dropped or fired the gun last turn
 		if(!Util.sameSquare(this.prevPosition, this.position)){
 			this.inventory.push(item);
@@ -151,8 +146,6 @@ Character.prototype = {
 	},
 
 	move : function(){
-		console.log(this.color + " moving from " + Util.squareDescription(this.position) +"["+this.position.col+"x"+this.position.row+"]" + " to " + Util.squareDescription(this.nextPosition()));
-
 		if(this.atDestination()){
 			if(Math.random() < 0.05){
 
