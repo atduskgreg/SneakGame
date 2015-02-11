@@ -128,7 +128,9 @@ App.MovesController = Ember.ObjectController.extend({
       if(move == "shoot"){
         // todo
       } else if(move == "drop"){
-        currPlayer.dropItem(currPlayer.itemWithAttribute("name", "gun"));
+        console.log("drop");
+        gun = currPlayer.itemWithAttribute("name", "gun");
+        currPlayer.dropItem(gun);
       } else {
         currPlayer.setNextMove(Util.moves[move]);
       }

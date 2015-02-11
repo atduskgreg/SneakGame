@@ -69,12 +69,12 @@ Character.prototype = {
 
 	itemWithAttribute : function(attr, value){
 		var result = null;
-		for(var i = 0; i < this.inventory; i++){
+		for(var i = 0; i < this.inventory.length; i++){
 			if(this.inventory[i][attr] == value){
-				return this.inventory[i];
+				result = this.inventory[i];
 			}
 		}
-		return result
+		return result;
 	},
 
 	// toString : function(){

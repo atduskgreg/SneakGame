@@ -48,8 +48,10 @@ var Game = {
 
   drawInventory : function(){
     $("#board td").removeClass('gun');
+    console.log("drawInventory: " + this.inventory.length + " items");
+    console.log(this.inventory);
     for(var i = 0; i < this.inventory.length; i++){
-      $(Util.squareSelector(this.inventory[i].position)).addClass('gun');
+      $(Util.squareSelector(this.inventory[i].position)).addClass(this.inventory[i].name);
     }
   },
 
