@@ -74,7 +74,13 @@ Player.prototype.displayString = function(){
 }
 
 Player.prototype.move = function(){
-	this.position = this.nextPos;
+  if(this.position){
+    this.prevPosition.col = this.position.col;
+    this.prevPosition.row = this.position.row;
+  }
+
+	this.position.col = this.nextPos.col;
+  this.position.row = this.nextPos.row;
 	this.hasNextPos = false;
 }
 
