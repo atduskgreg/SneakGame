@@ -47,6 +47,7 @@
       background-image: url('public/gun.jpg');
       background-repeat: no-repeat;
       background-position: center;
+      border: 2px solid #000;
     }
 
     </style>
@@ -99,21 +100,26 @@
       {{else}}
         <p>You are {{current-player-color}} ({{current-player-name}}).</p>
         <div id="moveInput">
-        <p>      
-          {{#if nw}}  
-            <button {{action "submitMove" "nw" }}>nw</button>
+        <p>
+          {{#if shoot}}
+            <button {{action "submitMove" "shoot" }}>shoot gun</button>
+            <button {{action "submitMove" "drop" }}>drop gun</button>
           {{ else }}
-            <span class="buttonSpacer"></span>
-          {{/if}}
-          {{#if n}}
-            <button {{action "submitMove" "n" }}>n</button>
-          {{ else }}
-            <span class="buttonSpacer"></span>
-          {{/if}}
-          {{#if ne }}
-            <button {{action "submitMove" "ne" }}>ne</button>
-          {{ else }}
-            <span class="buttonSpacer"></span>
+            {{#if nw}}  
+              <button {{action "submitMove" "nw" }}>nw</button>
+            {{ else }}
+              <span class="buttonSpacer"></span>
+            {{/if}}
+            {{#if n}}
+              <button {{action "submitMove" "n" }}>n</button>
+            {{ else }}
+              <span class="buttonSpacer"></span>
+            {{/if}}
+            {{#if ne }}
+              <button {{action "submitMove" "ne" }}>ne</button>
+            {{ else }}
+              <span class="buttonSpacer"></span>
+            {{/if}}
           {{/if}}
         </p>
         <p>        

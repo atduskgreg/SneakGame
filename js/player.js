@@ -31,11 +31,31 @@ Player.prototype.isMoveLegal = function(move){
 	return (!off_left && !off_right && !off_top && !off_bot);
 }
 
+Player.prototype.hasItem = function(itemName){
+  var result = false;
+
+  for(var i = 0; i < this.inventory.length; i++){
+    if(this.inventory[i].name == itemName){
+      result = true;
+      break;
+    }
+  }
+
+  return result;
+}
+
 Player.prototype.legalMoves = function(){
   result = {}
-  for(i in Util.moves){
-    result[i] = this.isMoveLegal(Util.moves[i]);
+
+  if(this.hasItem("gun")){
+    result["shoot"] = true;
+  } else {
+    for(i in Util.moves){
+      result[i] = this.isMoveLegal(Util.moves[i]);
+    }
   }
+
+  
 
   return result;
 }
