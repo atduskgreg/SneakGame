@@ -155,6 +155,7 @@ App.ShootController = Ember.ObjectController.extend({
 
         gun = currPlayer.itemWithAttribute("name", "gun");
         currPlayer.dropItem(gun);
+        Game.removeItem(gun);
 
         Game.drawDebug();
         this.transitionToRoute("killCharacter");
@@ -173,11 +174,12 @@ App.KillCharacterController = Ember.ObjectController.extend({
   model : {},
   actions : {
     continueMoves : function(){
-      // PassManager.next();
+      console.log("killCharController: continueMoves enter w/PM state: " + PassManager.get("currentState.name") + " playerIdx: " + PassManager.playerIdx);
+      PassManager.next();
       // HERE:
       //  shooting should count as a move and continue the
       //  natural pass manager flow
-      console.log("kill char: " + PassManager.get("currentState.name"));
+      console.log("kill char after PM.next(): " + PassManager.get("currentState.name") + " playerIdx: " + PassManager.playerIdx);
 
       if(PassManager.get("currentState.name") == "done"){
         this.transitionToRoute("moveInstructions");
@@ -343,8 +345,10 @@ var GameManager = Ember.StateManager.create({
 
   moveInput : Ember.State.create({
     enter: function(stateManager) {
-      console.log("begin moveInput");
-      PassManager.reset();
+      console.log("begin moveInput playerIdx: " + PassManager.playerIdx);
+      if(PassManager.playerIdx > 1){
+        PassManager.reset();
+      }
     }
   }),
 

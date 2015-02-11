@@ -246,6 +246,12 @@ var Game = {
     }
   },
 
+  removeItem : function(item){
+    index = Game.inventory.indexOf(item);
+    console.log("removing item at index: " + index);
+    Game.inventory.splice(index, 1);
+  },
+
   targetsFor : function(character){
     var result = [];
     charKeys = Object.keys(Game.characters);
