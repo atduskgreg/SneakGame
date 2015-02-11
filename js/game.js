@@ -13,6 +13,7 @@ var Game = {
   roundNum : 0,
   numGuns : 4,
   inventory : [],
+  winner : null,
 
   drawDebug : function(){
     this.drawCharacters(this.characters);

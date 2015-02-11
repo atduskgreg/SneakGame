@@ -164,7 +164,7 @@
       <h1>Pick Target</h1>
       <p>You are {{current-player-color}} ({{current-player-name}}).</p>
       <form {{action "fire" on="submit"}}>
-        {{view "select" content=targets valueBinding='targetName'}}
+        {{view "select" content=targets valueBinding='targetColor'}}
         <button type="submit">Shoot</button>
       </form>
     </script>
@@ -213,6 +213,11 @@
         <p><button {{action 'next'}}>Got it</button></p>
       {{/if}}
     </script>
+
+    <script type="text/x-handlebars" id="victory">
+    <h1>Game Over</h1>
+    <h2>{{winner.color}} ({{winner.name}}) is the winner!</h2>
+  </script>
 
     <script src="js/libs/jquery-1.10.2.js"></script>
     <script src="js/libs/handlebars-v2.0.0.js"></script>

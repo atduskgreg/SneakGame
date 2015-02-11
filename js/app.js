@@ -9,6 +9,7 @@ App.Router.map(function(){
   this.resource("dialogs");
   this.resource("dialogReveals");
   this.resource("shoot");
+  this.resource("victory");
 });
 
 App.SetupRoute = Ember.Route.extend({
@@ -125,21 +126,37 @@ App.ShootRoute = Ember.Route.extend({
     currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
     currPlayer = Game.players[currPlayerKey];
     targets = Game.targetsFor(currPlayer);
-    targetNames = [];
+    targetColors = [];
     for(var i = 0; i < targets.length; i++){
-      targetNames.push(targets[i].name);
+      targetColors.push(targets[i].color);
     }
 
-    controller.set("targets", targetNames);
+    controller.set("targets", targetColors);
   }
 });
 
 App.ShootController = Ember.ObjectController.extend({
-  content : {},
+  model : {},
   actions : {
     fire : function(){
-      targetCharacter = Game.characterWithAttribute("name", this.get("targetName"));
+      targetCharacter = Game.characterWithAttribute("color", this.get("targetColor"));
+      if(targetCharacter.isPlayer){
+        currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
+        Game.winner = Game.players[currPlayerKey];
+        this.transitionToRoute("victory");
+      } else {
+        console.log("hit NPC");
+        // TODO:
+          // kill npc
+      }
     }
+  }
+});
+
+App.VictoryRoute = Ember.Route.extend({
+  setupController : function(controller, model){
+    controller.set("winner", Game.winner);
+
   }
 });
 
