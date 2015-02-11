@@ -146,22 +146,30 @@ Character.prototype = {
 	},
 
 	move : function(){
-		if(this.atDestination()){
-			if(Math.random() < 0.05){
-
-				this.destination = {col : Math.floor(Math.random() * Game.boardWidth), row: Math.floor(Math.random() * Game.boardHeight)};
-			}
-
+		gun = this.itemWithAttribute("name", "gun");
+		if(gun){
+			console.log("npc dropping gun: " + this.color );
+			this.dropItem(gun);
+			this.prevPosition.col = this.position.col;
+			this.prevPosition.row = this.position.row;
 		} else {
-			var np = this.nextPosition();
-
-			if(this.position){
-				this.prevPosition.col = this.position.col;
-				this.prevPosition.row = this.position.row;
+			if(this.atDestination()){
+				if(Math.random() < 0.05){
+	
+					this.destination = {col : Math.floor(Math.random() * Game.boardWidth), row: Math.floor(Math.random() * Game.boardHeight)};
+				}
+	
+			} else {
+				var np = this.nextPosition();
+	
+				if(this.position){
+					this.prevPosition.col = this.position.col;
+					this.prevPosition.row = this.position.row;
+				}
+	
+				this.position.col = np.col;
+				this.position.row = np.row;
 			}
-
-			this.position.col = np.col;
-			this.position.row = np.row;
 		}
 	},
 
