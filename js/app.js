@@ -142,14 +142,20 @@ App.ShootController = Ember.ObjectController.extend({
   model : {},
   actions : {
     fire : function(){
+      currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
+      currPlayer = Game.players[currPlayerKey];
+
       targetCharacter = Game.characterWithAttribute("color", this.get("targetColor"));
       if(targetCharacter.isPlayer){
-        currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
-        Game.winner = Game.players[currPlayerKey];
+        Game.winner = currPlayer;
         this.transitionToRoute("victory");
       } else {
         console.log("hit NPC");
         Game.killCharacter(targetCharacter);
+
+        gun = currPlayer.itemWithAttribute("name", "gun");
+        currPlayer.dropItem(gun);
+
         Game.drawDebug();
         this.transitionToRoute("killCharacter");
       }
@@ -167,6 +173,12 @@ App.KillCharacterController = Ember.ObjectController.extend({
   model : {},
   actions : {
     continueMoves : function(){
+      // PassManager.next();
+      // HERE:
+      //  shooting should count as a move and continue the
+      //  natural pass manager flow
+      console.log("kill char: " + PassManager.get("currentState.name"));
+
       if(PassManager.get("currentState.name") == "done"){
         this.transitionToRoute("moveInstructions");
       } else {
