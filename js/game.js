@@ -104,7 +104,7 @@ var Game = {
       setupInstructions.push({"instruction" : "Place a " + Game.inventory[i].name + " on " + Util.squareDescription(Game.inventory[i].position)});
     }
     return setupInstructions;
-  }, 
+  },
 
   moveInstructions : function(){
     // shuffle order of players
@@ -114,7 +114,9 @@ var Game = {
     var result = [];
     for(var i = 0 ; i < orderedKeys.length; i++){
       currentCharacter = this.characters[orderedKeys[i]];
-      result.push(Util.moveDescription(currentCharacter));
+      //if(!currentCharacter.dead){
+        result.push(Util.moveDescription(currentCharacter));
+      //}
     }
 
     return result;
@@ -174,6 +176,9 @@ var Game = {
     }
   },
 
+  // TODO:
+  //  Maybe mark the dialogs that involve a dead person
+  //  so they can be displayed separately: "blue is rifling the corpse of green"
   currentDialogs : function(){
     results = {};
     for(i in this.characters){
@@ -188,6 +193,7 @@ var Game = {
     return results;
   },
 
+  // TODO: this should be renamed as it also transfers items
   propagateKnowledge : function(dialogs){
     for( i in dialogs){
       for(var j = 0; j < dialogs[i].characters.length; j++){
@@ -273,7 +279,8 @@ var Game = {
     for(var i = 0; i < charKeys.length; i++){
       currChar = Game.characters[charKeys[i]];
       if(currChar.name == character.name){
-        removeKey = charKeys[i];
+        //removeKey = charKeys[i];
+        currChar.die();
         break;
       }
     }
@@ -369,19 +376,6 @@ var Game = {
   getNumNPCs : function(){
     return this.numNPCs;
   },
-
-  // setNPCs : function(data){
-  //   this.characters = {};
-  //   for(i in data){
-  //     c = new Character();
-  //     c.fromData(data[i]);
-  //     this.characters[i] = c;
-  //   }
-
-  //   for(key in this.players){
-  //     this.characters[key] = this.players[key];
-  //   }
-  // },
 
 	moveCharacters : function(characters){
 		for(i in this.characters){
