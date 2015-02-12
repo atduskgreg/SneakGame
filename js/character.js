@@ -5,6 +5,7 @@ Character = function(){
 	this.knowledge = {};
 	this.destination = Util.getRandomSquare();
 	this.itemHistory = [];
+	this.dead = false;
 }
 
 Character.prototype = {
@@ -17,8 +18,15 @@ Character.prototype = {
 		this.prevPosition = {col : null, row: null};
 	},
 
+	die : function(){
+		this.dead = true;
+	},
+
 	// learn knowledge from other character's knowledge and items
 	learnFrom : function(other){
+		if(this.dead){
+			return false;
+		}
 		// learn about what they're carrying
 		for(var i = 0; i < other.inventory.length; i++){
 			this.knowledge[other.inventory[i].name] = {what : other.inventory[i].name, who : other, when : Game.roundNum, acquired : Game.roundNum}
@@ -43,6 +51,9 @@ Character.prototype = {
 	},
 
 	acquireItemsFrom : function(other){
+		if(this.dead){
+			return false;
+		}
 		itemsToRemove = [];
 		for(var i = 0; i < other.inventory.length; i++){
 			this.inventory.push(other.inventory[i]);
@@ -52,10 +63,13 @@ Character.prototype = {
 			index = other.inventory.indexOf(itemsToRemove[i]);
 			other.inventory.splice(index,1);
 		}
-
 	},
 
 	pickupItem : function(item){
+		if(this.dead){
+			return false;
+		}
+
 		// don't pick up the item if you dropped or fired the gun last turn
 		if(!Util.sameSquare(this.prevPosition, this.position)){
 			this.inventory.push(item);
@@ -93,30 +107,6 @@ Character.prototype = {
 		return result;
 	},
 
-	// toString : function(){
-	// 	inventory = [];
- //        for(var k =0; k < this.inventory.length; k++){
- //          inventory.push(this.inventory[k].name);
- //        }
-
- //        knowledgeDescription = [];
- //        for(i in this.knowledge){
- //        	knowledgeDescription.push(this.knowledge[i].who + " had the "+ i + " " + (Game.round.num - this.knowledge[i].when) + " turns ago " );
- //        }
-	// 	return this.name + " ("+this.color+") i:["+inventory.join(", ")+"] k:[" + knowledgeDescription.join(", ")+"]";
-	// },
-
-	toData : function(){
-		return {position : this.position, destination : this.destination, name : this.name, color : this.color};
-	},
-
-	fromData : function(data){
-		this.position = data.position;
-		this.destination = data.destination;
-		this.name = data.name;
-		this.color = data.color;
-	},
-
 	setupInstruction : function(){
 		return "Place the " + this.color + " character on " + Util.squareDescription(this.position);
 	},
@@ -127,7 +117,14 @@ Character.prototype = {
 
 	draw : function(){
 		var k = this.atDestination() ? "atDestination" : "inTransit";
-		$(this.squareSelector()).append("<p style='background-color:"+this.color+";' class='"+k+"'>"+this.name+"</p>");
+
+		pString = "<p style='background-color:"+this.color+";' class='"+k+"'>" + this.name;
+		if(this.dead){
+			pString += " XXX";
+		}
+		pString += "</p>"
+
+		$(this.squareSelector()).append(pString);
 	},
 
 	heading : function(){
@@ -164,6 +161,10 @@ Character.prototype = {
 	},
 
 	move : function(){
+		if(this.dead){
+			return false;
+		}
+
 		gun = this.itemWithAttribute("name", "gun");
 		if(gun){
 			console.log("npc dropping gun: " + this.color );
