@@ -5,6 +5,8 @@ Player = function() {
 	this.isPlayer = true;
   this.knowledge = {};
   this.inventory = [];
+  this.itemHistory = [];
+
   // startSqrIdx = Math.floor(Math.random() * Game.seedSquares.length);
   // startSqr = Game.seedSquares[startSqrIdx];
   // this.position = {col : startSqr.col, row : startSqr.row};
