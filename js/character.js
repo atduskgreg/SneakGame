@@ -4,6 +4,7 @@ Character = function(){
 	this.inventory = [];
 	this.knowledge = {};
 	this.destination = Util.getRandomSquare();
+	this.itemHistory = [];
 }
 
 Character.prototype = {
@@ -58,6 +59,7 @@ Character.prototype = {
 		// don't pick up the item if you dropped or fired the gun last turn
 		if(!Util.sameSquare(this.prevPosition, this.position)){
 			this.inventory.push(item);
+			this.itemHistory.push({action : "picked up", itemName : item.name, round : Game.roundNum, where : this.position});
 			return true;
 		} else {
 			return false;
@@ -68,6 +70,17 @@ Character.prototype = {
 		index = this.inventory.indexOf(item);
 		Game.inventory.push(item);
 		this.inventory.splice(index, 1);
+		this.itemHistory.push({action : "dropped", itemName : item.name, round : Game.roundNum, where : this.position});
+	},
+
+	itemHistoryForRound: function(roundNum){
+		var result = [];
+		for(var i = 0; i < this.itemHistory.length; i++){
+			if(this.itemHistory[i].round == roundNum){
+				result.push(this.itemHistory[i]);
+			}
+		}
+		return result;
 	},
 
 	itemWithAttribute : function(attr, value){
