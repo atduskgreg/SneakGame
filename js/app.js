@@ -221,7 +221,7 @@ App.MoveInstructionsController = Ember.ObjectController.extend({
   actions : {
     confirm : function(){
       console.log("confirm moves");
-      Game.makeMoves();
+      // Game.makeMoves();
 
       this.transitionToRoute("dialogs");
     }
@@ -329,12 +329,18 @@ var GameManager = Ember.StateManager.create({
       if(PassManager.playerIdx > 1){
         PassManager.reset();
       }
+    },
+
+    exit : function(stateManager){
+      console.log("exit moveInput");
     }
   }),
 
   moveInstructions : Ember.State.create({
     enter: function(stateManager) {
       console.log("begin moveInstructions");
+      Game.makeMoves();
+      Game.pickupItems();
     }
   }),
 
@@ -354,7 +360,7 @@ var GameManager = Ember.StateManager.create({
     enter: function(stateManager) {
       console.log("begin dialogReveal");
       Game.propagateKnowledge(Game.currentDialogs());
-      Game.pickupItems();
+      // Game.pickupItems();
       
       PassManager.reset();
     }, 

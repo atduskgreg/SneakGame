@@ -48,6 +48,12 @@ var Util = {
   },
   
   moveDescription : function(character){
+    itemActions = character.itemHistoryForRound(Game.roundNum);
+    console.log(character.color + " itemActions: " + itemActions.length);
+    if(itemActions.length > 0 && itemActions[0].itemName == "gun"){
+      return "the " + character.color + " character " + itemActions[0].action + " a gun";
+    }
+
     if(Util.sameSquare(character.position, character.nextPosition())){
       return "the "+ character.color +" character holds";
     } else {
