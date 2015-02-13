@@ -37,7 +37,7 @@ Character.prototype = {
 		}
 
 		if(!otherHasPlans){
-			this.knowledge["no-plans"] = {what : "plans", absence : true , who : other, when : Game.roundNum, acquired : Game.roundNum}
+			this.knowledge["no-plans-" + other.name] = {what : "plans", absence : true , who : other, when : Game.roundNum, acquired : Game.roundNum}
 		}
 
 
