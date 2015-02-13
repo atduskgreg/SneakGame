@@ -76,7 +76,11 @@ var Util = {
 
   knowledgeDescription : function(knowledge){
     result = "";
-    result += knowledge.who.color + " (" + knowledge.who.name + ") had the " + knowledge.what + " " + (Game.roundNum - knowledge.when) + " turns ago";
+    if(knowledge.absence){
+      result += knowledge.who.color + " (" + knowledge.who.name + ") didn't have the " + knowledge.what + " " + (Game.roundNum - knowledge.when) + " turns ago";
+    } else {
+      result += knowledge.who.color + " (" + knowledge.who.name + ") had the " + knowledge.what + " " + (Game.roundNum - knowledge.when) + " turns ago";
+    }
 
     return result;
   },

@@ -28,9 +28,19 @@ Character.prototype = {
 			return false;
 		}
 		// learn about what they're carrying
+		var otherHasPlans = false;
 		for(var i = 0; i < other.inventory.length; i++){
 			this.knowledge[other.inventory[i].name] = {what : other.inventory[i].name, who : other, when : Game.roundNum, acquired : Game.roundNum}
+			if(other.inventory[i].name == "plans"){
+				otherHasPlans = true;
+			}
 		}
+
+		if(!otherHasPlans){
+			this.knowledge["no-plans"] = {what : "plans", absence : true , who : other, when : Game.roundNum, acquired : Game.roundNum}
+		}
+
+
 
 		for(i in other.knowledge){
 
