@@ -1,0 +1,13 @@
+<h1>Move Instructions</h1>
+<ul>
+{{#each instruction in instructions}}
+  <li>{{ instruction }}</li>
+{{/each}}
+</ul>
+<h2>Shooting Victims</h2>
+<ul>
+{{#each victim in victims}}
+  <li>{{ victim.color }} was shot by {{victim.killer.color}}</li>
+{{/each}}
+</ul>
+<button {{action "confirm"}}>Done moving</button>

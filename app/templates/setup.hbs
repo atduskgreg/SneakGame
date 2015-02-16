@@ -1,0 +1,8 @@
+<h1>Setup</h1>
+<p>Exit is: {{format-square exit}}</p>
+<ul>
+{{#each item in instructions}}
+  <li>{{item.instruction}}</li>
+{{/each}}
+</ul>
+<p>{{#link-to 'characterAssignment'}}Find out your characters{{/link-to}}</p>

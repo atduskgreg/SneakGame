@@ -1,0 +1,14 @@
+<h1>Dialog Reveal</h1>
+{{#if PassManager.isPassing}}
+  {{partial 'pass'}}
+{{else}}
+  <h3>Your Knowledge</h3>
+  <ul>
+  {{ current-player-knowledge }}
+  </ul>
+  <h3>Your Inventory</h3>
+  <ul>
+  {{currentPlayerInventory}}
+  </ul>
+  <p><button {{action 'next'}}>Got it</button></p>
+{{/if}}

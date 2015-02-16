@@ -1,0 +1,9 @@
+<h1>Dialogs ({{length}})</h1>
+<ul> 
+  {{#each item in controller}}
+  <li>
+    {{item.summary}}
+  </li>
+  {{/each}}
+</ul>
+<p>{{#link-to 'dialogReveals'}}Reveal dialog results{{/link-to}}</p>
