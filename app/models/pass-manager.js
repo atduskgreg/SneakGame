@@ -1,6 +1,7 @@
 import Ember from "ember";
 
-export default Ember.StateManager.create({
+
+var PassManager = Ember.StateManager.create({
   initialState : 'pass',
   playerIdx : 0,
 
@@ -11,6 +12,7 @@ export default Ember.StateManager.create({
   },
 
   next : function(){
+    console.log("numplayers: " + Object.keys(Game.players).length + " playerIdx: " + this.playerIdx);
     if(PassManager.currentState.name == "pass"){
       this.transitionTo("act");
     } else {
@@ -48,4 +50,6 @@ PassManager.reopen({
   isPassing : function(){
     return this.get("currentState.name") == "pass";
   }.property("currentState.name")
-})
+});
+
+export default PassManager;

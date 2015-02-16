@@ -3,7 +3,7 @@ import Ember from "ember";
 // TODO:
 //  Horrible hack that should go away when Game
 //  and Player become proper model objects.
-export default Ember.Handlebars.registerBoundHelper('debugView',function(){
+export default Ember.Handlebars.makeBoundHelper(function(){
   var result = "<div id='debug'><table id='board'>"
   for(var i = Game.boardHeight-1; i >= 0; i--){
       result += "<tr>";

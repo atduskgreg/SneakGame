@@ -1,48 +1,48 @@
  #board {
-      float: left;
-      margin-right: 20px;
-    }
+  float: left;
+  margin-right: 20px;
+}
 
-    #board td{
-      border: 1px solid #000;
-      margin: 0;
-      min-width: 75;
-      width: 75;
-      height: 75;
-      min-height: 75;
-    }
+#board td{
+  border: 1px solid #000;
+  margin: 0;
+  min-width: 75px;
+  width: 75px;
+  height: 75px;
+  min-height: 75px;
+}
 
-    .squareDescription{
-      color: #aaa;
-    }
+.squareDescription{
+  color: #aaa;
+}
 
-    #players {
-      float: left;
-    }
+#players {
+  float: left;
+}
 
-    table p {
-      margin: 0;
-      border: 1px solid #ccc;
-      color: #fff;
-    }
+table p {
+  margin: 0;
+  border: 1px solid #ccc;
+  color: #fff;
+}
 
-    .highlight {
-      background-color: #cfc;
-    }
+.highlight {
+  background-color: #cfc;
+}
 
-    #moveInput button {
-      width: 200px;
-      height: 30px;
-    }
+#moveInput button {
+  width: 200px;
+  height: 30px;
+}
 
-    #moveInput .buttonSpacer {
-      min-width: 200px;
-      min-height: 30px;
-    }
+#moveInput .buttonSpacer {
+  min-width: 200px;
+  min-height: 30px;
+}
 
-    .gun {
-      background-image: url('public/gun.jpg');
-      background-repeat: no-repeat;
-      background-position: center;
-      border: 2px solid #000;
-    }
+.gun {
+  background-image: url('/images/gun.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  border: 2px solid #000;
+}

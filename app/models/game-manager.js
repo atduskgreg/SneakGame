@@ -1,4 +1,5 @@
 import Ember from "ember";
+import PassManager from "./pass-manager"
 
 export default Ember.StateManager.create({
   initialState: 'start',

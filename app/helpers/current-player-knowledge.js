@@ -1,7 +1,7 @@
 import Ember from "ember";
 import PassManager from "../models/pass-manager";
 
-export default Ember.Handlebars.registerBoundHelper('currentPlayerKnowledge',function(){
+export default Ember.Handlebars.makeBoundHelper(function(){
   currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
   currPlayer = Game.players[currPlayerKey];
 

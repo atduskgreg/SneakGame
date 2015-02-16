@@ -1,5 +1,5 @@
 <h1>Pick Target</h1>
-<p>You are {{currentPlayerColor}} ({{currentPlayerName}}).</p>
+<p>You are {{current-player-color}} ({{current-player-name}}).</p>
 <form {{action "fire" on="submit"}}>
   {{view "select" content=targets valueBinding='targetColor'}}
   <button type="submit">Shoot</button>
