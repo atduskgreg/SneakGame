@@ -39,7 +39,7 @@ App.MoveInstructionsRoute = Ember.Route.extend({
   setupController : function(controller, model){
     GameManager.transitionTo("moveInstructions");
 
-    controller.set('instructions', Game.moveInstructions());
+    controller.set('instructions', Game.moveInstructions);
     controller.set('victims', Game.newShootingVictims());
   }
 });
@@ -339,6 +339,7 @@ var GameManager = Ember.StateManager.create({
   moveInstructions : Ember.State.create({
     enter: function(stateManager) {
       console.log("begin moveInstructions");
+      Game.moveInstructions = Game.calculateMoveInstructions();
       Game.makeMoves();
       Game.pickupItems();
     }

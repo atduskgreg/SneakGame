@@ -7,6 +7,7 @@ Player = function() {
   this.inventory = [];
   this.itemHistory = [];
   this.dead = false;
+  this.position = null;
 
   // startSqrIdx = Math.floor(Math.random() * Game.seedSquares.length);
   // startSqr = Game.seedSquares[startSqrIdx];

@@ -15,6 +15,7 @@ var Game = {
   inventory : [],
   winner : null,
   shootingVictims : [],
+  moveInstructions : null,
 
   drawDebug : function(){
     this.drawCharacters(this.characters);
@@ -106,7 +107,7 @@ var Game = {
     return setupInstructions;
   },
 
-  moveInstructions : function(){
+  calculateMoveInstructions : function(){
     // shuffle order of players
     orderedKeys = Object.keys(this.characters);
     Util.shuffle(orderedKeys);
