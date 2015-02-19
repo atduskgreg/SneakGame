@@ -8,8 +8,6 @@ export default Ember.ObjectController.extend({
       PassManager.next();
       if(PassManager.get("currentState.name") == "done"){
         this.transitionToRoute("moves");
-      } else {
-
       }
     }
   }

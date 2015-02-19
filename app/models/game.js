@@ -15,6 +15,7 @@ var Game = {
   inventory : [],
   winner : null,
   shootingVictims : [],
+  moveInstructions : null,
 
   drawDebug : function(){
     this.drawCharacters(this.characters);
@@ -106,7 +107,10 @@ var Game = {
     return setupInstructions;
   },
 
-  moveInstructions : function(){
+  // TODO: we should really store all the moves
+  //       on the characters as commands which this
+  //       could then use.
+  calculateMoveInstructions : function(){
     // shuffle order of players
     orderedKeys = Object.keys(this.characters);
     Util.shuffle(orderedKeys);
@@ -123,6 +127,8 @@ var Game = {
   },
 
   makeMoves : function(){
+    // save move instructions before moves are applied (TODO: save log of character moves on character)
+    this.moveInstructions = this.calculateMoveInstructions();
     console.log("makeMoves");
     for( key in this.characters){
       this.characters[key].move();
