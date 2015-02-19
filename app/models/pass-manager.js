@@ -44,14 +44,19 @@ var PassManager = Ember.StateManager.create({
     enter: function(stateManager) {
       console.log("PassManager done");
     } 
-  })
+  }),
+
+  isPassing : function(){
+    console.log("here");
+    return true;
+  }
 });
 
-PassManager.reopen({
-  isPassing : function(){
-    console.log("isPassing: " + this.get("currentState.name"));
-    return this.get("currentState.name") == "pass";
-  }.property("currentState.name")
-});
+// PassManager.reopen({
+//   isPassing : function(){
+//     console.log("isPassing: " + this.get("currentState.name"));
+//     return this.get("currentState.name") == "pass";
+//   }.property("currentState.name")
+// });
 
 export default PassManager;
