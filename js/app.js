@@ -339,7 +339,6 @@ var GameManager = Ember.StateManager.create({
   moveInstructions : Ember.State.create({
     enter: function(stateManager) {
       console.log("begin moveInstructions");
-      Game.moveInstructions = Game.calculateMoveInstructions();
       Game.makeMoves();
       Game.pickupItems();
     }

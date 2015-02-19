@@ -107,6 +107,9 @@ var Game = {
     return setupInstructions;
   },
 
+  // TODO: we should really store all the moves
+  //       on the players as commands which this
+  //       could then use.
   calculateMoveInstructions : function(){
     // shuffle order of players
     orderedKeys = Object.keys(this.characters);
@@ -124,6 +127,9 @@ var Game = {
   },
 
   makeMoves : function(){
+    // save move instructions before moves are applied (TODO: save log of character moves on character)
+    this.moveInstructions = this.calculateMoveInstructions();
+
     console.log("makeMoves");
     for( key in this.characters){
       this.characters[key].move();
