@@ -1,4 +1,5 @@
 import Ember from "ember";
+import Game from "./game"
 
 
 var PassManager = Ember.StateManager.create({
@@ -6,13 +7,13 @@ var PassManager = Ember.StateManager.create({
   playerIdx : 0,
 
   reset : function(){
+    console.log("PassManager.reset()");
     this.players = Game.players;
     PassManager.playerIdx = 0;
     this.transitionTo("pass");
   },
 
   next : function(){
-    console.log("numplayers: " + Object.keys(Game.players).length + " playerIdx: " + this.playerIdx);
     if(PassManager.currentState.name == "pass"){
       this.transitionTo("act");
     } else {
@@ -48,6 +49,7 @@ var PassManager = Ember.StateManager.create({
 
 PassManager.reopen({
   isPassing : function(){
+    console.log("isPassing: " + this.get("currentState.name"));
     return this.get("currentState.name") == "pass";
   }.property("currentState.name")
 });
