@@ -1,10 +1,14 @@
 import Ember from "ember";
-import PassManager from "./pass-manager"
+// import PassManager from "./pass-manager"
 
 export default Ember.StateManager.create({
   initialState: 'start',
 
   start: Ember.State.create({
+    enter : function(stateManager){
+      console.log("enter start");
+    },
+
     exit: function(stateManager) {
       console.log("exiting the start state");
     }
@@ -20,7 +24,8 @@ export default Ember.StateManager.create({
   characterAssignment : Ember.State.create({
     enter: function(stateManager) {
       console.log("enter characterAssignment");
-      PassManager.reset();
+      stateManager.get("passManager").reset();
+      //PassManager.reset();
     }
   }),
 

@@ -1,7 +1,6 @@
 import Ember from "ember";
 import Game from "./game"
 
-
 var PassManager = Ember.StateManager.create({
   initialState : 'pass',
   playerIdx : 0,
