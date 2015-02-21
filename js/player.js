@@ -48,6 +48,20 @@ Player.prototype.hasItem = function(itemName){
   return result;
 }
 
+Player.prototype.disabledMoves = function(){
+  result = {}
+
+  if(this.hasItem("gun")){
+    result["shoot"] = true;
+  } else {
+    for(i in Util.moves){
+      result[i] = !this.isMoveLegal(Util.moves[i]);
+    }
+  }
+
+  return result;
+}
+
 Player.prototype.legalMoves = function(){
   result = {}
 
@@ -58,8 +72,6 @@ Player.prototype.legalMoves = function(){
       result[i] = this.isMoveLegal(Util.moves[i]);
     }
   }
-
-  
 
   return result;
 }

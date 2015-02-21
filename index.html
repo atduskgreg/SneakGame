@@ -104,60 +104,65 @@
           {{#if shoot}}
             <button {{action "submitMove" "shoot" }}>shoot gun</button>
             <button {{action "submitMove" "drop" }}>drop gun</button>
-          {{ else }}
-            {{#if nw}}  
-              <button {{action "submitMove" "nw" }}>nw</button>
-            {{ else }}
-              <span class="buttonSpacer"></span>
-            {{/if}}
-            {{#if n}}
+          {{else }}
+             
+              {{#if nw}}
+                <button {{action "submitMove" "nw" }}>nw</button>
+              {{else}}
+                <button disabled>nw</button> 
+              {{/if}}
+              
+              {{#if n}}
               <button {{action "submitMove" "n" }}>n</button>
-            {{ else }}
-              <span class="buttonSpacer"></span>
-            {{/if}}
-            {{#if ne }}
+              {{else}}
+                <button disabled>n</button> 
+              {{/if}}
+  
+              {{#if ne}}
               <button {{action "submitMove" "ne" }}>ne</button>
-            {{ else }}
-              <span class="buttonSpacer"></span>
-            {{/if}}
+              {{else}}
+                <button disabled>ne</button> 
+              {{/if}}
+            </p>
+
+            <p>        
+              {{#if w}}
+                <button {{action "submitMove" "w" }}>w</button>
+              {{else}}
+                <button disabled>w</button> 
+              {{/if}}
+
+              <button {{action "submitMove" "hold" }}>hold</button>
+              
+              {{#if e}}
+                <button {{action "submitMove" "e" }}>e</button>
+              {{else}}
+                <button disabled>e</button> 
+              {{/if}}
+            </p>
+            <p>        
+              {{#if sw}}
+                <button {{action "submitMove" "sw" }}>sw</button>
+              {{else}}
+                <button disabled>sw</button> 
+              {{/if}}
+  
+              {{#if s}}
+                <button {{action "submitMove" "s" }}>s</button>
+              {{else}}
+                <button disabled>s</button> 
+              {{/if}}
+  
+              {{#if se}}
+               <button {{action "submitMove" "se" }}>se</button>
+              {{else}}
+                <button disabled>se</button> 
+              {{/if}}
+            </p>
           {{/if}}
-        </p>
-        <p>        
-          {{#if w }}
-            <button {{action "submitMove" "w" }}>w</button>
-          {{ else }}
-            <span class="buttonSpacer"></span>
-          {{/if }}
-          {{#if hold}}
-            <button {{action "submitMove" "hold" }}>hold</button>
-          {{ else }}
-            <span class="buttonSpacer"></span>
-          {{/if }}
-          {{#if e }}
-          <button {{action "submitMove" "e" }}>e</button>
-          {{ else }}
-            <span class="buttonSpacer"></span>
-          {{/if }}
-        </p>
-        <p>        
-          {{#if sw}}
-            <button {{action "submitMove" "sw" }}>sw</button>
-          {{ else }}
-            <span class="buttonSpacer"></span>
-          {{/if }}
-          {{#if s}}
-           <button {{action "submitMove" "s" }}>s</button>
-          {{ else }}
-            <span class="buttonSpacer"></span>
-          {{/if }}
-          {{#if se}}
-          <button {{action "submitMove" "se" }}>se</button>
-          {{ else }}
-            <span class="buttonSpacer"></span>
-          {{/if }}
-        </p>
+
         </div>
-      {{/if}}
+        {{/if}}
     </script>
 
     <script type="text/x-handlebars" id="shoot">
