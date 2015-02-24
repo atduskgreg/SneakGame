@@ -223,7 +223,6 @@ App.MoveInstructionsController = Ember.ObjectController.extend({
   actions : {
     confirm : function(){
       console.log("confirm moves");
-      // Game.makeMoves();
 
       this.transitionToRoute("dialogs");
     }
@@ -343,6 +342,7 @@ var GameManager = Ember.StateManager.create({
       console.log("begin moveInstructions");
       Game.makeMoves();
       Game.pickupItems();
+      Game.calculateMoveInstructions();
     }
   }),
 
