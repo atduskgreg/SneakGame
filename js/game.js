@@ -122,13 +122,11 @@ var Game = {
         result.push(Util.moveDescription(currentCharacter));
       //}
     }
-
+    this.moveInstructions = result;
     return result;
   },
 
   makeMoves : function(){
-    // save move instructions before moves are applied (TODO: save log of character moves on character)
-    this.moveInstructions = this.calculateMoveInstructions();
 
     console.log("makeMoves");
     for( key in this.characters){
@@ -247,7 +245,7 @@ var Game = {
     for(var c = 0; c < charKeys.length; c++){
       currCharacter = Game.characters[charKeys[c]];
 
-      gun = Game.takeItemFromSquare("gun", currCharacter.position);
+      gun = Game.takeItemFromSquare("gun", currCharacter.nextPosition());
       if(gun){
         // if the character refuses to pick up the item
         // (for example because they just declined to use it)

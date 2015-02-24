@@ -81,13 +81,27 @@ Character.prototype = {
 		}
 
 		// don't pick up the item if you dropped or fired the gun last turn
-		if(!Util.sameSquare(this.prevPosition, this.position)){
+		if(!Util.sameSquare(this.prevPosition, this.position) && !this.justDroppedItem("gun")){
+		// if(){
 			this.inventory.push(item);
 			this.itemHistory.push({action : "picked up", itemName : item.name, round : Game.roundNum, where : this.position});
 			return true;
 		} else {
 			return false;
 		}
+	},
+
+	justDroppedItem : function(itemName){
+		lastRoundItemActions = this.itemHistoryForRound(Game.roundNum -1);
+		justDropped = false;
+		for(var i = 0; i < lastRoundItemActions.length; i++){
+			if(lastRoundItemActions[i].itemName == itemName && lastRoundItemActions[i].action == "dropped"){
+				justDropped = true;
+				break;
+			}
+		}
+
+		return justDropped;
 	},
 
 	dropItem : function(item){

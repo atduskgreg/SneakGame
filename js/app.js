@@ -31,6 +31,8 @@ App.MovesRoute = Ember.Route.extend({
   setupController : function(controller, model){
     GameManager.transitionTo("moveInput");
     currPlayer = Game.players[Object.keys(Game.players)[PassManager.playerIdx]];
+    console.log("legal moves: ");
+    console.log(currPlayer.legalMoves());
     controller.set("model", currPlayer.legalMoves());
   }
 });
@@ -221,7 +223,6 @@ App.MoveInstructionsController = Ember.ObjectController.extend({
   actions : {
     confirm : function(){
       console.log("confirm moves");
-      // Game.makeMoves();
 
       this.transitionToRoute("dialogs");
     }
@@ -341,6 +342,7 @@ var GameManager = Ember.StateManager.create({
       console.log("begin moveInstructions");
       Game.makeMoves();
       Game.pickupItems();
+      Game.calculateMoveInstructions();
     }
   }),
 
