@@ -234,6 +234,9 @@ App.ApplicationController = Em.ObjectController.extend({
 
   actions : {
     toggleDebug : function(){
+      if(Game.exit && Object.keys(Game.characters).length > 0){
+        Game.drawDebug();
+      }
       this.toggleProperty('debugIsVisible');
     },
 
