@@ -410,12 +410,14 @@ Ember.Handlebars.helper('current-player-knowledge',function(){
   if(Object.keys(currPlayer.knowledge).length > 0){
 
     for(i in currPlayer.knowledge){
-  
-       result += "<li>"
-      if(currPlayer.knowledge[i].acquired == Game.roundNum ){
-        result += "<b>NEW</b> "
+      
+      if(currPlayer.knowledge[i].what != "gun"){
+        result += "<li>"
+        if(currPlayer.knowledge[i].acquired == Game.roundNum ){
+          result += "<b>NEW</b> "
+        }
+        result += Util.knowledgeDescription(currPlayer.knowledge[i]) + "</li>";
       }
-      result += Util.knowledgeDescription(currPlayer.knowledge[i]) + "</li>";
     }
   } else {
     result += "<li>You know nothing.</li>"
