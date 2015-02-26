@@ -270,7 +270,7 @@ var Game = {
     for(var i = 0; i < charKeys.length; i++){
       currChar = Game.characters[charKeys[i]];
 
-      if(currChar.name != character.name){
+      if(currChar.name != character.name && !currChar.dead){
         result.push(currChar);
       }
     }
