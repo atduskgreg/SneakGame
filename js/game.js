@@ -118,9 +118,9 @@ var Game = {
     var result = [];
     for(var i = 0 ; i < orderedKeys.length; i++){
       currentCharacter = this.characters[orderedKeys[i]];
-      //if(!currentCharacter.dead){
+      if(!currentCharacter.dead){
         result.push(Util.moveDescription(currentCharacter));
-      //}
+      }
     }
     this.moveInstructions = result;
     return result;
