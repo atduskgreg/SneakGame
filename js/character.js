@@ -122,6 +122,9 @@ Character.prototype = {
 	},
 
 	itemWithAttribute : function(attr, value){
+		if(!attr || !value){
+			throw "itemWithAttribute: must query by attribute and value";
+		}
 		var result = null;
 		for(var i = 0; i < this.inventory.length; i++){
 			if(this.inventory[i][attr] == value){
@@ -142,9 +145,14 @@ Character.prototype = {
 	draw : function(){
 		var k = this.atDestination() ? "atDestination" : "inTransit";
 
+		
+
 		pString = "<p style='background-color:"+this.color+";' class='"+k+"'>" + this.name;
 		if(this.dead){
 			pString += " XXX";
+		}
+		if(this.itemWithAttribute("name", "gun")){
+			pString += " GUN";
 		}
 		pString += "</p>"
 

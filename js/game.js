@@ -245,7 +245,7 @@ var Game = {
     for(var c = 0; c < charKeys.length; c++){
       currCharacter = Game.characters[charKeys[c]];
 
-      gun = Game.takeItemFromSquare("gun", currCharacter.nextPosition());
+      gun = Game.takeItemFromSquare("gun", currCharacter.position);
       if(gun){
         // if the character refuses to pick up the item
         // (for example because they just declined to use it)

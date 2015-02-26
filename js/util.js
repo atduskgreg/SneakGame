@@ -48,12 +48,13 @@ var Util = {
   },
   
   moveDescription : function(character){
+    console.log(character.color +": " + Util.squareDescription(character.prevPosition) + " to " + Util.squareDescription(character.position) + " dir: " +  Util.cardinalDescription(character.prevPosition, character.position));
+
     itemActions = character.itemHistoryForRound(Game.roundNum);
-    console.log(character.color + " itemActions: " + itemActions.length);
     if(itemActions.length > 0 && itemActions[0].itemName == "gun"){
       // land on a gun and pick it up
       if(!Util.sameSquare(character.position, character.prevPosition)){
-        result = "move the " + character.color + " character " + Util.cardinalDescription(character.position,character.prevPosition) + ".";
+        result = "move the " + character.color + " character " + Util.cardinalDescription(character.prevPosition, character.position) + ".";
         result += " They " + itemActions[0].action + " a gun";
         return result;
       // drop or shoot a gun you were already holding
@@ -65,7 +66,7 @@ var Util = {
     if(Util.sameSquare(character.position, character.prevPosition)){
       return "the "+ character.color +" character holds";
     } else {
-      return "move the "+ character.color  + " character " + Util.cardinalDescription(character.position,character.prevPosition);
+      return "move the "+ character.color  + " character " + Util.cardinalDescription(character.prevPosition, character.position);
     }
   },
 
