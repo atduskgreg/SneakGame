@@ -63,12 +63,12 @@ var Game = {
   setup : function(){
     // these are order dependent
     Game.generateExit();
+    Game.placeGuns();
     Game.pickSeedSquares();
 
     Game.createNPCs();
     Game.createPlayers();
     Game.assignPlans();
-    Game.placeGuns();
   },
 
   placeGuns : function(){
@@ -83,11 +83,24 @@ var Game = {
     }
   },
 
+  isGunOnSquare :function(sqr){
+    var result = false;
+    for(var i = 0; i < this.inventory.length; i++){
+      if(this.inventory[i].name == "gun"){
+        if(Util.sameSquare(Game.inventory[i].position, sqr)){
+          result = true;
+          break;
+        }
+      }
+    }
+    return result;
+  },
+
   pickSeedSquares : function(){
 
     while(this.seedSquares.length < this.numSeedSquares){
       t = Util.getRandomSquare();
-      if(!Util.sameSquare(t, this.exit) && Util.indexOfSquare(t, this.seedSquares) < 0){
+      if(!Util.sameSquare(t, this.exit) && Util.indexOfSquare(t, this.seedSquares) < 0 && !this.isGunOnSquare(t)){
         this.seedSquares.push(t);
       }
     }
