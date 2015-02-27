@@ -94,6 +94,30 @@ var Util = {
     return result;
   },
 
+  // Takes an array of game objects
+  // that are assumed to have a position field on them
+  // compares them based on their position.
+  // Meant to be used with Array.sort() for 
+  // spatially-coherent sorting.
+  compareSpatially : function(a,b){
+    if(Util.squareCardinalValue(a.position) > Util.squareCardinalValue(b.position)){
+      return 1;
+    }
+
+    if(Util.squareCardinalValue(a.position) < Util.squareCardinalValue(b.position)){
+      return -1;
+    }
+
+    return 0;
+  },
+
+  // helper for compareSpatially,
+  // converts sqr.col and sqr.row
+  // into index for sorting
+  squareCardinalValue : function(sqr){
+    return sqr.row*Game.boardWidth + sqr.col;
+  },
+
   sameSquare : function(sqrA, sqrB){
     return (sqrA.col == sqrB.col) && (sqrA.row == sqrB.row);
   },

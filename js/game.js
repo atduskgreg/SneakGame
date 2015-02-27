@@ -108,8 +108,14 @@ var Game = {
 
   setupInstructions : function(){
     var setupInstructions = [];
-    for(i in this.characters){
-      setupInstructions.push({"instruction" : this.characters[i].setupInstruction()});
+
+    charArray = $.map(this.characters,function(value, index){
+      return [value];
+    });
+    orderedCharacters = charArray.sort(Util.compareSpatially);
+
+    for(var i = 0 ; i < orderedCharacters.length; i++){
+      setupInstructions.push({"instruction" : orderedCharacters[i].setupInstruction()});
     }
 
     console.log("place " + Game.inventory.length + " inventory items");
@@ -124,13 +130,14 @@ var Game = {
   //       on the players as commands which this
   //       could then use.
   calculateMoveInstructions : function(){
-    // shuffle order of players
-    orderedKeys = Object.keys(this.characters);
-    Util.shuffle(orderedKeys);
+    charArray = $.map(this.characters,function(value, index){
+      return [value];
+    });
+    orderedCharacters = charArray.sort(Util.compareSpatially);
 
     var result = [];
-    for(var i = 0 ; i < orderedKeys.length; i++){
-      currentCharacter = this.characters[orderedKeys[i]];
+    for(var i = 0 ; i < orderedCharacters.length; i++){
+      currentCharacter = orderedCharacters[i];
       if(!currentCharacter.dead){
         result.push(Util.moveDescription(currentCharacter));
       }
