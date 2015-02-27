@@ -112,7 +112,7 @@ var Game = {
     charArray = $.map(this.characters,function(value, index){
       return [value];
     });
-    orderedCharacters = charArray.sort(Util.compareSpatially);
+    orderedCharacters = charArray.sort(Util.comparePosition);
 
     for(var i = 0 ; i < orderedCharacters.length; i++){
       setupInstructions.push({"instruction" : orderedCharacters[i].setupInstruction()});
@@ -133,7 +133,7 @@ var Game = {
     charArray = $.map(this.characters,function(value, index){
       return [value];
     });
-    orderedCharacters = charArray.sort(Util.compareSpatially);
+    orderedCharacters = charArray.sort(Util.comparePrevPosition);
 
     var result = [];
     for(var i = 0 ; i < orderedCharacters.length; i++){

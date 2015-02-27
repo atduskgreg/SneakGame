@@ -99,18 +99,23 @@ var Util = {
   // compares them based on their position.
   // Meant to be used with Array.sort() for 
   // spatially-coherent sorting.
-  compareSpatially : function(a,b){
-    if(Util.squareCardinalValue(a.position) > Util.squareCardinalValue(b.position)){
-      return 1;
-    }
-
-    if(Util.squareCardinalValue(a.position) < Util.squareCardinalValue(b.position)){
-      return -1;
-    }
-
-    return 0;
+  comparePosition : function(a,b){
+    return Util.compareSpatially(a,b,"position");
   },
 
+  comparePrevPosition : function(a,b){
+    return Util.compareSpatially(a,b,"prevPosition");
+  },
+
+  compareSpatially : function(a, b, posField){
+    if(Util.squareCardinalValue(a[posField]) > Util.squareCardinalValue(b[posField])){
+      return 1;
+    }
+    if(Util.squareCardinalValue(a[posField]) < Util.squareCardinalValue(b[posField])){
+      return -1;
+    }
+    return 0;
+  },
   // helper for compareSpatially,
   // converts sqr.col and sqr.row
   // into index for sorting
