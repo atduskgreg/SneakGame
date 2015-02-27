@@ -1,6 +1,6 @@
 var Game = {
-	boardWidth : 8,
-	boardHeight: 8,
+	boardWidth : 7,
+	boardHeight: 7,
 	numNPCs : 8,
   nPlayers : 2,
 	characters : {},
@@ -72,11 +72,15 @@ var Game = {
   },
 
   placeGuns : function(){
+    // NOTE: this gets funky (with +1s below) when width/height are odd
+    w = Math.floor(Game.boardWidth/2);
+    h = Math.floor(Game.boardHeight/2);
+
     gunPositions = [];
-    gunPositions.push(Util.getRandomSquare({col : {start : 0, width: 4}, row : {start: 0, width: 4}}));
-    gunPositions.push(Util.getRandomSquare({col : {start : 4, width: 4}, row : {start: 0, width: 4}}));
-    gunPositions.push(Util.getRandomSquare({col : {start : 0, width: 4}, row : {start: 4, width: 4}}));
-    gunPositions.push(Util.getRandomSquare({col : {start : 4, width: 4}, row : {start: 4, width: 4}}));
+    gunPositions.push(Util.getRandomSquare({col : {start : 0,   width: w}, row : {start: 0,   width: h}}));
+    gunPositions.push(Util.getRandomSquare({col : {start : w+1, width: w}, row : {start: 0,   width: h}}));
+    gunPositions.push(Util.getRandomSquare({col : {start : 0,   width: w}, row : {start: h+1, width: h}}));
+    gunPositions.push(Util.getRandomSquare({col : {start : w+1, width: w}, row : {start: h+1, width: h}}));
 
     for(var i = 0; i < gunPositions.length; i++){
       Game.inventory.push({name : "gun", position : gunPositions[i]});
