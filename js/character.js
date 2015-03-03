@@ -24,6 +24,10 @@ Character.prototype = {
 		}
 	},
 
+	rank : function(){
+		return Util.ranks[Game.colorRanks.indexOf(this.color)];
+	},
+
 	die : function(){
 		this.dead = true;
 	},
@@ -141,7 +145,7 @@ Character.prototype = {
 	},
 
 	setupInstruction : function(){
-		return "Place the " + this.color + " character on " + Util.squareDescription(this.position);
+		return "Place " + this.rank() + " " + Util.capitalize(this.color) + " on " + Util.squareDescription(this.position);
 	},
 
 	squareSelector : function(){

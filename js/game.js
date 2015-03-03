@@ -16,6 +16,7 @@ var Game = {
   winner : null,
   shootingVictims : [],
   moveInstructions : null,
+  colorRanks : [],
 
   drawDebug : function(){
     this.drawCharacters(this.characters);
@@ -61,14 +62,24 @@ var Game = {
   },
 
   setup : function(){
-    // these are order dependent
+    // these must happen first
     Game.generateExit();
     Game.placeGuns();
     Game.pickSeedSquares();
+    Game.setColorRanks();
 
     Game.createNPCs();
     Game.createPlayers();
     Game.assignPlans();
+  },
+
+  // this needs to happen before we assign
+  // colors to characters or else Util.colors
+  // will be empty
+  setColorRanks : function(){
+    for(var i = 0; i < Util.colors.length; i++){
+      this.colorRanks.push(Util.colors[i]);
+    }
   },
 
   placeGuns : function(){

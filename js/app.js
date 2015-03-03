@@ -395,8 +395,17 @@ Ember.Handlebars.helper('current-player-color',function(){
   return Game.players[Object.keys(Game.players)[PassManager.playerIdx]].color;
 });
 
+Ember.Handlebars.helper('current-player-rank-color',function(){
+  p = Game.players[Object.keys(Game.players)[PassManager.playerIdx]];
+  return p.rank() + " " + Util.capitalize(p.color);
+});
+
 Ember.Handlebars.helper('current-player-name',function(){
   return Game.players[Object.keys(Game.players)[PassManager.playerIdx]].name;
+});
+
+Ember.Handlebars.helper('rank-list',function(){
+  return Util.ranks.join(", ");
 });
 
 Ember.Handlebars.helper('current-player-knowledge',function(){
