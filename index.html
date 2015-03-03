@@ -79,6 +79,9 @@
         <li>{{item.instruction}}</li>
       {{/each}}
       </ul>
+
+      <p><b>Character rank</b> <em>breaks ties for picking up objects. If multiple characters arrive at the same object at the same time, the character with the higher rank will get to pick up the object.</em></p>
+      <p><b>Rank in ascending order</b>: <em>{{rank-list}}</em></p>
       <p>{{#link-to 'characterAssignment'}}Find out your characters{{/link-to}}</p>
     </script>
     
