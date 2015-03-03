@@ -76,8 +76,10 @@ Character.prototype = {
 		}
 		itemsToRemove = [];
 		for(var i = 0; i < other.inventory.length; i++){
-			this.inventory.push(other.inventory[i]);
-			itemsToRemove.push(other.inventory[i]);
+			if(inventory[i].name != "gun"){
+				this.inventory.push(other.inventory[i]);
+				itemsToRemove.push(other.inventory[i]);
+			}
 		}
  		for(var i = 0; i < itemsToRemove.length; i++){
 			index = other.inventory.indexOf(itemsToRemove[i]);
