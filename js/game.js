@@ -168,6 +168,7 @@ var Game = {
       var pid = Game.generateId();
       var p = new Player();
       p.init();
+      p.tablePosition = i;
       Game.addPlayerForClient(p, pid);
     }
   },
