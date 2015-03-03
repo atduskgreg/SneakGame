@@ -95,6 +95,27 @@ var Util = {
     return result;
   },
 
+  sortBy : function(arrayOfObjs, comparator){
+    arrary = $.map(arrayOfObjs,function(value, index){
+      return [value];
+    });
+    return arrary.sort(comparator);
+  },
+
+  // compares two characters based on their rank.
+  // used for sorting in order to enforce rank
+  // priority for item pickup
+  compareRank : function(a,b){
+    if(Game.colorRanks.indexOf(a.color) > Game.colorRanks.indexOf(b.color)){
+      return 1;
+    }
+    if(Game.colorRanks.indexOf(a.color) < Game.colorRanks.indexOf(b.color)){
+      return -1;
+    }
+
+    return 0;
+  },
+
   // Takes an array of game objects
   // that are assumed to have a position field on them
   // compares them based on their position.

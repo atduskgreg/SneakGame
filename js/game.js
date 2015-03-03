@@ -124,10 +124,7 @@ var Game = {
   setupInstructions : function(){
     var setupInstructions = [];
 
-    charArray = $.map(this.characters,function(value, index){
-      return [value];
-    });
-    orderedCharacters = charArray.sort(Util.comparePosition);
+    orderedCharacters = Util.sortBy(this.characters, Util.comparePosition);
 
     for(var i = 0 ; i < orderedCharacters.length; i++){
       setupInstructions.push({"instruction" : orderedCharacters[i].setupInstruction()});
@@ -145,10 +142,7 @@ var Game = {
   //       on the players as commands which this
   //       could then use.
   calculateMoveInstructions : function(){
-    charArray = $.map(this.characters,function(value, index){
-      return [value];
-    });
-    orderedCharacters = charArray.sort(Util.comparePrevPosition);
+    orderedCharacters = Util.sortBy(this.characters, Util.comparePrevPosition);
 
     var result = [];
     for(var i = 0 ; i < orderedCharacters.length; i++){
@@ -233,8 +227,7 @@ var Game = {
     return results;
   },
 
-  // TODO: this should be renamed as it also transfers items
-  propagateKnowledge : function(dialogs){
+  transferKnowledgeAndItems : function(dialogs){
     for( i in dialogs){
       for(var j = 0; j < dialogs[i].characters.length; j++){
         char1 = dialogs[i].characters[j];
@@ -275,10 +268,12 @@ var Game = {
 
   pickupItems : function(){
     console.log(Game.inventory.length + " game items on the board");
-    charKeys = Object.keys(Game.characters);
 
-    for(var c = 0; c < charKeys.length; c++){
-      currCharacter = Game.characters[charKeys[c]];
+    sortedCharacters = Util.sortBy(Game.characters, Util.compareRank);
+    sortedCharacters.reverse();
+
+    for(var c = 0; c < sortedCharacters.length; c++){
+      currCharacter = sortedCharacters[c];
 
       gun = Game.takeItemFromSquare("gun", currCharacter.position);
       if(gun){

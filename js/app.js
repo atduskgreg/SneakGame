@@ -364,7 +364,7 @@ var GameManager = Ember.StateManager.create({
   dialogReveal : Ember.State.create({
     enter: function(stateManager) {
       console.log("begin dialogReveal");
-      Game.propagateKnowledge(Game.currentDialogs());
+      Game.transferKnowledgeAndItems(Game.currentDialogs());
       // Game.pickupItems();
       
       PassManager.reset();
