@@ -108,60 +108,118 @@
             <button {{action "submitMove" "shoot" }}>shoot gun</button>
             <button {{action "submitMove" "drop" }}>drop gun</button>
           {{else }}
-             
-              {{#if nw}}
-                <button {{action "submitMove" "nw" }}>nw</button>
-              {{else}}
-                <button disabled>nw</button> 
-              {{/if}}
-              
-              {{#if n}}
-              <button {{action "submitMove" "n" }}>n</button>
-              {{else}}
-                <button disabled>n</button> 
-              {{/if}}
-  
-              {{#if ne}}
-              <button {{action "submitMove" "ne" }}>ne</button>
-              {{else}}
-                <button disabled>ne</button> 
-              {{/if}}
-            </p>
+            {{#if position-top}} <!-- south is up, west is right -->
+              <p>        
+                {{#if se}}
+                 <button {{action "submitMove" "se" }}>se</button>
+                {{else}}
+                  <button disabled>se</button> 
+                {{/if}}
+      
+                {{#if s}}
+                  <button {{action "submitMove" "s" }}>s</button>
+                {{else}}
+                  <button disabled>s</button> 
+                {{/if}}
+      
+                {{#if sw}}
+                  <button {{action "submitMove" "sw" }}>sw</button>
+                {{else}}
+                  <button disabled>sw</button> 
+                {{/if}}
+              </p>
+              <p>        
+    
+                {{#if e}}
+                  <button {{action "submitMove" "e" }}>e</button>
+                {{else}}
+                  <button disabled>e</button> 
+                {{/if}}
 
-            <p>        
-              {{#if w}}
-                <button {{action "submitMove" "w" }}>w</button>
-              {{else}}
-                <button disabled>w</button> 
-              {{/if}}
+                <button {{action "submitMove" "hold" }}>hold</button>
+                
+                {{#if w}}
+                  <button {{action "submitMove" "w" }}>w</button>
+                {{else}}
+                  <button disabled>w</button> 
+                {{/if}}
+              </p>
+              <p>
+                {{#if ne}}
+                <button {{action "submitMove" "ne" }}>ne</button>
+                {{else}}
+                  <button disabled>ne</button> 
+                {{/if}}
+                
+                {{#if n}}
+                <button {{action "submitMove" "n" }}>n</button>
+                {{else}}
+                  <button disabled>n</button> 
+                {{/if}}
 
-              <button {{action "submitMove" "hold" }}>hold</button>
-              
-              {{#if e}}
-                <button {{action "submitMove" "e" }}>e</button>
-              {{else}}
-                <button disabled>e</button> 
-              {{/if}}
-            </p>
-            <p>        
-              {{#if sw}}
-                <button {{action "submitMove" "sw" }}>sw</button>
-              {{else}}
-                <button disabled>sw</button> 
-              {{/if}}
-  
-              {{#if s}}
-                <button {{action "submitMove" "s" }}>s</button>
-              {{else}}
-                <button disabled>s</button> 
-              {{/if}}
-  
-              {{#if se}}
-               <button {{action "submitMove" "se" }}>se</button>
-              {{else}}
-                <button disabled>se</button> 
-              {{/if}}
-            </p>
+                {{#if nw}}
+                  <button {{action "submitMove" "nw" }}>nw</button>
+                {{else}}
+                  <button disabled>nw</button> 
+                {{/if}}
+              </p>
+            
+            {{else}}
+              <p>
+                {{#if nw}}
+                  <button {{action "submitMove" "nw" }}>nw</button>
+                {{else}}
+                  <button disabled>nw</button> 
+                {{/if}}
+                
+                {{#if n}}
+                <button {{action "submitMove" "n" }}>n</button>
+                {{else}}
+                  <button disabled>n</button> 
+                {{/if}}
+      
+                {{#if ne}}
+                <button {{action "submitMove" "ne" }}>ne</button>
+                {{else}}
+                  <button disabled>ne</button> 
+                {{/if}}
+              </p>
+
+              <p>        
+                {{#if w}}
+                  <button {{action "submitMove" "w" }}>w</button>
+                {{else}}
+                  <button disabled>w</button> 
+                {{/if}}
+    
+                <button {{action "submitMove" "hold" }}>hold</button>
+                
+                {{#if e}}
+                  <button {{action "submitMove" "e" }}>e</button>
+                {{else}}
+                  <button disabled>e</button> 
+                {{/if}}
+              </p>
+              <p>        
+                {{#if sw}}
+                  <button {{action "submitMove" "sw" }}>sw</button>
+                {{else}}
+                  <button disabled>sw</button> 
+                {{/if}}
+      
+                {{#if s}}
+                  <button {{action "submitMove" "s" }}>s</button>
+                {{else}}
+                  <button disabled>s</button> 
+                {{/if}}
+      
+                {{#if se}}
+                 <button {{action "submitMove" "se" }}>se</button>
+                {{else}}
+                  <button disabled>se</button> 
+                {{/if}}
+              </p>
+            {{/if}}
           {{/if}}
 
         </div>

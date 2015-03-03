@@ -8,6 +8,7 @@ Player = function() {
   this.itemHistory = [];
   this.dead = false;
   this.position = null;
+  this.tablePosition = null;
 
   // startSqrIdx = Math.floor(Math.random() * Game.seedSquares.length);
   // startSqr = Game.seedSquares[startSqrIdx];
@@ -63,7 +64,8 @@ Player.prototype.disabledMoves = function(){
 }
 
 Player.prototype.legalMoves = function(){
-  result = {}
+  result = {};
+  result["position-top"] = (this.tablePosition == 1);
 
   if(this.hasItem("gun")){
     result["shoot"] = true;
