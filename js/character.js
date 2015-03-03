@@ -16,6 +16,12 @@ Character.prototype = {
 		startSqr = Game.seedSquares[startSqrIdx];
 		this.position = {col : startSqr.col, row : startSqr.row};
 		this.prevPosition = {col : null, row: null};
+
+		// if you start at your destination, re-roll destination
+		// until you get a different square
+		while(this.atDestination()){
+			this.destination = Util.getRandomSquare();
+		}
 	},
 
 	die : function(){
@@ -206,7 +212,6 @@ Character.prototype = {
 		} else {
 			if(this.atDestination()){
 				if(Math.random() < 0.05){
-	
 					this.destination = {col : Math.floor(Math.random() * Game.boardWidth), row: Math.floor(Math.random() * Game.boardHeight)};
 				}
 	
