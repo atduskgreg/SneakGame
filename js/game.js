@@ -341,27 +341,18 @@ var Game = {
       
     options = [];
 
-    //a-h8
-    for(var i = 0; i < 8; i++){
-     options.push("abcdefgh".slice(i,i+1) + "8");
+    //a1-<Game.boardWidth>1 and a<Game.boardHeight> - <Game.boardWidth><Game.boardHieght>
+    for(var i = 0; i < Game.boardWidth; i++){
+      options.push("abcdefgh".slice(i,i+1) + Game.boardHeight );
+      options.push("abcdefgh".slice(i,i+1) + 1);
     }
 
-    //h7-1
-    for(var i = 0; i < 7; i++){
-     options.push("h" + (i+1));
+    lastRow = "abcdefgh"[Game.boardWidth-1];
+    
+    for(var i = 2; i < Game.boardHeight; i++){
+      options.push("a" + i);
+      options.push(lastRow + i);
     }
-
-    //a-g1
-    for(var i = 0; i < 7; i++){
-     options.push("abcdefgh".slice(i,i+1) + 1);
-    }
-
-    //a8-2
-    for(var i = 0; i < 7; i++){
-     options.push("a" + (i+1));
-    }
-
-
 
     exitSquare = options[Math.floor(Math.random() * options.length)];
 
