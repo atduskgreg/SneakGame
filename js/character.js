@@ -220,7 +220,7 @@ Character.prototype = {
 			if(this.atDestination()){
 				this.prevPosition.col = this.position.col;
 				this.prevPosition.row = this.position.row;
-				if(Math.random() < 0.05){
+				if(Math.random() < 0.15){
 					this.destination = {col : Math.floor(Math.random() * Game.boardWidth), row: Math.floor(Math.random() * Game.boardHeight)};
 				}	
 			} else {
