@@ -78,7 +78,7 @@ Character.prototype = {
 		}
 		itemsToRemove = [];
 		for(var i = 0; i < other.inventory.length; i++){
-			if(other.inventory[i].name != "gun"){
+			if(other.inventory[i].name != "gun" && !other.isPlayer){
 				this.inventory.push(other.inventory[i]);
 				itemsToRemove.push(other.inventory[i]);
 			}
