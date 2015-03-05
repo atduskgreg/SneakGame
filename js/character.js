@@ -19,10 +19,9 @@ Character.prototype = {
 		this.prevPosition = {col : null, row: null};
 		this.positionHistory.push({col : this.position.col , row : this.position.row});
 
-		// if you start at your destination, re-roll destination
-		// until you get a different square
-		while(this.atDestination()){
-			this.destination = Util.getRandomSquare();
+		if(Math.random() < 0.15){
+			this.destination.col = this.position.col;
+			this.destination.row = this.position.row;
 		}
 	},
 
