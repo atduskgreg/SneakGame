@@ -6,6 +6,7 @@ Character = function(){
 	this.destination = Util.getRandomSquare();
 	this.itemHistory = [];
 	this.dead = false;
+	this.positionHistory = [];
 }
 
 Character.prototype = {
@@ -16,6 +17,7 @@ Character.prototype = {
 		startSqr = Game.seedSquares[startSqrIdx];
 		this.position = {col : startSqr.col, row : startSqr.row};
 		this.prevPosition = {col : null, row: null};
+		this.positionHistory.push({col : this.position.col , row : this.position.row});
 
 		// if you start at your destination, re-roll destination
 		// until you get a different square
@@ -76,7 +78,7 @@ Character.prototype = {
 		}
 		itemsToRemove = [];
 		for(var i = 0; i < other.inventory.length; i++){
-			if(inventory[i].name != "gun"){
+			if(other.inventory[i].name != "gun"){
 				this.inventory.push(other.inventory[i]);
 				itemsToRemove.push(other.inventory[i]);
 			}
@@ -217,10 +219,11 @@ Character.prototype = {
 			this.prevPosition.row = this.position.row;
 		} else {
 			if(this.atDestination()){
+				this.prevPosition.col = this.position.col;
+				this.prevPosition.row = this.position.row;
 				if(Math.random() < 0.05){
 					this.destination = {col : Math.floor(Math.random() * Game.boardWidth), row: Math.floor(Math.random() * Game.boardHeight)};
-				}
-	
+				}	
 			} else {
 				var np = this.nextPosition();
 	
@@ -233,6 +236,8 @@ Character.prototype = {
 				this.position.row = np.row;
 			}
 		}
+
+		this.positionHistory.push({col : this.position.col, row: this.position.row});
 	},
 
 	atDestination : function(){

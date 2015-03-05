@@ -9,6 +9,7 @@ Player = function() {
   this.dead = false;
   this.position = null;
   this.tablePosition = null;
+  this.positionHistory = [];
 
   // startSqrIdx = Math.floor(Math.random() * Game.seedSquares.length);
   // startSqr = Game.seedSquares[startSqrIdx];
@@ -100,6 +101,7 @@ Player.prototype.move = function(){
 	this.position.col = this.nextPos.col;
   this.position.row = this.nextPos.row;
 	this.hasNextPos = false;
+  this.positionHistory.push({col:this.position.col, row: this.position.row});
 }
 
 Player.prototype.heading = function(){
