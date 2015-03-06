@@ -87,12 +87,37 @@ var Util = {
   knowledgeDescription : function(knowledge){
     result = "";
     if(knowledge.absence){
-      result += knowledge.who.color + " (" + knowledge.who.name + ") didn't have the " + knowledge.what + " " + (Game.roundNum - knowledge.when) + " turns ago";
+
+      if(knowledge.source.color == knowledge.who.color){
+        result += this.capitalize(knowledge.source.color) + " says, \"I don't have the plans.\""
+      } else {
+        result += this.capitalize(knowledge.source.color) + " says, \"" + this.capitalize(knowledge.who.color) + " didn't have the " + knowledge.what + " when I saw them " + this.timeSinceInWords(knowledge.when) + ".\"";
+      }
+
+      //result += knowledge.who.color + " (" + knowledge.who.name + ") didn't have the " + knowledge.what + " " + (Game.roundNum - knowledge.when) + " turns ago";
     } else {
-      result += knowledge.who.color + " (" + knowledge.who.name + ") had the " + knowledge.what + " " + (Game.roundNum - knowledge.when) + " turns ago";
+      if(knowledge.source.color == knowledge.who.color){
+        result += this.capitalize(knowledge.source.color) + " says, \"I have the plans. Take them and escape to the exit!\""
+      } else {
+        result += this.capitalize(knowledge.source.color) + " says, \"" + this.capitalize(knowledge.who.color) + " had the " + knowledge.what + " when I saw them " + this.timeSinceInWords(knowledge.when) + ".\"";
+      }
+      //result += knowledge.who.color + " (" + knowledge.who.name + ") had the " + knowledge.what + " " + (Game.roundNum - knowledge.when) + " turns ago";
     }
 
     return result;
+  },
+
+  timeSinceInWords : function(turn){
+    offset = Game.roundNum = turn;
+
+    if(offset == 0){
+      return "this turn";
+    }
+    if(offset == 1){
+      return "last turn";
+    }
+
+    return turn + " turns ago";
   },
 
   sortBy : function(arrayOfObjs, comparator){

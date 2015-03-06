@@ -412,25 +412,88 @@ Ember.Handlebars.helper('current-player-knowledge',function(){
   currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
   currPlayer = Game.players[currPlayerKey];
 
-  // itemize (highlight) new knowledge gained
-  // show total knowledge
-  var result = "";
+  var result = "<p>Learned this turn:</p>"
+  result += "<ul>"
 
-  if(Object.keys(currPlayer.knowledge).length > 0){
+  numLearned = 0;
 
-    for(i in currPlayer.knowledge){
-      
-      if(currPlayer.knowledge[i].what != "gun"){
-        result += "<li>"
-        if(currPlayer.knowledge[i].acquired == Game.roundNum ){
-          result += "<b>NEW</b> "
-        }
-        result += Util.knowledgeDescription(currPlayer.knowledge[i]) + "</li>";
+  for(item in currPlayer.knowledge){
+    if(currPlayer.knowledge[item].when == Game.roundNum){
+      if(currPlayer.knowledge[item].who.color != currPlayer.color){
+        numLearned++;
+        result += "<li>";
+        result += Util.knowledgeDescription(currPlayer.knowledge[item]);
+        result += "</li>";
       }
     }
-  } else {
-    result += "<li>You know nothing.</li>"
   }
+  if(numLearned == 0){
+    result += "<li>Nothing learned this turn.</li>";
+  }
+
+  result += "</ul>"
+
+  // itemize (highlight) new knowledge gained
+  // show total knowledge
+  result +=  "<p>Characters you've been told don't have the plans are marked with an 'X'.</p>";
+
+  result += "<table id='checklist'>";
+  result += "<tr>"
+  sortedChars = Util.sortBy(Game.characters, Util.compareRank);
+
+  for(var i = 0; i < sortedChars.length; i++){
+    if( i == sortedChars.length/2){
+      result += "</tr><tr>";
+    }  
+
+    charKnowledge = currPlayer.knowledge["no-plans-"+sortedChars[i].name];
+
+    result += "<td style='background-color:" + sortedChars[i].color +"'";
+    if(charKnowledge && charKnowledge.when == Game.roundNum){
+      if(sortedChars[i].color == "red"){
+        result += " class='newKnowledgeRed'"
+      } else {
+        result += " class='newKnowledge'"
+      }
+    }
+
+    result += "'>";
+
+    if(charKnowledge){
+
+      if(sortedChars[i].color == "black"){
+        result += "<span class='blackKnowledge'>"
+      }
+      result += "X";
+
+      if(sortedChars[i].color == "black"){
+        result += "</span>"
+      }
+
+      
+    }
+
+    result += "</td>";
+  }
+
+
+
+  result += "</tr></table>"
+  // if(Object.keys(currPlayer.knowledge).length > 0){
+
+  //   for(i in currPlayer.knowledge){
+      
+  //     if(currPlayer.knowledge[i].what != "gun"){
+  //       result += "<li>"
+  //       if(currPlayer.knowledge[i].acquired == Game.roundNum ){
+  //         result += "<b>NEW</b> "
+  //       }
+  //       result += Util.knowledgeDescription(currPlayer.knowledge[i]) + "</li>";
+  //     }
+  //   }
+  // } else {
+  //   result += "<li>You know nothing.</li>"
+  // }
 
   return new Handlebars.SafeString(result);
 });

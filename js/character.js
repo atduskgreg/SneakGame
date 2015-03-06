@@ -41,14 +41,14 @@ Character.prototype = {
 		// learn about what they're carrying
 		var otherHasPlans = false;
 		for(var i = 0; i < other.inventory.length; i++){
-			this.knowledge[other.inventory[i].name] = {what : other.inventory[i].name, who : other, when : Game.roundNum, acquired : Game.roundNum}
+			this.knowledge[other.inventory[i].name] = {source : other, what : other.inventory[i].name, who : other, when : Game.roundNum, acquired : Game.roundNum}
 			if(other.inventory[i].name == "plans"){
 				otherHasPlans = true;
 			}
 		}
 
 		if(!otherHasPlans){
-			this.knowledge["no-plans-" + other.name] = {what : "plans", absence : true , who : other, when : Game.roundNum, acquired : Game.roundNum}
+			this.knowledge["no-plans-" + other.name] = {source : other, what : "plans", absence : true , who : other, when : Game.roundNum, acquired : Game.roundNum}
 		}
 
 
@@ -61,12 +61,14 @@ Character.prototype = {
 				if(this.knowledge[i].when < other.knowledge[i].when){
 					this.knowledge[i] = other.knowledge[i];
 					this.knowledge[i].acquired = Game.roundNum;
+					this.knowledge[i].source = other;
 				}
 			}
 			// if we know nothing, learn what they know
 			else {
 				this.knowledge[i] = other.knowledge[i];
 				this.knowledge[i].acquired = Game.roundNum;
+				this.knowledge[i].source = other;
 			}
 		}
 	},
