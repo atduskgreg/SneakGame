@@ -71,6 +71,7 @@ var Game = {
     Game.createNPCs();
     Game.createPlayers();
     Game.assignPlans();
+    Game.endRound(); // setup is round 0. mainly so plan assignment learning is distinct from first real round
   },
 
   // this needs to happen before we assign
@@ -185,7 +186,7 @@ var Game = {
     npcKeys = Object.keys(npcs);
     nid = Math.floor(Math.random() * npcKeys.length);
 
-    npcs[npcKeys[nid]].gainItem({name : "plans"});//.inventory.push({name : "plans"});
+    npcs[npcKeys[nid]].gainItemFrom({name : "plans"});//.inventory.push({name : "plans"});
   },
 
   characterWithItem : function(item){

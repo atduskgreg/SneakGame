@@ -30,11 +30,20 @@ Character.prototype = {
 		}
 	},
 
-	gainItem : function(item){
+	gainItemFrom : function(item, other){
 		this.inventory.push(item);
 		if(item.name == "plans"){
 			this.learned.push({subject : this.color, when : Game.roundNum, plans : true});
+			if(other){
+				this.learned.push({subject : other.color, when : Game.roundNum, plans : false, receivedFrom : other.color});
+			}
 		}
+
+		item = {action : "got", itemName : item.name, when : Game.roundNum, where : this.position};
+		if(other){
+			item.from = other.color;
+		}
+		this.itemHistory.push(item);
 	},
 
 	loseItemTo : function(item, other){
@@ -45,6 +54,8 @@ Character.prototype = {
 			this.learned.push({subject : other.color, when : Game.roundNum, plans : true});
 			this.learned.push({subject : this.color, when : Game.roundNum, plans : false});
 		}
+
+		this.itemHistory.push({action : "gave", itemName : item.name, to : other.color, when : Game.roundNum, where : this.position});
 	},
 
 	rank : function(){
@@ -59,7 +70,17 @@ Character.prototype = {
 		result = {};
 		sortedInfo = this.learned.sort(Util.compareChronologically);
 		for(var i = 0; i < sortedInfo.length; i++){
-			result[sortedInfo[i].subject] = sortedInfo[i];
+			// if we already know something about this subject
+			// and we learned that from the horse's mouth
+			if(result[sortedInfo[i].subject] && result[sortedInfo[i].subject].receivedFrom == sortedInfo[i].subject){
+				// then only update if the newer
+				if(sortedInfo[i].when > result[sortedInfo[i].subject].when){
+					result[sortedInfo[i].subject] = sortedInfo[i];
+				}
+			} else {
+				result[sortedInfo[i].subject] = sortedInfo[i];
+			}
+
 		}
 
 		return result;
@@ -81,15 +102,14 @@ Character.prototype = {
 		}
 
 		// observe whether or not they have the plans
-		this.learned.push({subject : other.color, when : Game.roundNum, plans : other.hasPlans()});
+		// this.learned.push({subject : other.color, when : Game.roundNum, plans : other.hasPlans()});
 		
 		// learn from their current best knowledge
 		theirKnowledge = other.currentKnowledge();
-		for(color in theirKnowledge){
-			// don't learn things I alrady observed
-			// also don't learn things about myself
-			if(color != this.color && color != other.color){
-				item = theirKnowledge[color];
+		for(subject in theirKnowledge){
+			// don't learn things about myself
+			if(subject != this.color){
+				item = JSON.parse(JSON.stringify(theirKnowledge[subject]));
 				item.receivedFrom = other.color;
 				item.receivedAt = Game.roundNum;
 				this.learned.push(item);
@@ -104,7 +124,7 @@ Character.prototype = {
 		itemsToRemove = [];
 		for(var i = 0; i < other.inventory.length; i++){
 			if(other.inventory[i].name != "gun" && !other.isPlayer){
-				this.gainItem(other.inventory[i]);
+				this.gainItemFrom(other.inventory[i], other);
 				itemsToRemove.push(other.inventory[i]);
 			}
 		}
@@ -122,7 +142,7 @@ Character.prototype = {
 		if(!Util.sameSquare(this.prevPosition, this.position) && !this.justDroppedItem("gun")){
 		// if(){
 			this.inventory.push(item);
-			this.itemHistory.push({action : "picked up", itemName : item.name, round : Game.roundNum, where : this.position});
+			this.itemHistory.push({action : "picked up", itemName : item.name, when : Game.roundNum, where : this.position});
 			return true;
 		} else {
 			return false;
@@ -146,13 +166,13 @@ Character.prototype = {
 		index = this.inventory.indexOf(item);
 		Game.inventory.push(item);
 		this.inventory.splice(index, 1);
-		this.itemHistory.push({action : "dropped", itemName : item.name, round : Game.roundNum, where : this.position});
+		this.itemHistory.push({action : "dropped", itemName : item.name, when : Game.roundNum, where : this.position});
 	},
 
 	itemHistoryForRound: function(roundNum){
 		var result = [];
 		for(var i = 0; i < this.itemHistory.length; i++){
-			if(this.itemHistory[i].round == roundNum){
+			if(this.itemHistory[i].when == roundNum){
 				result.push(this.itemHistory[i]);
 			}
 		}

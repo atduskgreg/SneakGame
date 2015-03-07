@@ -417,13 +417,28 @@ Ember.Handlebars.helper('current-player-knowledge',function(){
 
   numLearned = 0;
 
-  for(item in currPlayer.knowledge){
-    if(currPlayer.knowledge[item].when == Game.roundNum){
-      if(currPlayer.knowledge[item].who.color != currPlayer.color){
+  playerKnowledge = currPlayer.currentKnowledge();
+
+  itemActions = currPlayer.itemHistoryForRound(Game.roundNum);
+  acquiredFrom = [];
+  for(var i = 0; i < itemActions.length; i++){
+    if(itemActions[0].action == "got"){
+      acquiredFrom.push(itemActions[0].from);
+      result += "<li>";
+      result += Util.capitalize(itemActions[0].from) + " says, \"I have the plans. Take them and escape to the exit!\"";
+      result += "</li>";
+    }
+  }
+
+  for(color in playerKnowledge){
+    if(playerKnowledge[color].when == Game.roundNum || playerKnowledge[color].receivedAt == Game.roundNum){
+      if(color != currPlayer.color){
         numLearned++;
-        result += "<li>";
-        result += Util.knowledgeDescription(currPlayer.knowledge[item]);
-        result += "</li>";
+        if(acquiredFrom.indexOf(playerKnowledge[color].receivedFrom) == -1){
+          result += "<li>";
+          result += Util.knowledgeDescription(playerKnowledge[color]);
+          result += "</li>";
+        }
       }
     }
   }
@@ -435,7 +450,7 @@ Ember.Handlebars.helper('current-player-knowledge',function(){
 
   // itemize (highlight) new knowledge gained
   // show total knowledge
-  result +=  "<p>Characters you've been told don't have the plans are marked with an 'X'.</p>";
+  result +=  "<p>Characters you've been told don't have the plans are marked with an 'X'. The character you believe has the plans is marked with a 'P'.</p>";
 
   result += "<table id='checklist'>";
   result += "<tr>"
@@ -446,10 +461,11 @@ Ember.Handlebars.helper('current-player-knowledge',function(){
       result += "</tr><tr>";
     }  
 
-    charKnowledge = currPlayer.knowledge["no-plans-"+sortedChars[i].name];
+    charKnowledge = playerKnowledge[sortedChars[i].color];
+
 
     result += "<td style='background-color:" + sortedChars[i].color +"'";
-    if(charKnowledge && charKnowledge.when == Game.roundNum){
+    if(charKnowledge && (charKnowledge.when == Game.roundNum || charKnowledge.receivedAt == Game.roundNum)){
       if(sortedChars[i].color == "red"){
         result += " class='newKnowledgeRed'"
       } else {
@@ -464,7 +480,12 @@ Ember.Handlebars.helper('current-player-knowledge',function(){
       if(sortedChars[i].color == "black"){
         result += "<span class='blackKnowledge'>"
       }
-      result += "X";
+      if(charKnowledge.plans){
+        result += "P";
+      } else {
+        result += "X";
+
+      }
 
       if(sortedChars[i].color == "black"){
         result += "</span>"

@@ -86,20 +86,20 @@ var Util = {
 
   knowledgeDescription : function(knowledge){
     result = "";
-    if(knowledge.absence){
+    if(!knowledge.plans){
 
-      if(knowledge.source.color == knowledge.who.color){
-        result += this.capitalize(knowledge.source.color) + " says, \"I don't have the plans.\""
+      if(knowledge.subject == knowledge.receivedFrom){
+        result += this.capitalize(knowledge.receivedFrom) + " says, \"I don't have the plans.\""
       } else {
-        result += this.capitalize(knowledge.source.color) + " says, \"" + this.capitalize(knowledge.who.color) + " didn't have the " + knowledge.what + " when I saw them " + this.timeSinceInWords(knowledge.when) + ".\"";
+        result += this.capitalize(knowledge.receivedFrom) + " says, \"" + this.capitalize(knowledge.subject) + " didn't have the plans when I saw them " + this.timeSinceInWords(knowledge.when) + ".\"";
       }
 
       //result += knowledge.who.color + " (" + knowledge.who.name + ") didn't have the " + knowledge.what + " " + (Game.roundNum - knowledge.when) + " turns ago";
     } else {
-      if(knowledge.source.color == knowledge.who.color){
-        result += this.capitalize(knowledge.source.color) + " says, \"I have the plans. Take them and escape to the exit!\""
+      if(knowledge.subject == knowledge.receivedFrom){
+        result += this.capitalize(knowledge.receivedFrom) + " says, \"I have the plans. Take them and escape to the exit!\""
       } else {
-        result += this.capitalize(knowledge.source.color) + " says, \"" + this.capitalize(knowledge.who.color) + " had the " + knowledge.what + " when I saw them " + this.timeSinceInWords(knowledge.when) + ".\"";
+        result += this.capitalize(knowledge.receivedFrom) + " says, \"" + this.capitalize(knowledge.subject) + " had the plans when I saw them " + this.timeSinceInWords(knowledge.when) + ".\"";
       }
       //result += knowledge.who.color + " (" + knowledge.who.name + ") had the " + knowledge.what + " " + (Game.roundNum - knowledge.when) + " turns ago";
     }
@@ -108,7 +108,7 @@ var Util = {
   },
 
   timeSinceInWords : function(turn){
-    offset = Game.roundNum = turn;
+    offset = Game.roundNum - turn;
 
     if(offset == 0){
       return "this turn";
@@ -117,7 +117,7 @@ var Util = {
       return "last turn";
     }
 
-    return turn + " turns ago";
+    return offset + " turns ago";
   },
 
   sortBy : function(arrayOfObjs, comparator){
