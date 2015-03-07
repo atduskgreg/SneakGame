@@ -50,6 +50,28 @@
       border: 2px solid #000;
     }
 
+    #checklist td{
+      width: 50px;
+      height: 50px;
+      border: 2px solid;
+      text-align: center;
+      font-size: 40;
+      font-family: sans-serif;
+      padding-top: 7;
+    }
+
+    #checklist td.newKnowledge {
+      border: 2px dotted red;
+    }
+
+    #checklist td.newKnowledgeRed {
+      border: 2px dotted yellow;
+    }
+
+    .blackKnowledge{
+      color: white;
+    }
+
     </style>
 
 
@@ -274,9 +296,7 @@
         {{partial 'pass'}}
       {{else}}
         <h3>Your Knowledge</h3>
-        <ul>
         {{ current-player-knowledge }}
-        </ul>
         <h3>Your Inventory</h3>
         <ul>
         {{current-player-inventory}}

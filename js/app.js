@@ -412,25 +412,109 @@ Ember.Handlebars.helper('current-player-knowledge',function(){
   currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
   currPlayer = Game.players[currPlayerKey];
 
-  // itemize (highlight) new knowledge gained
-  // show total knowledge
-  var result = "";
+  var result = "<p>Learned this turn:</p>"
+  result += "<ul>"
 
-  if(Object.keys(currPlayer.knowledge).length > 0){
+  numLearned = 0;
 
-    for(i in currPlayer.knowledge){
-      
-      if(currPlayer.knowledge[i].what != "gun"){
-        result += "<li>"
-        if(currPlayer.knowledge[i].acquired == Game.roundNum ){
-          result += "<b>NEW</b> "
+  playerKnowledge = currPlayer.currentKnowledge();
+
+  itemActions = currPlayer.itemHistoryForRound(Game.roundNum);
+  acquiredFrom = [];
+  for(var i = 0; i < itemActions.length; i++){
+    if(itemActions[0].action == "got"){
+      acquiredFrom.push(itemActions[0].from);
+      result += "<li>";
+      result += Util.capitalize(itemActions[0].from) + " says, \"I have the plans. Take them and escape to the exit!\"";
+      result += "</li>";
+    }
+  }
+
+  for(color in playerKnowledge){
+    if(playerKnowledge[color].when == Game.roundNum || playerKnowledge[color].receivedAt == Game.roundNum){
+      if(color != currPlayer.color){
+        numLearned++;
+        if(acquiredFrom.indexOf(playerKnowledge[color].receivedFrom) == -1){
+          result += "<li>";
+          result += Util.knowledgeDescription(playerKnowledge[color]);
+          result += "</li>";
         }
-        result += Util.knowledgeDescription(currPlayer.knowledge[i]) + "</li>";
       }
     }
-  } else {
-    result += "<li>You know nothing.</li>"
   }
+  if(numLearned == 0){
+    result += "<li>Nothing learned this turn.</li>";
+  }
+
+  result += "</ul>"
+
+  // itemize (highlight) new knowledge gained
+  // show total knowledge
+  result +=  "<p>Characters you've been told don't have the plans are marked with an 'X'. The character you believe has the plans is marked with a 'P'.</p>";
+
+  result += "<table id='checklist'>";
+  result += "<tr>"
+  sortedChars = Util.sortBy(Game.characters, Util.compareRank);
+
+  for(var i = 0; i < sortedChars.length; i++){
+    if( i == sortedChars.length/2){
+      result += "</tr><tr>";
+    }  
+
+    charKnowledge = playerKnowledge[sortedChars[i].color];
+
+
+    result += "<td style='background-color:" + sortedChars[i].color +"'";
+    if(charKnowledge && (charKnowledge.when == Game.roundNum || charKnowledge.receivedAt == Game.roundNum)){
+      if(sortedChars[i].color == "red"){
+        result += " class='newKnowledgeRed'"
+      } else {
+        result += " class='newKnowledge'"
+      }
+    }
+
+    result += "'>";
+
+    if(charKnowledge){
+
+      if(sortedChars[i].color == "black"){
+        result += "<span class='blackKnowledge'>"
+      }
+      if(charKnowledge.plans){
+        result += "P";
+      } else {
+        result += "X";
+
+      }
+
+      if(sortedChars[i].color == "black"){
+        result += "</span>"
+      }
+
+      
+    }
+
+    result += "</td>";
+  }
+
+
+
+  result += "</tr></table>"
+  // if(Object.keys(currPlayer.knowledge).length > 0){
+
+  //   for(i in currPlayer.knowledge){
+      
+  //     if(currPlayer.knowledge[i].what != "gun"){
+  //       result += "<li>"
+  //       if(currPlayer.knowledge[i].acquired == Game.roundNum ){
+  //         result += "<b>NEW</b> "
+  //       }
+  //       result += Util.knowledgeDescription(currPlayer.knowledge[i]) + "</li>";
+  //     }
+  //   }
+  // } else {
+  //   result += "<li>You know nothing.</li>"
+  // }
 
   return new Handlebars.SafeString(result);
 });

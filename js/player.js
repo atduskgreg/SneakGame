@@ -10,6 +10,7 @@ Player = function() {
   this.position = null;
   this.tablePosition = null;
   this.positionHistory = [];
+  this.learned = [];
 
   // startSqrIdx = Math.floor(Math.random() * Game.seedSquares.length);
   // startSqr = Game.seedSquares[startSqrIdx];

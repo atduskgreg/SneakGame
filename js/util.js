@@ -86,13 +86,38 @@ var Util = {
 
   knowledgeDescription : function(knowledge){
     result = "";
-    if(knowledge.absence){
-      result += knowledge.who.color + " (" + knowledge.who.name + ") didn't have the " + knowledge.what + " " + (Game.roundNum - knowledge.when) + " turns ago";
+    if(!knowledge.plans){
+
+      if(knowledge.subject == knowledge.receivedFrom){
+        result += this.capitalize(knowledge.receivedFrom) + " says, \"I don't have the plans.\""
+      } else {
+        result += this.capitalize(knowledge.receivedFrom) + " says, \"" + this.capitalize(knowledge.subject) + " didn't have the plans when I saw them " + this.timeSinceInWords(knowledge.when) + ".\"";
+      }
+
+      //result += knowledge.who.color + " (" + knowledge.who.name + ") didn't have the " + knowledge.what + " " + (Game.roundNum - knowledge.when) + " turns ago";
     } else {
-      result += knowledge.who.color + " (" + knowledge.who.name + ") had the " + knowledge.what + " " + (Game.roundNum - knowledge.when) + " turns ago";
+      if(knowledge.subject == knowledge.receivedFrom){
+        result += this.capitalize(knowledge.receivedFrom) + " says, \"I have the plans. Take them and escape to the exit!\""
+      } else {
+        result += this.capitalize(knowledge.receivedFrom) + " says, \"" + this.capitalize(knowledge.subject) + " had the plans when I saw them " + this.timeSinceInWords(knowledge.when) + ".\"";
+      }
+      //result += knowledge.who.color + " (" + knowledge.who.name + ") had the " + knowledge.what + " " + (Game.roundNum - knowledge.when) + " turns ago";
     }
 
     return result;
+  },
+
+  timeSinceInWords : function(turn){
+    offset = Game.roundNum - turn;
+
+    if(offset == 0){
+      return "this turn";
+    }
+    if(offset == 1){
+      return "last turn";
+    }
+
+    return offset + " turns ago";
   },
 
   sortBy : function(arrayOfObjs, comparator){
@@ -138,6 +163,17 @@ var Util = {
     }
     return 0;
   },
+
+  compareChronologically : function(a,b){
+    if(a.when > b.when){
+      return 1;
+    }
+    if(a.when < b.when){
+      return -1;
+    }
+    return 0;
+  },
+
   // helper for compareSpatially,
   // converts sqr.col and sqr.row
   // into index for sorting
