@@ -163,6 +163,17 @@ var Util = {
     }
     return 0;
   },
+
+  compareChronologically : function(a,b){
+    if(a.when > b.when){
+      return 1;
+    }
+    if(a.when < b.when){
+      return -1;
+    }
+    return 0;
+  },
+
   // helper for compareSpatially,
   // converts sqr.col and sqr.row
   // into index for sorting

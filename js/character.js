@@ -7,6 +7,7 @@ Character = function(){
 	this.itemHistory = [];
 	this.dead = false;
 	this.positionHistory = [];
+	this.learned = [];
 }
 
 Character.prototype = {
@@ -19,9 +20,30 @@ Character.prototype = {
 		this.prevPosition = {col : null, row: null};
 		this.positionHistory.push({col : this.position.col , row : this.position.row});
 
+		// everyone starts off knowing they don't have the plans
+		this.learned.push({subject : this.color, when : -1, plans : false});
+
+		// give a 15% chance of having a hold on the first turn
 		if(Math.random() < 0.15){
 			this.destination.col = this.position.col;
 			this.destination.row = this.position.row;
+		}
+	},
+
+	gainItem : function(item){
+		this.inventory.push(item);
+		if(item.name == "plans"){
+			this.learned.push({subject : this.color, when : Game.roundNum, plans : true});
+		}
+	},
+
+	loseItemTo : function(item, other){
+		index = this.inventory.indexOf(item);
+		this.inventory.splice(index,1);
+		console.log(item.name);
+		if(item.name == "plans"){
+			this.learned.push({subject : other.color, when : Game.roundNum, plans : true});
+			this.learned.push({subject : this.color, when : Game.roundNum, plans : false});
 		}
 	},
 
@@ -33,42 +55,44 @@ Character.prototype = {
 		this.dead = true;
 	},
 
+	currentKnowledge : function(){
+		result = {};
+		sortedInfo = this.learned.sort(Util.compareChronologically);
+		for(var i = 0; i < sortedInfo.length; i++){
+			result[sortedInfo[i].subject] = sortedInfo[i];
+		}
+
+		return result;
+	},
+
+	hasPlans : function(){
+		for(var i = 0; i < this.inventory.length; i++){
+			if(this.inventory[i].name == "plans"){
+				return true;
+			}
+		}
+		return false;
+	},
+
 	// learn knowledge from other character's knowledge and items
 	learnFrom : function(other){
 		if(this.dead){
 			return false;
 		}
-		// learn about what they're carrying
-		var otherHasPlans = false;
-		for(var i = 0; i < other.inventory.length; i++){
-			this.knowledge[other.inventory[i].name] = {source : other, what : other.inventory[i].name, who : other, when : Game.roundNum, acquired : Game.roundNum}
-			if(other.inventory[i].name == "plans"){
-				otherHasPlans = true;
-			}
-		}
 
-		if(!otherHasPlans){
-			this.knowledge["no-plans-" + other.name] = {source : other, what : "plans", absence : true , who : other, when : Game.roundNum, acquired : Game.roundNum}
-		}
-
-
-
-		for(i in other.knowledge){
-
-			// if we know something about the item,
-			// only learn from them if their info is more recent
-			if(this.knowledge[i]){
-				if(this.knowledge[i].when < other.knowledge[i].when){
-					this.knowledge[i] = other.knowledge[i];
-					this.knowledge[i].acquired = Game.roundNum;
-					this.knowledge[i].source = other;
-				}
-			}
-			// if we know nothing, learn what they know
-			else {
-				this.knowledge[i] = other.knowledge[i];
-				this.knowledge[i].acquired = Game.roundNum;
-				this.knowledge[i].source = other;
+		// observe whether or not they have the plans
+		this.learned.push({subject : other.color, when : Game.roundNum, plans : other.hasPlans()});
+		
+		// learn from their current best knowledge
+		theirKnowledge = other.currentKnowledge();
+		for(color in theirKnowledge){
+			// don't learn things I alrady observed
+			// also don't learn things about myself
+			if(color != this.color && color != other.color){
+				item = theirKnowledge[color];
+				item.receivedFrom = other.color;
+				item.receivedAt = Game.roundNum;
+				this.learned.push(item);
 			}
 		}
 	},
@@ -80,13 +104,12 @@ Character.prototype = {
 		itemsToRemove = [];
 		for(var i = 0; i < other.inventory.length; i++){
 			if(other.inventory[i].name != "gun" && !other.isPlayer){
-				this.inventory.push(other.inventory[i]);
+				this.gainItem(other.inventory[i]);
 				itemsToRemove.push(other.inventory[i]);
 			}
 		}
  		for(var i = 0; i < itemsToRemove.length; i++){
-			index = other.inventory.indexOf(itemsToRemove[i]);
-			other.inventory.splice(index,1);
+ 			other.loseItemTo(itemsToRemove[i], this);
 		}
 	},
 

@@ -185,7 +185,7 @@ var Game = {
     npcKeys = Object.keys(npcs);
     nid = Math.floor(Math.random() * npcKeys.length);
 
-    npcs[npcKeys[nid]].inventory.push({name : "plans"});
+    npcs[npcKeys[nid]].gainItem({name : "plans"});//.inventory.push({name : "plans"});
   },
 
   characterWithItem : function(item){
