@@ -17,6 +17,11 @@ var Game = {
   shootingVictims : [],
   moveInstructions : null,
   colorRanks : [],
+  // config : null,
+
+  // setConfig : function(ds){
+  //   this.config = ds;
+  // },
 
   drawDebug : function(){
     this.drawCharacters(this.characters);

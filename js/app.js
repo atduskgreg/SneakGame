@@ -12,9 +12,26 @@ App.Router.map(function(){
   this.resource("victory");
 });
 
+var attr = DS.attr;
+App.Config = DS.Model.extend({
+  onScreen : attr('boolean', {defaultValue: false})
+});
+
+App.IndexRoute = Ember.Route.extend({
+  setupController : function(controller, model){
+    config = this.store.createRecord('config');
+    console.log(config);
+    console.log(config.get("onScreen"));
+    controller.set("model", config);
+  }
+});
+
 App.SetupRoute = Ember.Route.extend({
   setupController : function(controller, model){
     GameManager.transitionTo("setup");
+
+    console.log("find")
+    console.log(this.store.find("config", {onScreen : false}));
 
     controller.set('exit', Game.exit);
     controller.set('instructions', Game.setupInstructions());
