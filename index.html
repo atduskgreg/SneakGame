@@ -79,13 +79,14 @@
     <script type="text/x-handlebars">
       {{outlet}}
 
-      <p><em><a href="#" {{action "toggleDebug"}}>Toggle debug view</a></em></p>
-
       <br style="clear:both" />
       {{#view "debug" isVisibleBinding="debugIsVisible"}}
-        <button {{action 'refreshDebug'}}>refresh</button> <!-- temporary hack until game is an ember model -->
+        <!-- <button {{action 'refreshDebug'}}>refresh</button> --> <!-- temporary hack until game is an ember model -->
         {{debug-view}}
       {{/view}}
+
+      <p><em><a href="#" {{action "toggleDebug"}}>Toggle debug view</a></em></p>
+
     </script>
   
     <script type="text/x-handlebars" id ="index">
