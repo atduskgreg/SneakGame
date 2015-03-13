@@ -90,12 +90,15 @@
   
     <script type="text/x-handlebars" id ="index">
       <h1>Sneak</h1>
+       <label>Play game on-screen?</label> {{view Ember.Checkbox checkedBinding="model.onScreen"}}
+
       <p>{{#link-to 'setup'}}Start game{{/link-to}}</p>
     </script>
   
     <script type="text/x-handlebars" id="setup">
       <h1>Setup</h1>
       <p>Exit is: {{format-square exit}}</p>
+      
       <ul>
       {{#each item in instructions}}
         <li>{{item.instruction}}</li>
@@ -313,6 +316,9 @@
     <script src="js/libs/jquery-1.10.2.js"></script>
     <script src="js/libs/handlebars-v2.0.0.js"></script>
     <script src="js/libs/ember-1.9.1.js"></script>
+    <script src="js/libs/ember-data.js"></script>
+    <script src="js/libs/localstorage_adapter.js"></script>
+
     <script src="js/libs/ember-states.js"></script>
     <script src="js/game.js"></script>
     <script src="js/util.js"></script>

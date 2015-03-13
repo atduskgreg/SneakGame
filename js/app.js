@@ -12,9 +12,47 @@ App.Router.map(function(){
   this.resource("victory");
 });
 
+// setup local storage adapter for data
+App.ApplicationSerializer = DS.LSSerializer.extend();
+App.ApplicationAdapter = DS.LSAdapter.extend({  
+  namespace: 'sneak_game'
+});
+var attr = DS.attr;
+App.ApplicationStore = DS.Store.extend();
+
+// model for storing game config
+App.Config = DS.Model.extend({
+  onScreen : DS.attr('boolean', {defaultValue: false})
+});
+
+
+App.IndexRoute = Ember.Route.extend({
+  setupController : function(controller, model){
+    // create the config record for this game
+    config = this.store.createRecord('config', {onScreen : false});
+    config.save();
+
+    route = this;
+    config.addObserver('onScreen',function(){
+      route.controllerFor("application").set("debugIsVisible", config.get("onScreen"));
+    });
+
+    controller.set("model", config);
+  }
+});
+
+
 App.SetupRoute = Ember.Route.extend({
   setupController : function(controller, model){
     GameManager.transitionTo("setup");
+
+
+    // config = this.store.all("config").get("firstObject");
+    console.log("configOnScreen: " + this.store.all("config").get("firstObject").get("onScreen"));
+    // console.log("onScreen: " + config.get("onScreen"));
+
+    // console.log(controller.get("configOnScreen"))
+    controller.set("configOnScreen", this.store.all("config").get("firstObject").get("onScreen"))
 
     controller.set('exit', Game.exit);
     controller.set('instructions', Game.setupInstructions());
@@ -238,7 +276,7 @@ App.ApplicationController = Em.ObjectController.extend({
         Game.drawDebug();
       }
       this.toggleProperty('debugIsVisible');
-    },
+    }.observes(""),
 
     // TODO:
     //  temporary hack until Game is an ember model
@@ -251,6 +289,10 @@ App.ApplicationController = Em.ObjectController.extend({
     }
   }
 });
+
+// App.ApplicationController.reopen({
+
+// });
 
 App.DebugView = Ember.View.extend();
 
