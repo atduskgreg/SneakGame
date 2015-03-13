@@ -40,7 +40,7 @@ var Game = {
     }
   
     result += "</ul>";
-    $("#playerDebug").html(result)
+    $("#playerDebug").html(result);
   },
 
 	drawCharacters : function(characters){
