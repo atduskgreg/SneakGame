@@ -99,9 +99,7 @@ var Util = {
           result += this.capitalize(knowledge.receivedFrom) + " says, \"I don't have the plans.\""
         } else {
           result += this.capitalize(knowledge.receivedFrom) + " says, \"" + this.capitalize(knowledge.subject) + " didn't have the plans when I saw them " + this.timeSinceInWords(knowledge.when) + ".\"";
-        }
-    
-        //result += knowledge.who.color + " (" + knowledge.who.name + ") didn't have the " + knowledge.what + " " + (Game.roundNum - knowledge.when) + " turns ago";
+        }    
       } else {
         if(knowledge.subject == knowledge.receivedFrom){
           result += this.capitalize(knowledge.receivedFrom) + " says, \"I have the plans. Take them and escape to the exit!\""
@@ -110,9 +108,7 @@ var Util = {
         }
       }
     }
-      //result += knowledge.who.color + " (" + knowledge.who.name + ") had the " + knowledge.what + " " + (Game.roundNum - knowledge.when) + " turns ago";
     
-
     return result;
   },
 
