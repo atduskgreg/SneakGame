@@ -23,11 +23,14 @@ var Game = {
   //   this.config = ds;
   // },
 
-  drawDebug : function(){
+  drawDebug : function(hidePlayers){
     this.drawCharacters(this.characters);
     this.drawExit();
-    this.drawPlayerDebug();
-    this.drawInventory();
+    if(!hidePlayers){
+      this.drawPlayerDebug();
+      this.drawInventory()
+    }
+;
   },
 
   drawPlayerDebug : function(){
@@ -40,7 +43,7 @@ var Game = {
     }
   
     result += "</ul>";
-    $("#playerDebug").html(result)
+    $("#playerDebug").html(result);
   },
 
 	drawCharacters : function(characters){

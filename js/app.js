@@ -47,11 +47,6 @@ App.SetupRoute = Ember.Route.extend({
     GameManager.transitionTo("setup");
 
 
-    // config = this.store.all("config").get("firstObject");
-    console.log("configOnScreen: " + this.store.all("config").get("firstObject").get("onScreen"));
-    // console.log("onScreen: " + config.get("onScreen"));
-
-    // console.log(controller.get("configOnScreen"))
     controller.set("configOnScreen", this.store.all("config").get("firstObject").get("onScreen"))
 
     controller.set('exit', Game.exit);
@@ -132,23 +127,6 @@ App.DialogRevealsController = Ember.ArrayController.extend({
     }
 });
 
-// App.DialogRevealController = Ember.ObjectController.extend({
-
-//   knowledge : function(){
-//     console.log("knowledge helper");
-//     // return Util.knowledgeDescription(this.get("k"));
-//   }.property(),
-
-//   inventory : function(){
-//     // use PassManager to get the current player
-//     // currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
-//     // currPlayer = Game.players[currPlayerKey];
-//     // itemize (highlight) new items gained
-//     // show all itms
-    
-//   }
-// });
-
 
 App.CharacterAssignmentController = Ember.ObjectController.extend({
   actions : {
@@ -197,7 +175,8 @@ App.ShootController = Ember.ObjectController.extend({
         currPlayer.dropItem(gun);
         Game.removeItem(gun);
 
-        Game.drawDebug();
+        hidePlayers = this.store.all("config").get("firstObject").get("onScreen")
+        Game.drawDebug(hidePlayers);
         PassManager.next();
         if(PassManager.get("currentState.name") == "done"){
           this.transitionToRoute("moveInstructions");
@@ -273,7 +252,8 @@ App.ApplicationController = Em.ObjectController.extend({
   actions : {
     toggleDebug : function(){
       if(Game.exit && Object.keys(Game.characters).length > 0){
-        Game.drawDebug();
+        hidePlayers = this.store.all("config").get("firstObject").get("onScreen")
+        Game.drawDebug(hidePlayers);
       }
       this.toggleProperty('debugIsVisible');
     }.observes(""),
@@ -284,7 +264,9 @@ App.ApplicationController = Em.ObjectController.extend({
     refreshDebug : function(){
       console.log("refresh debug");
       if(Game.exit && Object.keys(Game.characters).length > 0){
-        Game.drawDebug();
+        hidePlayers = this.store.all("config").get("firstObject").get("onScreen")
+
+        Game.drawDebug(hidePlayers);
       }
     }
   }
@@ -539,24 +521,8 @@ Ember.Handlebars.helper('current-player-knowledge',function(){
     result += "</td>";
   }
 
-
-
   result += "</tr></table>"
-  // if(Object.keys(currPlayer.knowledge).length > 0){
 
-  //   for(i in currPlayer.knowledge){
-      
-  //     if(currPlayer.knowledge[i].what != "gun"){
-  //       result += "<li>"
-  //       if(currPlayer.knowledge[i].acquired == Game.roundNum ){
-  //         result += "<b>NEW</b> "
-  //       }
-  //       result += Util.knowledgeDescription(currPlayer.knowledge[i]) + "</li>";
-  //     }
-  //   }
-  // } else {
-  //   result += "<li>You know nothing.</li>"
-  // }
 
   return new Handlebars.SafeString(result);
 });
@@ -593,6 +559,5 @@ Ember.Handlebars.helper('debug-view',function(){
      result += "</tr>";
     }
   result += "</table><div id='playerDebug'></div></div>";
-
   return new Handlebars.SafeString(result);
 });

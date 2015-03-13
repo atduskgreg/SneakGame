@@ -87,8 +87,13 @@ Player.prototype.displayString = function(){
      }
 
      knowledgeDescription = [];
-     for(i in this.knowledge){
-     	knowledgeDescription.push(this.knowledge[i].who.color + " had the "+ i + " " + (Game.roundNum - this.knowledge[i].when) + " turns ago " );
+     for(subject in this.currentKnowledge()){
+      console.log(subject);
+      console.log(this.currentKnowledge()[subject]);
+      k = Util.knowledgeDescription(this.currentKnowledge()[subject])
+      console.log(k)
+     	knowledgeDescription.push(k);
+
      }
 	return "P : " + this.name + " ("+this.color+") i:["+inventory.join(", ")+"] k:[" + knowledgeDescription.join(", ")+"]";
 }
