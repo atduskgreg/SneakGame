@@ -50,6 +50,8 @@ App.SetupRoute = Ember.Route.extend({
     GameManager.transitionTo("setup");
     Game.drawDebug();
 
+    controller.set("onScreen", this.store.all("config").get("firstObject").get("onScreen"));
+
     controller.set('exit', Game.exit);
     controller.set('instructions', Game.setupInstructions());
   }
@@ -65,9 +67,13 @@ App.MovesRoute = Ember.Route.extend({
   setupController : function(controller, model){
     GameManager.transitionTo("moveInput");
     currPlayer = Game.players[Object.keys(Game.players)[PassManager.playerIdx]];
-    console.log("legal moves: ");
-    console.log(currPlayer.legalMoves());
-    controller.set("model", currPlayer.legalMoves());
+
+    model= currPlayer.legalMoves();
+    model.onScreen = this.store.all("config").get("firstObject").get("onScreen");
+    console.log("model.onScreen " + model.onScreen);
+    // controller.set("onScreen", this.store.all("config").get("firstObject").get("onScreen"));
+    // console.log("cs: " + controller.get("onScreen"));
+    controller.set("model", model);
   }
 });
 
@@ -75,6 +81,7 @@ App.MoveInstructionsRoute = Ember.Route.extend({
   setupController : function(controller, model){
     GameManager.transitionTo("moveInstructions");
 
+    controller.set("onScreen", this.store.all("config").get("firstObject").get("onScreen"));
     controller.set('instructions', Game.moveInstructions);
     controller.set('victims', Game.newShootingVictims());
   }
@@ -197,6 +204,7 @@ App.VictoryRoute = Ember.Route.extend({
 });
 
 App.MovesController = Ember.ObjectController.extend({
+  content : {},
   actions : {
     submitMove : function(move){
       console.log("submit move: " + move);
@@ -224,7 +232,9 @@ App.MovesController = Ember.ObjectController.extend({
         // load up the model so we can hide illegal move inputs
         // for the next player
         currPlayer = Game.players[Object.keys(Game.players)[PassManager.playerIdx]];
-        this.set("model", currPlayer.legalMoves());
+        model = currPlayer.legalMoves();
+        model.onScreen = this.store.all("config").get("firstObject").get("onScreen");
+        this.set("model", model);
       }
     },
 
