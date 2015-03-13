@@ -32,6 +32,11 @@ App.IndexRoute = Ember.Route.extend({
     config = this.store.createRecord('config', {onScreen : false});
     config.save();
 
+    route = this;
+    config.addObserver('onScreen',function(){
+      route.controllerFor("application").set("debugIsVisible", config.get("onScreen"));
+    });
+
     controller.set("model", config);
   }
 });
@@ -271,7 +276,7 @@ App.ApplicationController = Em.ObjectController.extend({
         Game.drawDebug();
       }
       this.toggleProperty('debugIsVisible');
-    },
+    }.observes(""),
 
     // TODO:
     //  temporary hack until Game is an ember model
@@ -284,6 +289,10 @@ App.ApplicationController = Em.ObjectController.extend({
     }
   }
 });
+
+// App.ApplicationController.reopen({
+
+// });
 
 App.DebugView = Ember.View.extend();
 
