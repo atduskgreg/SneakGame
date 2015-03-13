@@ -17,20 +17,15 @@ var Game = {
   shootingVictims : [],
   moveInstructions : null,
   colorRanks : [],
-  // config : null,
+  hidePlayers : false,
 
-  // setConfig : function(ds){
-  //   this.config = ds;
-  // },
-
-  drawDebug : function(hidePlayers){
+  drawDebug : function(){
     this.drawCharacters(this.characters);
     this.drawExit();
-    if(!hidePlayers){
+    if(!this.hidePlayers){
       this.drawPlayerDebug();
-      this.drawInventory()
+      this.drawInventory();
     }
-;
   },
 
   drawPlayerDebug : function(){

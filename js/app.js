@@ -22,7 +22,10 @@ App.ApplicationStore = DS.Store.extend();
 
 // model for storing game config
 App.Config = DS.Model.extend({
-  onScreen : DS.attr('boolean', {defaultValue: false})
+  onScreen : DS.attr('boolean', {defaultValue: false}),
+  updateDebug : function(){
+    Game.hidePlayers = this.get("onScreen");
+  }.observes("onScreen")
 });
 
 
@@ -45,9 +48,7 @@ App.IndexRoute = Ember.Route.extend({
 App.SetupRoute = Ember.Route.extend({
   setupController : function(controller, model){
     GameManager.transitionTo("setup");
-
-
-    controller.set("configOnScreen", this.store.all("config").get("firstObject").get("onScreen"))
+    Game.drawDebug();
 
     controller.set('exit', Game.exit);
     controller.set('instructions', Game.setupInstructions());
@@ -175,8 +176,8 @@ App.ShootController = Ember.ObjectController.extend({
         currPlayer.dropItem(gun);
         Game.removeItem(gun);
 
-        hidePlayers = this.store.all("config").get("firstObject").get("onScreen")
-        Game.drawDebug(hidePlayers);
+        // hidePlayers = this.store.all("config").get("firstObject").get("onScreen")
+        Game.drawDebug();
         PassManager.next();
         if(PassManager.get("currentState.name") == "done"){
           this.transitionToRoute("moveInstructions");
@@ -252,8 +253,7 @@ App.ApplicationController = Em.ObjectController.extend({
   actions : {
     toggleDebug : function(){
       if(Game.exit && Object.keys(Game.characters).length > 0){
-        hidePlayers = this.store.all("config").get("firstObject").get("onScreen")
-        Game.drawDebug(hidePlayers);
+        Game.drawDebug();
       }
       this.toggleProperty('debugIsVisible');
     }.observes(""),
@@ -264,9 +264,7 @@ App.ApplicationController = Em.ObjectController.extend({
     refreshDebug : function(){
       console.log("refresh debug");
       if(Game.exit && Object.keys(Game.characters).length > 0){
-        hidePlayers = this.store.all("config").get("firstObject").get("onScreen")
-
-        Game.drawDebug(hidePlayers);
+        Game.drawDebug();
       }
     }
   }
@@ -286,6 +284,7 @@ var PassManager = Ember.StateManager.create({
     this.players = Game.players;
     PassManager.playerIdx = 0;
     this.transitionTo("pass");
+    Game.drawDebug();
   },
 
   next : function(){
@@ -298,6 +297,8 @@ var PassManager = Ember.StateManager.create({
         this.transitionTo("pass");
       }
     }
+    Game.drawDebug();
+
   },
 
   pass : Ember.State.create({
