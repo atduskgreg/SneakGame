@@ -65,6 +65,8 @@ var Game = {
   },
 
   setup : function(){
+    Map.setup();
+
     // these must happen first
     Game.generateExit();
     Game.placeGuns();
