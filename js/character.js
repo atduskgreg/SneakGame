@@ -8,6 +8,7 @@ Character = function(){
 	this.dead = false;
 	this.positionHistory = [];
 	this.learned = [];
+	this.newDestinationProbability = Math.min(Math.random() + 0.15, 0.85);
 }
 
 Character.prototype = {
@@ -265,7 +266,7 @@ Character.prototype = {
 			if(this.atDestination()){
 				this.prevPosition.col = this.position.col;
 				this.prevPosition.row = this.position.row;
-				if(Math.random() < 0.3){
+				if(Math.random() < this.newDestinationProbability){
 					this.destination = {col : Math.floor(Math.random() * Game.boardWidth), row: Math.floor(Math.random() * Game.boardHeight)};
 				}	
 			} else {
