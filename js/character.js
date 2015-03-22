@@ -3,7 +3,7 @@
 Character = function(){
 	this.inventory = [];
 	this.knowledge = {};
-	this.destination = Util.getRandomSquare();
+	this.destination = null;//Util.getRandomSquare();
 	this.itemHistory = [];
 	this.dead = false;
 	this.positionHistory = [];
@@ -21,6 +21,12 @@ Character.prototype = {
 		this.prevPosition = {col : null, row: null};
 		this.positionHistory.push({col : this.position.col , row : this.position.row});
 
+		// TODO: once there are doors this won't be needed
+		// for now, pick a random connected cell as the destination
+		destinationOptions = Map.getConnectedCells(Map.getCell(this.position));
+		dest = destinationOptions[Math.floor(Math.random() * destinationOptions.length)];
+		this.destination = {col : dest.col, row : dest.row};
+
 		// everyone starts off knowing they don't have the plans
 		this.learned.push({subject : this.color, when : -1, plans : false});
 
@@ -29,6 +35,10 @@ Character.prototype = {
 			this.destination.col = this.position.col;
 			this.destination.row = this.position.row;
 		}
+	},
+
+	pathToDestination : function(){
+		return Map.getPath(Map.getCell(this.destination), Map.getCell(this.position));
 	},
 
 	gainItemFrom : function(item, other){
@@ -218,6 +228,13 @@ Character.prototype = {
 		$(this.squareSelector()).append(pString);
 	},
 
+	drawPath : function(){
+		path = this.pathToDestination();
+		if(path){
+			Map.highlightCells(path, "path");
+		}
+	},
+
 	heading : function(){
 		var colHeading = 0;
 		var rowHeading = 0;
@@ -244,10 +261,16 @@ Character.prototype = {
 		if(this.itemWithAttribute("name", "gun")){
 			return this.position;
 		} else {
-			h = this.heading();
-			nCol = this.position.col + h.col;
-			nRow = this.position.row + h.row;
-			return {col : nCol, row: nRow};
+			// h = this.heading();
+			// nCol = this.position.col + h.col;
+			// nRow = this.position.row + h.row;
+			// return {col : nCol, row: nRow};
+			path = this.pathToDestination();
+			if(path && path.length > 0){
+				return {col : path[1].col, row : path[1].row};
+			} else {
+				return {col : this.position.col, row : this.position.row};
+			}
 		}
 	},
 

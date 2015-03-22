@@ -24,6 +24,18 @@ var Util = {
     return Util.colors.splice(idx, 1)[0];
   },
 
+  getRandomIndoorSquare : function(){
+    indoorSquares = Map.indoorCells();
+    result = indoorSquares[Math.floor(Math.random() * indoorSquares.length)];
+    return {col : result.col, row : result.row};
+  },
+
+  getRandomOutdoorSquare : function(){
+    outdoorSquares = Map.outdoorCells();
+    result = outdoorSquares[Math.floor(Math.random() * outdoorSquares.length)];
+    return {col : result.col, row : result.row};
+  },
+
   getRandomSquare : function(range){
     // default to full width of board
     var c = Math.floor(Math.random() * Game.boardWidth);
@@ -45,7 +57,7 @@ var Util = {
   },
 
   squareDescription : function(sqr){
-    return ["a", "b", "c", "d", "e", "f","g","h"][sqr.col] + (sqr.row+1);
+    return ["a", "b", "c", "d", "e", "f","g","h", "i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"][sqr.col] + (sqr.row+1);
   },
   
   moveDescription : function(character){
@@ -216,3 +228,28 @@ var Util = {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 }
+
+function HashTable() {
+    this.hashes = {};
+}
+
+HashTable.prototype = {
+    constructor: HashTable,
+
+    put: function( key, value ) {
+        this.hashes[ JSON.stringify( key ) ] = value;
+    },
+
+    get: function( key ) {
+        return this.hashes[ JSON.stringify( key ) ];
+    },
+
+    keys : function(){
+      result = [];
+      hashKeys = Object.keys(this.hashes);
+      for(var i = 0; i < hashKeys.length; i++){
+        result.push(JSON.parse(hashKeys[i]));
+      }
+      return result;
+    }
+};

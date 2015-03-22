@@ -1,6 +1,6 @@
 var Game = {
-	boardWidth : 7,
-	boardHeight: 7,
+	boardWidth : 9,
+	boardHeight: 9,
 	numNPCs : 8,
   nPlayers : 2,
 	characters : {},
@@ -22,9 +22,10 @@ var Game = {
   drawDebug : function(){
     this.drawCharacters(this.characters);
     this.drawExit();
+    this.drawInventory();
+
     if(!this.hidePlayers){
       this.drawPlayerDebug();
-      this.drawInventory();
     }
   },
 
@@ -349,11 +350,11 @@ var Game = {
 
     //a1-<Game.boardWidth>1 and a<Game.boardHeight> - <Game.boardWidth><Game.boardHieght>
     for(var i = 0; i < Game.boardWidth; i++){
-      options.push("abcdefgh".slice(i,i+1) + Game.boardHeight );
-      options.push("abcdefgh".slice(i,i+1) + 1);
+      options.push("abcdefghijklmnopqrstuvwxyz".slice(i,i+1) + Game.boardHeight );
+      options.push("abcdefghijklmnopqrstuvwxyz".slice(i,i+1) + 1);
     }
 
-    lastRow = "abcdefgh"[Game.boardWidth-1];
+    lastRow = "abcdefghijklmnopqrstuvwxyz"[Game.boardWidth-1];
     
     for(var i = 2; i < Game.boardHeight; i++){
       options.push("a" + i);
@@ -364,7 +365,7 @@ var Game = {
 
     parts = exitSquare.split("");
 
-    col = "abcdefgh".split("").indexOf(parts[0]);
+    col = "abcdefghijklmnopqrstuvwxyz".split("").indexOf(parts[0]);
     row = parseInt(parts[1]) - 1;
 
     this.exit = {col : col, row : row};
