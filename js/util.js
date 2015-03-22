@@ -45,7 +45,7 @@ var Util = {
   },
 
   squareDescription : function(sqr){
-    return ["a", "b", "c", "d", "e", "f","g","h"][sqr.col] + (sqr.row+1);
+    return ["a", "b", "c", "d", "e", "f","g","h", "i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"][sqr.col] + (sqr.row+1);
   },
   
   moveDescription : function(character){
@@ -216,3 +216,19 @@ var Util = {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
 }
+
+function HashTable() {
+    this.hashes = {};
+}
+
+HashTable.prototype = {
+    constructor: HashTable,
+
+    put: function( key, value ) {
+        this.hashes[ JSON.stringify( key ) ] = value;
+    },
+
+    get: function( key ) {
+        return this.hashes[ JSON.stringify( key ) ];
+    }
+};
