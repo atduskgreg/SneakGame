@@ -72,7 +72,12 @@ var Map = {
       }
     }
 
-    return path;
+    if(Util.sameSquare(path[path.length-1], fromCell)){
+      return path;
+    } else { // no path from here to there
+      return false;
+    }
+
   },
 
   connectCells : function(cell1, cell2){
