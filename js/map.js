@@ -60,6 +60,21 @@ var Map = {
     return pathMap;
   },
 
+  getConnectedCells : function(cell){
+    return this.getPathMap(cell).keys();
+  },
+
+  getSetEdges : function(cells){
+    var edgeCells = [];
+    for(var i = 0; i < cells.length; i++){
+      connectedNeighbors = this.getConnectedNeighbors(cells[i]);
+      if(connectedNeighbors.length < this.getNeighbors(cells[i]).length){
+        edgeCells.push(cells[i])
+      }
+    }
+    return edgeCells;
+  },
+
   getPath : function(fromCell, toCell){
     var path = []
     pathMap = this.getPathMap(fromCell);
@@ -110,6 +125,17 @@ var Map = {
     result = [];
     for(var i = 0; i < this.cells.length; i++){
       if(this.cells[i].indoors){
+        result.push(this.cells[i]);
+      }
+    }
+
+    return result;
+  },
+
+  outdoorCells : function(){
+    result = [];
+    for(var i = 0; i < this.cells.length; i++){
+      if(!this.cells[i].indoors){
         result.push(this.cells[i]);
       }
     }

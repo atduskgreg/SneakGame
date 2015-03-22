@@ -24,6 +24,18 @@ var Util = {
     return Util.colors.splice(idx, 1)[0];
   },
 
+  getRandomIndoorSquare : function(){
+    indoorSquares = Map.indoorCells();
+    result = indoorSquares[Math.floor(Math.random() * indoorSquares.length)];
+    return {col : result.col, row : result.row};
+  },
+
+  getRandomOutdoorSquare : function(){
+    outdoorSquares = Map.outdoorCells();
+    result = outdoorSquares[Math.floor(Math.random() * outdoorSquares.length)];
+    return {col : result.col, row : result.row};
+  },
+
   getRandomSquare : function(range){
     // default to full width of board
     var c = Math.floor(Math.random() * Game.boardWidth);
@@ -230,5 +242,14 @@ HashTable.prototype = {
 
     get: function( key ) {
         return this.hashes[ JSON.stringify( key ) ];
+    },
+
+    keys : function(){
+      result = [];
+      hashKeys = Object.keys(this.hashes);
+      for(var i = 0; i < hashKeys.length; i++){
+        result.push(JSON.parse(hashKeys[i]));
+      }
+      return result;
     }
 };
