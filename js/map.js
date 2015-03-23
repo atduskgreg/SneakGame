@@ -23,6 +23,14 @@ var Map = {
 
     this.buildMap_connectedRooms();
     this.highlightIndoorCells();
+    this.highlightCells(this.getDoorCells(), "door");
+    doorCells = this.getDoorCells();
+    console.log("door cells");
+    for(var i = 0; i < doorCells.length; i++){
+      console.log(doorCells[i]);
+      dir = this.doorDirection(doorCells[i])
+      $(Util.squareSelector(doorCells[i])).addClass(dir + "Door");
+    }
   },
 
   buildMap_connectedRooms : function(){
@@ -47,8 +55,8 @@ var Map = {
     // connect outdoor areas to the indoors with doors
 
     outdoorCells = this.outdoorCells();
+    doorPairs = [];
     while(outdoorCells.length > 0){
-      console.log("outdoorCells.length : " + outdoorCells.length);
       //  pick a random element in the array
       cell = outdoorCells[Math.floor(Math.random() * outdoorCells.length)];
       //  find all the cells connected to that element
@@ -59,11 +67,8 @@ var Map = {
       doorTo = edges[Math.floor(Math.random() * edges.length)];    
       
       indoorNeighbors = this.getDisconnectedNeighbors(doorTo, this.orthoDirs);
-      console.log("indoorNeighbors");
-      console.log(indoorNeighbors);
       doorFrom = indoorNeighbors[Math.floor(Math.random() * indoorNeighbors.length)];
-      this.addDoor(doorFrom, doorTo);
-  
+      doorPairs.push([doorFrom, doorTo])  
       //  remove all the area cells from the array
       toRemove = [];
       for(var i = 0; i < area.length; i++){
@@ -77,6 +82,10 @@ var Map = {
         idx = outdoorCells.indexOf(toRemove[i]);
         outdoorCells.splice(idx,1);
       }
+    }
+
+    for(var i = 0; i < doorPairs.length; i++){
+      this.addDoor(doorPairs[i][0], doorPairs[i][1]);
     }
     
 
@@ -203,19 +212,21 @@ var Map = {
   },
 
   addDoor : function(cell1, cell2){
-    console.log("from");
-    console.log(cell1);
-    console.log("to");
-    console.log(cell2);
-
     cell1.doorTo = cell2;
   },
 
-  // TODO : this is where doors get implemented
-  // use doorTo (see above)
   areCellsConnected : function(cell1, cell2){
-    // HERE
-    return (cell1.indoors == cell2.indoors)
+    if(cell1.indoors == cell2.indoors){
+      return true;
+    }
+    if(cell1.doorTo && Util.sameSquare(cell1.doorTo, cell2)){
+      return true;
+    }
+    if(cell2.doorTo && Util.sameSquare(cell2.doorTo, cell1)){
+      return true;
+    }
+
+    return false;
   },
 
   getDoorCells : function(){
@@ -227,6 +238,10 @@ var Map = {
       }
     }
     return result;
+  },
+
+  doorDirection : function(cell){
+    return Util.cardinalDescription(cell, cell.doorTo);
   },
 
   getConnectedNeighbors : function(cell, selectedDirs){
@@ -247,7 +262,6 @@ var Map = {
     var result = [];
     for(var i = 0; i < dirs.length; i++){
       dir = dirs[i];
-      console.log(dir);
       neighbor = this.getNeighbor(cell, dir);
       if(neighbor && !this.areCellsConnected(neighbor,cell)){
         result.push(neighbor);
@@ -292,6 +306,8 @@ var Map = {
 
   clear : function(){
     this.clearHighlights();
+    this.clearHighlights("door");
+    this.clearHighlights("path");
     this.cells = [];
     for(var i = 0; i < this.cells.length; i++){
       this.cells[i].indoors = false;
