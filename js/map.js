@@ -1,5 +1,9 @@
 var Map = {
   cells : [],
+  orthoDirs : [{col: 1,  row:  0},
+               {col: 0,  row:  1},
+               {col: -1, row:  0},
+               {col: 0,  row: -1}],
   dirs : [{col: 1,  row:  0},
           {col: 0,  row:  1},
           {col: -1, row:  0},
@@ -19,6 +23,14 @@ var Map = {
 
     this.buildMap_connectedRooms();
     this.highlightIndoorCells();
+    this.highlightCells(this.getDoorCells(), "door");
+    doorCells = this.getDoorCells();
+    console.log("door cells");
+    for(var i = 0; i < doorCells.length; i++){
+      console.log(doorCells[i]);
+      dir = this.doorDirection(doorCells[i])
+      $(Util.squareSelector(doorCells[i])).addClass(dir + "Door");
+    }
   },
 
   buildMap_connectedRooms : function(){
@@ -39,6 +51,44 @@ var Map = {
       
       } 
     }
+
+    // connect outdoor areas to the indoors with doors
+
+    outdoorCells = this.outdoorCells();
+    doorPairs = [];
+    while(outdoorCells.length > 0){
+      //  pick a random element in the array
+      cell = outdoorCells[Math.floor(Math.random() * outdoorCells.length)];
+      //  find all the cells connected to that element
+      area = Map.getConnectedCells(cell)
+      // get the edge cells of this area
+      edges = this.getSetEdges(area);
+      //  pick a random edge cell and add a door to one of its indoor neighbors
+      doorTo = edges[Math.floor(Math.random() * edges.length)];    
+      
+      indoorNeighbors = this.getDisconnectedNeighbors(doorTo, this.orthoDirs);
+      doorFrom = indoorNeighbors[Math.floor(Math.random() * indoorNeighbors.length)];
+      doorPairs.push([doorFrom, doorTo])  
+      //  remove all the area cells from the array
+      toRemove = [];
+      for(var i = 0; i < area.length; i++){
+         for(var j = 0; j < outdoorCells.length; j++){
+           if(Util.sameSquare(area[i], outdoorCells[j])){
+             toRemove.push(outdoorCells[j]);
+           }
+         }
+      }
+      for(var i = 0; i < toRemove.length; i++){
+        idx = outdoorCells.indexOf(toRemove[i]);
+        outdoorCells.splice(idx,1);
+      }
+    }
+
+    for(var i = 0; i < doorPairs.length; i++){
+      this.addDoor(doorPairs[i][0], doorPairs[i][1]);
+    }
+    
+
   },
 
   getPathMap : function(cell){
@@ -67,8 +117,8 @@ var Map = {
   getSetEdges : function(cells){
     var edgeCells = [];
     for(var i = 0; i < cells.length; i++){
-      connectedNeighbors = this.getConnectedNeighbors(cells[i]);
-      if(connectedNeighbors.length < this.getNeighbors(cells[i]).length){
+      connectedNeighbors = this.getConnectedNeighbors(cells[i], this.orthoDirs);
+      if(connectedNeighbors.length < this.getNeighbors(cells[i], this.orthoDirs).length){
         edgeCells.push(cells[i])
       }
     }
@@ -161,15 +211,44 @@ var Map = {
     return false;
   },
 
-  // TODO : this is where doors get implemented
-  areCellsConnected : function(cell1, cell2){
-    return (cell1.indoors == cell2.indoors)
+  addDoor : function(cell1, cell2){
+    cell1.doorTo = cell2;
   },
 
-  getConnectedNeighbors : function(cell){
+  areCellsConnected : function(cell1, cell2){
+    if(cell1.indoors == cell2.indoors){
+      return true;
+    }
+    if(cell1.doorTo && Util.sameSquare(cell1.doorTo, cell2)){
+      return true;
+    }
+    if(cell2.doorTo && Util.sameSquare(cell2.doorTo, cell1)){
+      return true;
+    }
+
+    return false;
+  },
+
+  getDoorCells : function(){
     var result = [];
-    for(var i = 0; i < this.dirs.length; i++){
-      dir = this.dirs[i];
+    indoorCells = this.indoorCells();
+    for(var i = 0; i < indoorCells.length; i++){
+      if(indoorCells[i].doorTo){
+        result.push(indoorCells[i]);
+      }
+    }
+    return result;
+  },
+
+  doorDirection : function(cell){
+    return Util.cardinalDescription(cell, cell.doorTo);
+  },
+
+  getConnectedNeighbors : function(cell, selectedDirs){
+    dirs = selectedDirs || this.dirs
+    var result = [];
+    for(var i = 0; i < dirs.length; i++){
+      dir = dirs[i];
       neighbor = this.getNeighbor(cell, dir);
       if(neighbor && this.areCellsConnected(neighbor,cell)){
         result.push(neighbor);
@@ -178,10 +257,24 @@ var Map = {
     return result;
   },
 
-  getNeighbors : function(cell){
+  getDisconnectedNeighbors : function(cell, selectedDirs){
+    dirs = selectedDirs || this.dirs
     var result = [];
-    for(var i = 0; i < this.dirs.length; i++){
-      dir = this.dirs[i];
+    for(var i = 0; i < dirs.length; i++){
+      dir = dirs[i];
+      neighbor = this.getNeighbor(cell, dir);
+      if(neighbor && !this.areCellsConnected(neighbor,cell)){
+        result.push(neighbor);
+      }
+    }
+    return result;
+  },
+
+  getNeighbors : function(cell, selectedDirs){
+    dirs = selectedDirs || this.dirs
+    var result = [];
+    for(var i = 0; i < dirs.length; i++){
+      dir = dirs[i];
       neighbor = this.getNeighbor(cell, dir);
       if(neighbor){
         result.push(neighbor);
@@ -213,6 +306,9 @@ var Map = {
 
   clear : function(){
     this.clearHighlights();
+    this.clearHighlights("door");
+    this.clearHighlights("path");
+    this.cells = [];
     for(var i = 0; i < this.cells.length; i++){
       this.cells[i].indoors = false;
     }
