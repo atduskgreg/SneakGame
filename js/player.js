@@ -51,20 +51,6 @@ Player.prototype.hasItem = function(itemName){
   return result;
 }
 
-Player.prototype.disabledMoves = function(){
-  result = {}
-
-  if(this.hasItem("gun")){
-    result["shoot"] = true;
-  } else {
-    for(i in Util.moves){
-      result[i] = !this.isMoveLegal(Util.moves[i]);
-    }
-  }
-
-  return result;
-}
-
 Player.prototype.legalMoves = function(){
   result = {};
   result["position-top"] = (this.tablePosition == 1);
@@ -72,9 +58,26 @@ Player.prototype.legalMoves = function(){
   if(this.hasItem("gun")){
     result["shoot"] = true;
   } else {
+    // default to false
     for(i in Util.moves){
-      result[i] = this.isMoveLegal(Util.moves[i]);
+      result[i] = false;
     }
+    // can always hold
+    result["hold"] = true;
+
+    // go through the connected neighbors
+    // and add them as legal options 
+    currCell = Map.getCell(this.position);
+    legalDestinations = Map.getConnectedNeighbors(currCell);
+    for(var i = 0; i < legalDestinations.length; i++){
+      d = Util.cardinalDescription(this.position, legalDestinations[i]);
+      result[d] = true;
+    }
+    console.log("legalMoves for " + this.color);
+    console.log(result);
+    // for(i in Util.moves){
+    //   result[i] = this.isMoveLegal(Util.moves[i]);
+    // }
   }
 
   return result;
