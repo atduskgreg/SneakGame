@@ -4,6 +4,7 @@ App.Router.map(function(){
   this.resource('/');
   this.resource("setup");
   this.resource("characterAssignment");
+  this.resource("poison");
   this.resource("moves");
   this.resource("moveInstructions");
   this.resource("dialogs");
@@ -60,6 +61,24 @@ App.SetupRoute = Ember.Route.extend({
 App.CharacterAssignmentRoute = Ember.Route.extend({
   setupController : function(controller, model){
     GameManager.transitionTo("characterAssignment");
+  }
+});
+
+App.PoisonRoute = Ember.Route.extend({
+  setupController : function(controller, model){
+    GameManager.transitionTo("poisonInput");
+
+    console.log("poisonRoute playerIDx: " + PassManager.playerIdx);
+
+    currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
+    currPlayer = Game.players[currPlayerKey];
+    targets = Game.poisoningTargetsFor(currPlayer);
+    targetColors = [];
+    for(var i = 0; i < targets.length; i++){
+      targetColors.push(targets[i].color);
+    }
+
+    controller.set("targets", targetColors);
   }
 });
 
@@ -129,10 +148,31 @@ App.DialogRevealsController = Ember.ArrayController.extend({
       next : function(){
         PassManager.next();
         if(PassManager.get("currentState.name") == "done"){
-          this.transitionToRoute("moves");
+          this.transitionToRoute("poison");
         }
       }
     }
+});
+
+App.PoisonController = Ember.ObjectController.extend({
+  model : {},
+  actions : {
+    poison : function(){
+      // HERE: get target and execute poisoning (see ShootController)
+
+      PassManager.next();
+      if(PassManager.get("currentState.name") == "done"){
+        this.transitionToRoute("moves");
+      }
+    },
+
+    next :function(){
+      PassManager.next();
+      if(PassManager.get("currentState.name") == "done"){
+        this.transitionToRoute("moves");
+      }
+    }
+  }
 });
 
 
@@ -141,7 +181,7 @@ App.CharacterAssignmentController = Ember.ObjectController.extend({
     next : function(){
       PassManager.next();
       if(PassManager.get("currentState.name") == "done"){
-        this.transitionToRoute("moves");
+        this.transitionToRoute("poison");
       } else {
 
       }
@@ -154,7 +194,7 @@ App.ShootRoute = Ember.Route.extend({
     GameManager.transitionTo("pickTarget");
     currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
     currPlayer = Game.players[currPlayerKey];
-    targets = Game.targetsFor(currPlayer);
+    targets = Game.shootingTargetsFor(currPlayer);
     targetColors = [];
     for(var i = 0; i < targets.length; i++){
       targetColors.push(targets[i].color);
@@ -359,6 +399,21 @@ var GameManager = Ember.StateManager.create({
     enter: function(stateManager) {
       console.log("enter characterAssignment");
       PassManager.reset();
+    }
+  }),
+
+  poisonInput : Ember.State.create({
+    enter: function(stateManager) {
+      console.log("enter poisonInput");
+      // if(PassManager.playerIdx > 1){
+        PassManager.reset();
+      // }
+      // console.log("begin poisonInput playerIdx: " + PassManager.playerIdx);
+
+    },
+
+    exit : function(stateManager){
+      console.log("exit poisonInput");
     }
   }),
 
