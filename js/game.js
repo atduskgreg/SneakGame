@@ -332,7 +332,9 @@ var Game = {
 
   // TODO: Make poison duration be set by player
   poisonCharacter : function(character, opts){
-    character.poisonings.push({poisoner: opts.poisoner, when : Game.roundNum, duration : 3});
+    poisoning = {poisoner: opts.poisoner, victim : character, when : Game.roundNum, duration : 3};
+    character.poisonings.push(poisoning);
+    opts.poisoner.poisoningsCommitted.push(poisoning);
   },
 
   checkPoisonings : function(){
