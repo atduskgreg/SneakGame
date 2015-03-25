@@ -330,6 +330,11 @@ var Game = {
     return result;
   },
 
+  // TODO: Make poison duration be set by player
+  poisonCharacter : function(character, opts){
+    character.poisonings.push({poisoner: opts.poisoner, when : Game.roundNum, duration : 3});
+  },
+
   killCharacter : function(character, opts){
     charKeys = Object.keys(Game.characters);
     for(var i = 0; i < charKeys.length; i++){
@@ -340,7 +345,7 @@ var Game = {
       }
     }
 
-    Game.victims.push({killer : opts.killer, name : character.name, color : character.color, position : character.position, when : Game.roundNum});
+    Game.victims.push({killer : opts.killer, method : opts.method, name : character.name, color : character.color, position : character.position, when : Game.roundNum});
   },
 
   newVictims : function(){

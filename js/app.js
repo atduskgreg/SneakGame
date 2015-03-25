@@ -149,7 +149,11 @@ App.PoisonController = Ember.ObjectController.extend({
   model : {},
   actions : {
     poison : function(){
-      // HERE: get target and execute poisoning (see ShootController)
+      // get target and execute poisoning
+      targetCharacter = Game.characterWithAttribute("color", this.get("targetColor"));
+      currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
+      currPlayer = Game.players[currPlayerKey];
+      Game.poisonCharacter(targetCharacter, {poisoner : currPlayer});
 
       PassManager.next();
       if(PassManager.get("currentState.name") == "done"){
