@@ -60,15 +60,24 @@ var Map = {
       //  pick a random element in the array
       cell = outdoorCells[Math.floor(Math.random() * outdoorCells.length)];
       //  find all the cells connected to that element
-      area = Map.getConnectedCells(cell)
+      area = Map.getConnectedCells(cell);
+      console.log("area");
+      console.log(area);
       // get the edge cells of this area
       edges = this.getSetEdges(area);
-      //  pick a random edge cell and add a door to one of its indoor neighbors
-      doorTo = edges[Math.floor(Math.random() * edges.length)];    
-      
-      indoorNeighbors = this.getDisconnectedNeighbors(doorTo, this.orthoDirs);
-      doorFrom = indoorNeighbors[Math.floor(Math.random() * indoorNeighbors.length)];
-      doorPairs.push([doorFrom, doorTo])  
+
+//      if(edges.length > 0){
+        //  pick a random edge cell and add a door to one of its indoor neighbors
+        edgeIdx = Math.floor(Math.random() * edges.length);
+        doorTo = edges[edgeIdx];    
+        console.log(edges);
+        console.log("edgeIdx: " + edgeIdx);
+        console.log(doorTo);
+        
+        indoorNeighbors = this.getDisconnectedNeighbors(doorTo, this.orthoDirs);
+        doorFrom = indoorNeighbors[Math.floor(Math.random() * indoorNeighbors.length)];
+        doorPairs.push([doorFrom, doorTo])  
+    //  }
       //  remove all the area cells from the array
       toRemove = [];
       for(var i = 0; i < area.length; i++){
@@ -111,14 +120,19 @@ var Map = {
   },
 
   getConnectedCells : function(cell){
-    return this.getPathMap(cell).keys();
+    result = this.getPathMap(cell).keys();
+    // isolated cells should be connected to themselves
+    if(result.length == 0){
+      result.push(cell);
+    }
+    return result;
   },
 
   getSetEdges : function(cells){
     var edgeCells = [];
     for(var i = 0; i < cells.length; i++){
       connectedNeighbors = this.getConnectedNeighbors(cells[i], this.orthoDirs);
-      if(connectedNeighbors.length < this.getNeighbors(cells[i], this.orthoDirs).length){
+      if(connectedNeighbors.length < this.getNeighbors(cells[i], this.orthoDirs).length || connectedNeighbors.length == 0){
         edgeCells.push(cells[i])
       }
     }
@@ -307,6 +321,11 @@ var Map = {
   clear : function(){
     this.clearHighlights();
     this.clearHighlights("door");
+    this.clearHighlights("nDoor");
+    this.clearHighlights("eDoor");
+    this.clearHighlights("wDoor");
+    this.clearHighlights("sDoor");
+
     this.clearHighlights("path");
     this.cells = [];
     for(var i = 0; i < this.cells.length; i++){

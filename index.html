@@ -145,7 +145,22 @@
         <p><button {{action 'next'}}>Got it</button></p>
       {{/if}}
     </script>
+    
+    <script type="text/x-handlebars" id="poison">
+    <h1>Select someone to poison</h1>
+    {{#if PassManager.isPassing}}
+        {{partial 'pass'}}
+    {{else}}
+      (You are {{ current-player-rank-color }})
+      <form {{action "poison" on="submit"}}>
+        {{view "select" contentBinding="targets" valueBinding='targetColor'}}
+        <button type="submit">Poison</button>
+      </form>
+      or
+      <button {{action "next"}}>Skip</button>
+    {{/if}}
 
+    </script>
 
     <script type="text/x-handlebars" id="moves">
       <h1>Input moves</h1>

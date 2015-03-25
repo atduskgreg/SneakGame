@@ -4,6 +4,7 @@ App.Router.map(function(){
   this.resource('/');
   this.resource("setup");
   this.resource("characterAssignment");
+  this.resource("poison");
   this.resource("moves");
   this.resource("moveInstructions");
   this.resource("dialogs");
@@ -63,6 +64,17 @@ App.CharacterAssignmentRoute = Ember.Route.extend({
   }
 });
 
+App.PoisonRoute = Ember.Route.extend({
+  setupController : function(controller, model){
+    GameManager.transitionTo("poisonInput");
+    // NOTE: controller.set("targets") gets set in the PoisonController
+    // (rather than heresince it needs to be bound to the PassManager
+    // to get updated with each player's turn
+  }
+
+});
+
+
 App.MovesRoute = Ember.Route.extend({
   setupController : function(controller, model){
     GameManager.transitionTo("moveInput");
@@ -70,9 +82,7 @@ App.MovesRoute = Ember.Route.extend({
 
     model= currPlayer.legalMoves();
     model.onScreen = this.store.all("config").get("firstObject").get("onScreen");
-    console.log("model.onScreen " + model.onScreen);
-    // controller.set("onScreen", this.store.all("config").get("firstObject").get("onScreen"));
-    // console.log("cs: " + controller.get("onScreen"));
+
     controller.set("model", model);
   }
 });
@@ -129,19 +139,59 @@ App.DialogRevealsController = Ember.ArrayController.extend({
       next : function(){
         PassManager.next();
         if(PassManager.get("currentState.name") == "done"){
-          this.transitionToRoute("moves");
+          this.transitionToRoute("poison");
         }
       }
     }
 });
 
+App.PoisonController = Ember.ObjectController.extend({
+  model : {},
+  actions : {
+    poison : function(){
+      // HERE: get target and execute poisoning (see ShootController)
+
+      PassManager.next();
+      if(PassManager.get("currentState.name") == "done"){
+        this.transitionToRoute("moves");
+      }
+    },
+
+    next :function(){
+      PassManager.next();
+      if(PassManager.get("currentState.name") == "done"){
+        this.transitionToRoute("moves");
+      }
+    },
+  }
+});
+
+App.PoisonController.reopen({
+  updateTargets : function(){
+    console.log("updateTargets");
+    currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
+    currPlayer = Game.players[currPlayerKey];
+
+    // we seem to get called at a weird point in the PM lifecycle
+    // where sometimes playerIdx is wrong. Also we don't need to
+    // do set targets when we're out of the poisoning phase
+    if(currPlayer && GameManager.get("currentState.name") == "poisonInput"){
+      targets = Game.poisoningTargetsFor(currPlayer);
+      targetColors = [];
+      for(var i = 0; i < targets.length; i++){
+        targetColors.push(targets[i].color);
+      }
+      this.set("targets", targetColors);
+    }
+  }.observes("PassManager.currentState.name")
+});
 
 App.CharacterAssignmentController = Ember.ObjectController.extend({
   actions : {
     next : function(){
       PassManager.next();
       if(PassManager.get("currentState.name") == "done"){
-        this.transitionToRoute("moves");
+        this.transitionToRoute("poison");
       } else {
 
       }
@@ -154,7 +204,7 @@ App.ShootRoute = Ember.Route.extend({
     GameManager.transitionTo("pickTarget");
     currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
     currPlayer = Game.players[currPlayerKey];
-    targets = Game.targetsFor(currPlayer);
+    targets = Game.shootingTargetsFor(currPlayer);
     targetColors = [];
     for(var i = 0; i < targets.length; i++){
       targetColors.push(targets[i].color);
@@ -337,7 +387,7 @@ PassManager.reopen({
   isPassing : function(){
     return this.get("currentState.name") == "pass";
   }.property("currentState.name")
-})
+});
 
 var GameManager = Ember.StateManager.create({
   initialState: 'start',
@@ -359,6 +409,21 @@ var GameManager = Ember.StateManager.create({
     enter: function(stateManager) {
       console.log("enter characterAssignment");
       PassManager.reset();
+    }
+  }),
+
+  poisonInput : Ember.State.create({
+    enter: function(stateManager) {
+      console.log("enter poisonInput");
+      // if(PassManager.playerIdx > 1){
+        PassManager.reset();
+      // }
+      // console.log("begin poisonInput playerIdx: " + PassManager.playerIdx);
+
+    },
+
+    exit : function(stateManager){
+      console.log("exit poisonInput");
     }
   }),
 

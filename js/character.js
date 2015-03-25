@@ -37,6 +37,17 @@ Character.prototype = {
 		}
 	},
 
+	charactersSharingPosition : function(){
+		var result = [];
+		all = Game.charactersOnSquare(this.position);
+		for(var i = 0; i < all.length; i++){
+			if(all[i].name != this.name){
+				result.push(all[i]);
+			}
+		}
+		return result;
+	},
+
 	pathToDestination : function(){
 		return Map.getPath(Map.getCell(this.destination), Map.getCell(this.position));
 	},

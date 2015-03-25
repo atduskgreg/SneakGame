@@ -218,6 +218,16 @@ var Game = {
     }
   },
 
+  charactersOnSquare : function(square){
+    var result = [];
+    for(i in this.characters){
+      if(Util.sameSquare(this.characters[i].position, square)){
+        result.push(this.characters[i]);
+      }
+    }
+    return result;
+  },
+
   // TODO:
   //  Maybe mark the dialogs that involve a dead person
   //  so they can be displayed separately: "blue is rifling the corpse of green"
@@ -301,7 +311,11 @@ var Game = {
     Game.inventory.splice(index, 1);
   },
 
-  targetsFor : function(character){
+  poisoningTargetsFor : function(character){
+    return character.charactersSharingPosition();
+  },
+
+  shootingTargetsFor : function(character){
     var result = [];
     charKeys = Object.keys(Game.characters);
 
