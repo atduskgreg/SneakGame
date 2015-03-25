@@ -12,6 +12,7 @@ Player = function() {
   this.positionHistory = [];
   this.learned = [];
   this.poisonings = [];
+  this.poisoningsCommitted = [];
 
   // startSqrIdx = Math.floor(Math.random() * Game.seedSquares.length);
   // startSqr = Game.seedSquares[startSqrIdx];
@@ -20,6 +21,10 @@ Player = function() {
 }
 
 Player.prototype = new Character();
+
+Player.prototype.canPoison = function(){
+  return (this.poisoningsCommitted.length == 0);
+}
 
 Player.prototype.setNextMove = function(dir){
 	this.nextPos = {col: this.position.col + dir.col, row:this.position.row + dir.row};

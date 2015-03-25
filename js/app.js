@@ -179,13 +179,25 @@ App.PoisonController.reopen({
     // where sometimes playerIdx is wrong. Also we don't need to
     // do set targets when we're out of the poisoning phase
     if(currPlayer && GameManager.get("currentState.name") == "poisonInput"){
-      console.log("updateTargets");
-      targets = Game.poisoningTargetsFor(currPlayer);
-      targetColors = [];
-      for(var i = 0; i < targets.length; i++){
-        targetColors.push(targets[i].color);
+      
+      if(currPlayer.canPoison()){
+        console.log("updateTargets");
+        targets = Game.poisoningTargetsFor(currPlayer);
+        targetColors = [];
+        for(var i = 0; i < targets.length; i++){
+          targetColors.push(targets[i].color);
+        }
+        console.log("num targets: " + targetColors.length);
+        this.set("targets", targetColors);
+        if(targetColors.length == 0){
+          console.log("noTargets, true");
+          this.set("noTargets", true);
+        }
+        this.set("canPoison", true);
+      } else {
+        this.set("noTargets", false);
+        this.set("canPoison", false);
       }
-      this.set("targets", targetColors);
     }
   }.observes("PassManager.currentState.name")
 });

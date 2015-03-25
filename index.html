@@ -152,12 +152,21 @@
         {{partial 'pass'}}
     {{else}}
       (You are {{ current-player-rank-color }})
-      <form {{action "poison" on="submit"}}>
-        {{view "select" contentBinding="targets" valueBinding='targetColor'}}
-        <button type="submit">Poison</button>
-      </form>
-      or
-      <button {{action "next"}}>Skip</button>
+      {{#if canPoison }}
+        {{#if noTargets}}
+          <p>No one to poison here. <button {{action "next"}}>Continue</button></p>
+        {{ else }}
+
+          <form {{action "poison" on="submit"}}>
+            {{view "select" contentBinding="targets" valueBinding='targetColor'}}
+            <button type="submit">Poison</button>
+          </form>
+          or
+          <button {{action "next"}}>Skip</button>
+        {{/if}}
+      {{else}}
+        <p>You already used your poison. <button {{action "next"}}>Continue</button></p>
+      {{/if}}
     {{/if}}
 
     </script>
