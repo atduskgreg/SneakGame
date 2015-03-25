@@ -93,7 +93,7 @@ App.MoveInstructionsRoute = Ember.Route.extend({
 
     controller.set("onScreen", this.store.all("config").get("firstObject").get("onScreen"));
     controller.set('instructions', Game.moveInstructions);
-    controller.set('victims', Game.newShootingVictims());
+    controller.set('victims', Game.newVictims());
   }
 });
 
@@ -149,7 +149,11 @@ App.PoisonController = Ember.ObjectController.extend({
   model : {},
   actions : {
     poison : function(){
-      // HERE: get target and execute poisoning (see ShootController)
+      // get target and execute poisoning
+      targetCharacter = Game.characterWithAttribute("color", this.get("targetColor"));
+      currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
+      currPlayer = Game.players[currPlayerKey];
+      Game.poisonCharacter(targetCharacter, {poisoner : currPlayer});
 
       PassManager.next();
       if(PassManager.get("currentState.name") == "done"){
@@ -168,7 +172,6 @@ App.PoisonController = Ember.ObjectController.extend({
 
 App.PoisonController.reopen({
   updateTargets : function(){
-    console.log("updateTargets");
     currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
     currPlayer = Game.players[currPlayerKey];
 
@@ -176,6 +179,7 @@ App.PoisonController.reopen({
     // where sometimes playerIdx is wrong. Also we don't need to
     // do set targets when we're out of the poisoning phase
     if(currPlayer && GameManager.get("currentState.name") == "poisonInput"){
+      console.log("updateTargets");
       targets = Game.poisoningTargetsFor(currPlayer);
       targetColors = [];
       for(var i = 0; i < targets.length; i++){
@@ -227,7 +231,7 @@ App.ShootController = Ember.ObjectController.extend({
         this.transitionToRoute("victory");
       } else {
         console.log("hit NPC");
-        Game.killCharacter(targetCharacter, {killer : currPlayer});
+        Game.killCharacter(targetCharacter, {killer : currPlayer, method : "shooting"});
 
         gun = currPlayer.itemWithAttribute("name", "gun");
         currPlayer.dropItem(gun);
@@ -444,6 +448,7 @@ var GameManager = Ember.StateManager.create({
     enter: function(stateManager) {
       console.log("begin moveInstructions");
       Game.makeMoves();
+      Game.checkPoisonings();
       Game.pickupItems();
       Game.calculateMoveInstructions();
     }

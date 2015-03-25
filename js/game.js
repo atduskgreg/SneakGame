@@ -14,7 +14,7 @@ var Game = {
   numGuns : 4,
   inventory : [],
   winner : null,
-  shootingVictims : [],
+  victims : [],
   moveInstructions : null,
   colorRanks : [],
   hidePlayers : false,
@@ -330,28 +330,47 @@ var Game = {
     return result;
   },
 
+  // TODO: Make poison duration be set by player
+  poisonCharacter : function(character, opts){
+    character.poisonings.push({poisoner: opts.poisoner, when : Game.roundNum, duration : 3});
+  },
+
+  checkPoisonings : function(){
+    for(i in this.characters){
+      if(this.characters[i].shouldDieFromPoison()){
+        this.killCharacter(this.characters[i], {method : "poisoning"})
+      }
+    }
+  },
+
   killCharacter : function(character, opts){
     charKeys = Object.keys(Game.characters);
-    removeKey = null;
     for(var i = 0; i < charKeys.length; i++){
       currChar = Game.characters[charKeys[i]];
       if(currChar.name == character.name){
-        //removeKey = charKeys[i];
         currChar.die();
         break;
       }
     }
 
-    Game.shootingVictims.push({killer : opts.killer, name : character.name, color : character.color, position : character.position, when : Game.roundNum});
-
-    delete Game.characters[removeKey];
+    Game.victims.push({killer : opts.killer, method : opts.method, name : character.name, color : character.color, position : character.position, when : Game.roundNum});
   },
 
-  newShootingVictims : function(){
+  deathDescription : function(death){
+    if(death.method == "shooting"){
+      return death.color + " was shot by " + death.killer.color + ".";
+
+    }
+    if(death.method == "poisoning"){
+      return death.color + " died of poison."
+    }
+  },
+
+  newVictims : function(){
     var result = [];
-    for(var i = 0; i < Game.shootingVictims.length; i++){
-      if(Game.shootingVictims[i].when == Game.roundNum){
-        result.push(Game.shootingVictims[i]);
+    for(var i = 0; i < Game.victims.length; i++){
+      if(Game.victims[i].when == Game.roundNum){
+        result.push(this.deathDescription(Game.victims[i]));
       }
     }
     return result;

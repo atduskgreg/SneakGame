@@ -9,6 +9,7 @@ Character = function(){
 	this.positionHistory = [];
 	this.learned = [];
 	this.newDestinationProbability = Math.min(Math.random() + 0.15, 0.85);
+	this.poisonings = [];
 }
 
 Character.prototype = {
@@ -82,6 +83,18 @@ Character.prototype = {
 
 	rank : function(){
 		return Util.ranks[Game.colorRanks.indexOf(this.color)];
+	},
+
+	shouldDieFromPoison : function(){
+		var result = false;
+		for(var i = 0; i < this.poisonings.length; i++){
+			dueDate = this.poisonings[i].when + this.poisonings[i].duration;
+			if(dueDate == Game.roundNum){
+				result = true;
+			}
+		}
+
+		return result;
 	},
 
 	die : function(){
