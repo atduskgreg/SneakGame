@@ -153,7 +153,7 @@
     {{else}}
       (You are {{ current-player-rank-color }})
       <form {{action "poison" on="submit"}}>
-        {{view "select" content=targets valueBinding='targetColor'}}
+        {{view "select" contentBinding="targets" valueBinding='targetColor'}}
         <button type="submit">Poison</button>
       </form>
       or
