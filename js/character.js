@@ -9,6 +9,7 @@ Character = function(){
 	this.positionHistory = [];
 	this.learned = [];
 	this.newDestinationProbability = Math.min(Math.random() + 0.15, 0.85);
+	this.poisonings = [];
 }
 
 Character.prototype = {

@@ -14,7 +14,7 @@ var Game = {
   numGuns : 4,
   inventory : [],
   winner : null,
-  shootingVictims : [],
+  victims : [],
   moveInstructions : null,
   colorRanks : [],
   hidePlayers : false,
@@ -332,26 +332,22 @@ var Game = {
 
   killCharacter : function(character, opts){
     charKeys = Object.keys(Game.characters);
-    removeKey = null;
     for(var i = 0; i < charKeys.length; i++){
       currChar = Game.characters[charKeys[i]];
       if(currChar.name == character.name){
-        //removeKey = charKeys[i];
         currChar.die();
         break;
       }
     }
 
-    Game.shootingVictims.push({killer : opts.killer, name : character.name, color : character.color, position : character.position, when : Game.roundNum});
-
-    delete Game.characters[removeKey];
+    Game.victims.push({killer : opts.killer, name : character.name, color : character.color, position : character.position, when : Game.roundNum});
   },
 
-  newShootingVictims : function(){
+  newVictims : function(){
     var result = [];
-    for(var i = 0; i < Game.shootingVictims.length; i++){
-      if(Game.shootingVictims[i].when == Game.roundNum){
-        result.push(Game.shootingVictims[i]);
+    for(var i = 0; i < Game.victims.length; i++){
+      if(Game.victims[i].when == Game.roundNum){
+        result.push(Game.victims[i]);
       }
     }
     return result;

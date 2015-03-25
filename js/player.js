@@ -11,6 +11,7 @@ Player = function() {
   this.tablePosition = null;
   this.positionHistory = [];
   this.learned = [];
+  this.poisonings = [];
 
   // startSqrIdx = Math.floor(Math.random() * Game.seedSquares.length);
   // startSqr = Game.seedSquares[startSqrIdx];

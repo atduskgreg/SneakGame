@@ -93,7 +93,7 @@ App.MoveInstructionsRoute = Ember.Route.extend({
 
     controller.set("onScreen", this.store.all("config").get("firstObject").get("onScreen"));
     controller.set('instructions', Game.moveInstructions);
-    controller.set('victims', Game.newShootingVictims());
+    controller.set('victims', Game.newVictims());
   }
 });
 
@@ -227,7 +227,7 @@ App.ShootController = Ember.ObjectController.extend({
         this.transitionToRoute("victory");
       } else {
         console.log("hit NPC");
-        Game.killCharacter(targetCharacter, {killer : currPlayer});
+        Game.killCharacter(targetCharacter, {killer : currPlayer, method : "shooting"});
 
         gun = currPlayer.itemWithAttribute("name", "gun");
         currPlayer.dropItem(gun);
