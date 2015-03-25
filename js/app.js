@@ -172,7 +172,6 @@ App.PoisonController = Ember.ObjectController.extend({
 
 App.PoisonController.reopen({
   updateTargets : function(){
-    console.log("updateTargets");
     currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
     currPlayer = Game.players[currPlayerKey];
 
@@ -180,6 +179,7 @@ App.PoisonController.reopen({
     // where sometimes playerIdx is wrong. Also we don't need to
     // do set targets when we're out of the poisoning phase
     if(currPlayer && GameManager.get("currentState.name") == "poisonInput"){
+      console.log("updateTargets");
       targets = Game.poisoningTargetsFor(currPlayer);
       targetColors = [];
       for(var i = 0; i < targets.length; i++){
@@ -448,6 +448,7 @@ var GameManager = Ember.StateManager.create({
     enter: function(stateManager) {
       console.log("begin moveInstructions");
       Game.makeMoves();
+      Game.checkPoisonings();
       Game.pickupItems();
       Game.calculateMoveInstructions();
     }

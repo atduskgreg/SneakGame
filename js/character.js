@@ -85,6 +85,18 @@ Character.prototype = {
 		return Util.ranks[Game.colorRanks.indexOf(this.color)];
 	},
 
+	shouldDieFromPoison : function(){
+		var result = false;
+		for(var i = 0; i < this.poisonings.length; i++){
+			dueDate = this.poisonings[i].when + this.poisonings[i].duration;
+			if(dueDate == Game.roundNum){
+				result = true;
+			}
+		}
+
+		return result;
+	},
+
 	die : function(){
 		this.dead = true;
 	},

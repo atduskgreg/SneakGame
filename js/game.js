@@ -335,6 +335,14 @@ var Game = {
     character.poisonings.push({poisoner: opts.poisoner, when : Game.roundNum, duration : 3});
   },
 
+  checkPoisonings : function(){
+    for(i in this.characters){
+      if(this.characters[i].shouldDieFromPoison()){
+        this.killCharacter(this.characters[i], {method : "poisoning"})
+      }
+    }
+  },
+
   killCharacter : function(character, opts){
     charKeys = Object.keys(Game.characters);
     for(var i = 0; i < charKeys.length; i++){
@@ -348,11 +356,21 @@ var Game = {
     Game.victims.push({killer : opts.killer, method : opts.method, name : character.name, color : character.color, position : character.position, when : Game.roundNum});
   },
 
+  deathDescription : function(death){
+    if(death.method == "shooting"){
+      return death.color + " was shot by " + death.killer.color + ".";
+
+    }
+    if(death.method == "poisoning"){
+      return death.color + " died of poison."
+    }
+  },
+
   newVictims : function(){
     var result = [];
     for(var i = 0; i < Game.victims.length; i++){
       if(Game.victims[i].when == Game.roundNum){
-        result.push(Game.victims[i]);
+        result.push(this.deathDescription(Game.victims[i]));
       }
     }
     return result;
