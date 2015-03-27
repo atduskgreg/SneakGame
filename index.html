@@ -426,7 +426,13 @@
 
     <script type="text/x-handlebars" id="victory">
     <h1>Game Over</h1>
-    <h2>{{winner.color}} ({{winner.name}}) is the winner!</h2>
+    {{#if oneWinner }}
+      <h2>{{result.winner.color}} is the winner!</h2>
+      <p>{{result.message}}</p>
+    {{else}}
+      <h2>{{result.message}}</h2>
+
+    {{/if}}
   </script>
 
     <script src="js/libs/jquery-1.10.2.js"></script>
