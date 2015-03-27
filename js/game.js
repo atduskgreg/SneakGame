@@ -13,7 +13,7 @@ var Game = {
   roundNum : 0,
   numGuns : 4,
   inventory : [],
-  winner : null,
+  result : {},
   victims : [],
   moveInstructions : null,
   colorRanks : [],
@@ -343,6 +343,37 @@ var Game = {
         this.killCharacter(this.characters[i], {method : "poisoning"})
       }
     }
+  },
+
+  // returns false if no victory
+  // returns object with info about winner otherwise
+  checkVictory : function(){
+    var result = false;
+    numDeadPlayers = 0;
+
+    soleWinner = null;
+    deathCauses = [];
+    for(i in this.players){
+      if(this.players[i].dead){
+        if(this.players[i].poisonings.length > 0){
+          deathCauses.push(this.players[i].color + " was poisoned by " + this.players[i].poisonings[0].poisoner.color) +".";
+        } // do something with shootings?
+        numDeadPlayers++;
+      } else {
+        // only use this if all the other players are dead
+        soleWinner = this.players[i];
+      }
+    }
+
+    if(numDeadPlayers == (this.nPlayers-1)){
+      result = {winner : soleWinner, message : deathCauses.join(" ")};
+    }
+
+    if(numDeadPlayers == this.nPlayers){
+      result = {message : "Everyone is dead! It's a draw.", draw : true};
+    }
+
+    return result;
   },
 
   killCharacter : function(character, opts){

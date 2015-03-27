@@ -91,6 +91,12 @@ App.MoveInstructionsRoute = Ember.Route.extend({
   setupController : function(controller, model){
     GameManager.transitionTo("moveInstructions");
 
+    gameResult = Game.checkVictory();
+    if(gameResult){
+      Game.result = gameResult;
+      controller.transitionToRoute("victory");
+    }
+
     controller.set("onScreen", this.store.all("config").get("firstObject").get("onScreen"));
     controller.set('instructions', Game.moveInstructions);
     controller.set('victims', Game.newVictims());
@@ -192,7 +198,11 @@ App.PoisonController.reopen({
         if(targetColors.length == 0){
           console.log("noTargets, true");
           this.set("noTargets", true);
+        } else {
+          console.log("noTargets, false");
+          this.set("noTargets", false);
         }
+
         this.set("canPoison", true);
       } else {
         this.set("noTargets", false);
@@ -238,8 +248,10 @@ App.ShootController = Ember.ObjectController.extend({
       currPlayer = Game.players[currPlayerKey];
 
       targetCharacter = Game.characterWithAttribute("color", this.get("targetColor"));
+      // TODO: refactor this to use Game.checkVictory (and killCharacter)
       if(targetCharacter.isPlayer){
-        Game.winner = currPlayer;
+        Game.result.winner = currPlayer;
+        Game.result.message = targetCharacter.color + " was shot by " + currPlayer.color + "."; 
         this.transitionToRoute("victory");
       } else {
         console.log("hit NPC");
@@ -264,7 +276,8 @@ App.ShootController = Ember.ObjectController.extend({
 
 App.VictoryRoute = Ember.Route.extend({
   setupController : function(controller, model){
-    controller.set("winner", Game.winner);
+    controller.set("oneWinner", !Game.result.draw);
+    controller.set("result", Game.result);
 
   }
 });
@@ -431,11 +444,7 @@ var GameManager = Ember.StateManager.create({
   poisonInput : Ember.State.create({
     enter: function(stateManager) {
       console.log("enter poisonInput");
-      // if(PassManager.playerIdx > 1){
-        PassManager.reset();
-      // }
-      // console.log("begin poisonInput playerIdx: " + PassManager.playerIdx);
-
+      PassManager.reset();
     },
 
     exit : function(stateManager){
