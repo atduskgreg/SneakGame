@@ -156,6 +156,7 @@ App.PoisonController = Ember.ObjectController.extend({
   actions : {
     poison : function(){
       // get target and execute poisoning
+      console.log("targetColor: " + this.get("targetColor"));
       targetCharacter = Game.characterWithAttribute("color", this.get("targetColor"));
       currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
       currPlayer = Game.players[currPlayerKey];
@@ -194,6 +195,9 @@ App.PoisonController.reopen({
           targetColors.push(targets[i].color);
         }
         console.log("num targets: " + targetColors.length);
+        console.log("first target: " + targetColors[0]);
+        console.log(targetColors);
+        this.set("firstTarget", targetColors[0]);
         this.set("targets", targetColors);
         if(targetColors.length == 0){
           console.log("noTargets, true");
