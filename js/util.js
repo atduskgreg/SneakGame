@@ -114,7 +114,13 @@ var Util = {
         }    
       } else {
         if(knowledge.subject == knowledge.receivedFrom){
-          result += this.capitalize(knowledge.receivedFrom) + " says, \"I have the plans. Take them and escape to the exit!\""
+
+          if(Game.characterWithAttribute("color", knowledge.receivedFrom).isPlayer){
+            result += this.capitalize(knowledge.receivedFrom) + " says, \"I have the plans, but I'm keeping them. Shoo!\""
+          } else {
+            result += this.capitalize(knowledge.receivedFrom) + " says, \"I have the plans. Take them and escape to the exit!\""
+          }
+
         } else {
           result += this.capitalize(knowledge.receivedFrom) + " says, \"" + this.capitalize(knowledge.subject) + " had the plans when I saw them " + this.timeSinceInWords(knowledge.when) + ".\"";
         }
