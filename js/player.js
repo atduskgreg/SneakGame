@@ -97,12 +97,8 @@ Player.prototype.displayString = function(){
 
      knowledgeDescription = [];
      for(subject in this.currentKnowledge()){
-      console.log(subject);
-      console.log(this.currentKnowledge()[subject]);
       k = Util.knowledgeDescription(this.currentKnowledge()[subject])
-      console.log(k)
      	knowledgeDescription.push(k);
-
      }
 	return "P : " + this.name + " ("+this.color+") i:["+inventory.join(", ")+"] k:[" + knowledgeDescription.join(", ")+"]";
 }

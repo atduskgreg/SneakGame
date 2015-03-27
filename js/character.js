@@ -227,8 +227,12 @@ Character.prototype = {
 		return result;
 	},
 
+	presentationString : function(){
+		return new Handlebars.SafeString("<span class='characterDisplay "+this.color+"Character'>"+this.rank() + " " + Util.capitalize(this.color)+"</span>");
+	},
+
 	setupInstruction : function(){
-		return "Place " + this.rank() + " " + Util.capitalize(this.color) + " on " + Util.squareDescription(this.position);
+		return new Handlebars.SafeString("Place " + this.presentationString() +  " on " + Util.squareDescription(this.position));
 	},
 
 	squareSelector : function(){

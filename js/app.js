@@ -126,7 +126,7 @@ App.DialogsController = Ember.ArrayController.extend({
 App.DialogController = Ember.ObjectController.extend({
 
   summary : function(){
-    return this.get("characters")[0].color + " (" + this.get("characters")[0].name + ") and " + this.get("characters")[1].color+ " (" + this.get("characters")[1].name + ")";
+    return new Handlebars.SafeString(this.get("characters")[0].presentationString() + " and " + this.get("characters")[1].presentationString());
   }.property("characters")
 });
 
@@ -188,22 +188,17 @@ App.PoisonController.reopen({
     if(currPlayer && GameManager.get("currentState.name") == "poisonInput"){
       
       if(currPlayer.canPoison()){
-        console.log("updateTargets");
         targets = Game.poisoningTargetsFor(currPlayer);
         targetColors = [];
         for(var i = 0; i < targets.length; i++){
           targetColors.push(targets[i].color);
         }
-        console.log("num targets: " + targetColors.length);
-        console.log("first target: " + targetColors[0]);
-        console.log(targetColors);
+
         this.set("firstTarget", targetColors[0]);
         this.set("targets", targetColors);
         if(targetColors.length == 0){
-          console.log("noTargets, true");
           this.set("noTargets", true);
         } else {
-          console.log("noTargets, false");
           this.set("noTargets", false);
         }
 
@@ -527,7 +522,7 @@ Ember.Handlebars.helper('current-player-color',function(){
 
 Ember.Handlebars.helper('current-player-rank-color',function(){
   p = Game.players[Object.keys(Game.players)[PassManager.playerIdx]];
-  return p.rank() + " " + Util.capitalize(p.color);
+  return p.presentationString();
 });
 
 Ember.Handlebars.helper('current-player-name',function(){
@@ -555,7 +550,7 @@ Ember.Handlebars.helper('current-player-knowledge',function(){
     if(itemActions[0].action == "got"){
       acquiredFrom.push(itemActions[0].from);
       result += "<li>";
-      result += Util.capitalize(itemActions[0].from) + " says, \"I have the plans. Take them and escape to the exit!\"";
+      result += Util.displayCharacterWithColor(itemActions[0].from) + " says, \"I have the plans. Take them and escape to the exit!\"";
       result += "</li>";
     }
   }

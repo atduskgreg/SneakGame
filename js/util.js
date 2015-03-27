@@ -67,19 +67,19 @@ var Util = {
     if(itemActions.length > 0 && itemActions[0].itemName == "gun"){
       // land on a gun and pick it up
       if(!Util.sameSquare(character.position, character.prevPosition)){
-        result = "move the " + character.color + " character " + Util.cardinalDescription(character.prevPosition, character.position) + ".";
+        result = "Move " + character.presentationString() + " " + Util.cardinalDescription(character.prevPosition, character.position) + ".";
         result += " They " + itemActions[0].action + " a gun";
         return result;
       // drop or shoot a gun you were already holding
       } else {
-        return "the " + character.color + " character " + itemActions[0].action + " a gun";
+        return character.presentationString() + itemActions[0].action + " a gun";
       }
     }
 
     if(Util.sameSquare(character.position, character.prevPosition)){
-      return "the "+ character.color +" character holds";
+      return character.presentationString() + " holds";
     } else {
-      return "move the "+ character.color  + " character " + Util.cardinalDescription(character.prevPosition, character.position);
+      return "Move "+ character.presentationString() + " " + Util.cardinalDescription(character.prevPosition, character.position);
     }
   },
 
@@ -96,38 +96,42 @@ var Util = {
     }
   },
 
+  displayCharacterWithColor : function(color){
+    return new Handlebars.SafeString(Game.characterWithAttribute("color", color).presentationString());
+  },
+
   knowledgeDescription : function(knowledge){
     result = "";
 
     if(!knowledge.receivedFrom){
       if(knowledge.plans){
-        result += this.capitalize(knowledge.subject) + " has the plans";
+        result += this.displayCharacterWithColor(knowledge.subject) + " has the plans";
       } else {
-        result += this.capitalize(knowledge.subject) + " doesn't have the plans";
+        result += this.displayCharacterWithColor(knowledge.subject) + " doesn't have the plans";
       }
     } else {
       if(!knowledge.plans){
         if(knowledge.subject == knowledge.receivedFrom){
-          result += this.capitalize(knowledge.receivedFrom) + " says, \"I don't have the plans.\""
+          result += this.displayCharacterWithColor(knowledge.receivedFrom) + " says, \"I don't have the plans.\""
         } else {
-          result += this.capitalize(knowledge.receivedFrom) + " says, \"" + this.capitalize(knowledge.subject) + " didn't have the plans when I saw them " + this.timeSinceInWords(knowledge.when) + ".\"";
+          result += this.displayCharacterWithColor(knowledge.receivedFrom) + " says, \"" + this.displayCharacterWithColor(knowledge.subject) + " didn't have the plans when I saw them " + this.timeSinceInWords(knowledge.when) + ".\"";
         }    
       } else {
         if(knowledge.subject == knowledge.receivedFrom){
 
           if(Game.characterWithAttribute("color", knowledge.receivedFrom).isPlayer){
-            result += this.capitalize(knowledge.receivedFrom) + " says, \"I have the plans, but I'm keeping them. Shoo!\""
+            result += this.displayCharacterWithColor(knowledge.receivedFrom) + " says, \"I have the plans, but I'm keeping them. Shoo!\""
           } else {
-            result += this.capitalize(knowledge.receivedFrom) + " says, \"I have the plans. Take them and escape to the exit!\""
+            result += this.displayCharacterWithColor(knowledge.receivedFrom) + " says, \"I have the plans. Take them and escape to the exit!\""
           }
 
         } else {
-          result += this.capitalize(knowledge.receivedFrom) + " says, \"" + this.capitalize(knowledge.subject) + " had the plans when I saw them " + this.timeSinceInWords(knowledge.when) + ".\"";
+          result += this.displayCharacterWithColor(knowledge.receivedFrom) + " says, \"" + this.displayCharacterWithColor(knowledge.subject) + " had the plans when I saw them " + this.timeSinceInWords(knowledge.when) + ".\"";
         }
       }
     }
     
-    return result;
+    return new Handlebars.SafeString(result);
   },
 
   timeSinceInWords : function(turn){
