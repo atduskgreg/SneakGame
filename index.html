@@ -89,9 +89,47 @@
       border: 2px dotted yellow;
     }
 
+    .characterDisplay {
+      font-weight: bold;
+    }
+
     .blackKnowledge{
       color: white;
     }
+
+    .redCharacter {
+      color: red;
+    }
+    .blueCharacter {
+      color: blue;
+    }
+    .greenCharacter {
+      color: green;
+    }
+    .yellowCharacter {
+      color: yellow;
+      -webkit-text-stroke: 1px gray;
+    }
+    .blackCharacter {
+      color: black;
+    }
+    .whiteCharacter {
+      -webkit-text-stroke: 1px gray;
+      color: white;
+    }
+    .orangeCharacter {
+      color: orange;
+    }
+    .pinkCharacter {
+      color: pink;
+    }
+    .grayCharacter {
+      color: gray;
+    }
+    .brownCharacter {
+      color: brown;
+    }
+
 
     </style>
 
@@ -176,7 +214,7 @@
       {{#if PassManager.isPassing}}
         {{partial 'pass'}}
       {{else}}
-        <p>You are {{current-player-color}} ({{current-player-name}}).</p>
+        <p>You are {{current-player-rank-color}}.</p>
         <div id="moveInput">
         <p>
           {{#if shoot}}

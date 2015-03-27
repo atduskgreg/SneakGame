@@ -126,7 +126,7 @@ App.DialogsController = Ember.ArrayController.extend({
 App.DialogController = Ember.ObjectController.extend({
 
   summary : function(){
-    return this.get("characters")[0].color + " (" + this.get("characters")[0].name + ") and " + this.get("characters")[1].color+ " (" + this.get("characters")[1].name + ")";
+    return new Handlebars.SafeString(this.get("characters")[0].presentationString() + " and " + this.get("characters")[1].presentationString());
   }.property("characters")
 });
 
@@ -527,7 +527,7 @@ Ember.Handlebars.helper('current-player-color',function(){
 
 Ember.Handlebars.helper('current-player-rank-color',function(){
   p = Game.players[Object.keys(Game.players)[PassManager.playerIdx]];
-  return p.rank() + " " + Util.capitalize(p.color);
+  return p.presentationString();
 });
 
 Ember.Handlebars.helper('current-player-name',function(){

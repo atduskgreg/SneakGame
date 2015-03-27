@@ -67,19 +67,19 @@ var Util = {
     if(itemActions.length > 0 && itemActions[0].itemName == "gun"){
       // land on a gun and pick it up
       if(!Util.sameSquare(character.position, character.prevPosition)){
-        result = "move the " + character.color + " character " + Util.cardinalDescription(character.prevPosition, character.position) + ".";
+        result = "Move " + character.presentationString() + " " + Util.cardinalDescription(character.prevPosition, character.position) + ".";
         result += " They " + itemActions[0].action + " a gun";
         return result;
       // drop or shoot a gun you were already holding
       } else {
-        return "the " + character.color + " character " + itemActions[0].action + " a gun";
+        return character.presentationString() + itemActions[0].action + " a gun";
       }
     }
 
     if(Util.sameSquare(character.position, character.prevPosition)){
-      return "the "+ character.color +" character holds";
+      return character.presentationString() + " holds";
     } else {
-      return "move the "+ character.color  + " character " + Util.cardinalDescription(character.prevPosition, character.position);
+      return "Move "+ character.presentationString() + " " + Util.cardinalDescription(character.prevPosition, character.position);
     }
   },
 
