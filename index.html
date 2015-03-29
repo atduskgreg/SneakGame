@@ -480,6 +480,7 @@
     <script src="js/libs/localstorage_adapter.js"></script>
     <script src="js/libs/ember-states.js"></script>
     <script src="js/libs/Queue.js"></script>
+    <script src="js/libs/p5.min.js"></script>
 
     <script src="js/map.js"></script>
     <script src="js/game.js"></script>
@@ -488,6 +489,189 @@
     <script src="js/player.js"></script>
 
     <script src="js/app.js"></script>
+    <script>
+      var gridSize = 50;
+
+      function setup(){
+        Map.setup();
+        console.log(Game.boardWidth + "," + Game.boardHeight)
+        canvas = createCanvas(50*Game.boardWidth + 50,50*Game.boardHeight+50);
+      }
+
+      function drawGrid(){
+        strokeWeight(0.1);
+        squaresPerCell = 4;
+
+
+        for(var row = 0; row < Game.boardHeight*4+1; row++){
+          for(var col = 0; col < Game.boardWidth*4+1; col++){
+            x = 25 + col*gridSize/squaresPerCell;
+            y = 25 + Game.boardHeight*gridSize;
+                    stroke(75,75,255);
+
+            if(col % 4 == 0){
+              strokeWeight(1);
+            } else {
+              strokeWeight(0.5);
+              stroke(40,40, 255);
+            }
+            line(x, 25, x, y);
+
+
+            line(25,x,y,x);
+
+
+
+            // Debug: draw coordinate labels
+            // if(col < Game.boardWidth && row < Game.boardHeight){
+            //   stroke(125);
+            //   text(col + "," + row,  col * gridSize , canvas.height - row*gridSize );
+            // }
+          }
+        }
+      }
+
+      function cellPos(cell){
+        x = gridSize/2 + gridSize * cell.col - 5;
+        y = (canvas.height-gridSize/2) - gridSize*(cell.row+1) - 5;
+        return {x: x, y: y};
+      }
+
+
+      function drawDoors(){
+        noFill();
+        doorCells = Map.getDoorCells();
+        strokeWeight(1);
+        for(var i = 0; i < doorCells.length; i++){
+          doorDir = Map.doorDirection(doorCells[i]);
+          pos = cellPos(doorCells[i]);
+          stroke(125);
+
+          if(doorDir == "n"){
+            // line(pos.x, pos.y, pos.x+gridSize-5, pos.y+10)
+
+            arc(pos.x+50, pos.y, 100, 100, HALF_PI, PI);
+            line(pos.x+50,pos.y, pos.x+50, pos.y+50);
+          }
+          if(doorDir == "s"){
+            arc(pos.x+gridSize,pos.y+gridSize, 100, 100, PI, PI+HALF_PI);
+            line(pos.x+gridSize,pos.y+gridSize, pos.x+gridSize, pos.y);
+
+          }
+
+          if(doorDir == "w"){
+            arc(pos.x, pos.y, 100, 100, 0, HALF_PI);
+            line(pos.x,pos.y, pos.x+50, pos.y);
+          }
+
+          if(doorDir == "w"){
+            arc(pos.x, pos.y, 100, 100, 0, HALF_PI);
+            line(pos.x,pos.y, pos.x+50, pos.y);
+          }
+        }
+      }
+
+      function westWall(){
+        rect(pos.x, pos.y, 10, gridSize);
+        // line(pos.x, pos.y, pos.x, pos.y+gridSize);
+        // line(pos.x+10, pos.y, pos.x+10, pos.y+gridSize);
+      }
+      function eastWall(){
+        rect(pos.x+gridSize, pos.y, 10, gridSize);
+        // line(pos.x+gridSize, pos.y, pos.x+gridSize, pos.y+gridSize);
+        // line(pos.x+gridSize+10, pos.y+10, pos.x+gridSize+10, pos.y+gridSize+10);
+      }
+      function northWall(){
+        rect(pos.x, pos.y, gridSize, 10);
+        // line(pos.x, pos.y, pos.x+gridSize, pos.y);
+        // line(pos.x, pos.y+10, pos.x+gridSize, pos.y+10);
+      }
+
+      function southWall(){
+        rect(pos.x,pos.y+gridSize, gridSize, 10);
+        // line(pos.x, pos.y+gridSize, pos.x+gridSize, pos.y+gridSize);
+        // line(pos.x, pos.y+gridSize+10, pos.x+gridSize, pos.y+gridSize+10);
+      }
+
+      function drawCell(cell){
+
+
+
+        dNeighbors = Map.getDisconnectedNeighbors(cell);
+        pos = cellPos(cell);
+
+        noFill();
+        strokeWeight(1);
+        stroke(125);
+
+        if(!cell.indoors){
+          nHatches = 5;
+          for(var i = 0; i < nHatches; i++){
+            line(pos.x+5, pos.y+5 +  gridSize/nHatches * i, pos.x  +5+  gridSize/nHatches * i, pos.y +5);
+
+            line(pos.x+5 +  gridSize/nHatches * i, pos.y +gridSize+5, pos.x +gridSize+5, pos.y +  gridSize/nHatches * i + 5);
+
+          }
+        }
+
+        strokeWeight(1);
+        stroke(255);
+
+        for(var i = 0; i < dNeighbors.length; i++){
+          wallDir = Util.cardinalDescription(cell,dNeighbors[i]);
+          if(wallDir == "n"){
+            // rect(pos.x, pos.y, gridSize , 10);
+            northWall();
+          }
+          if(wallDir == "s"){
+            // rect(pos.x, pos.y + gridSize, gridSize , 10);
+            southWall();
+          }
+          if(wallDir == "e"){
+            // rect(pos.x+gridSize, pos.y, 10 , gridSize);
+            eastWall();
+          }
+          if(wallDir == "w" ){
+            westWall();
+            // rect(pos.x, pos.y, 10 , gridSize);
+          }
+        
+         
+        }
+        if(cell.indoors && !Map.getNeighbor(cell, {col: -1 , row: 0})){
+          westWall();
+          // rect(pos.x, pos.y, 10 , gridSize);
+        }
+        if(cell.indoors &&!Map.getNeighbor(cell, {col: 1 , row: 0})){
+          // rect(pos.x+gridSize, pos.y, 10 , gridSize);
+          eastWall();
+        }
+        if(cell.indoors &&!Map.getNeighbor(cell, {col: 0 , row: 1})){
+            // rect(pos.x, pos.y, gridSize , 10);
+            northWall();
+        }
+        if(cell.indoors && !Map.getNeighbor(cell, {col: 0 , row: -1})){
+            // rect(pos.x, pos.y + gridSize, gridSize , 10);
+            southWall();
+        }
+      }
+
+      function drawMap(){
+        for(var i = 0; i < Map.cells.length; i++){
+          drawCell(Map.cells[i]);
+        }
+      }
+
+
+      function draw(){
+        background(0,0,255);
+        drawGrid();
+        drawDoors();
+        drawMap();
+      }
+
+
+    </script>
   </head>
   <body>
   </body>
