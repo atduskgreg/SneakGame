@@ -216,7 +216,7 @@ App.CharacterAssignmentController = Ember.ObjectController.extend({
     next : function(){
       PassManager.next();
       if(PassManager.get("currentState.name") == "done"){
-        this.transitionToRoute("poison");
+        this.transitionToRoute("moves");
       } else {
 
       }
