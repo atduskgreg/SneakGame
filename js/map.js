@@ -1,4 +1,5 @@
 var Map = {
+  setupDone : false,
   cells : [],
   orthoDirs : [{col: 1,  row:  0},
                {col: 0,  row:  1},
@@ -15,21 +16,24 @@ var Map = {
           {col: -1, row:  1}],
 
   setup : function(){
-    for(var row = 0; row < Game.boardHeight; row++){
-      for(var col = 0; col < Game.boardWidth; col++){
-        this.cells.push({col : col, row: row});
+    if(!this.setupDone){
+      for(var row = 0; row < Game.boardHeight; row++){
+        for(var col = 0; col < Game.boardWidth; col++){
+          this.cells.push({col : col, row: row});
+        }
       }
-    }
+  
+      this.buildMap_connectedRooms();
+      this.highlightIndoorCells();
+      this.highlightCells(this.getDoorCells(), "door");
+      doorCells = this.getDoorCells();
+      console.log("door cells");
+      for(var i = 0; i < doorCells.length; i++){
+        dir = this.doorDirection(doorCells[i])
+        $(Util.squareSelector(doorCells[i])).addClass(dir + "Door");
+      }
 
-    this.buildMap_connectedRooms();
-    this.highlightIndoorCells();
-    this.highlightCells(this.getDoorCells(), "door");
-    doorCells = this.getDoorCells();
-    console.log("door cells");
-    for(var i = 0; i < doorCells.length; i++){
-      console.log(doorCells[i]);
-      dir = this.doorDirection(doorCells[i])
-      $(Util.squareSelector(doorCells[i])).addClass(dir + "Door");
+      this.setupDone = true;
     }
   },
 
