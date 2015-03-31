@@ -1,6 +1,10 @@
 var Map = {
   setupDone : false,
   cells : [],
+  DIRS : {E : {col : 1,  row : 0},
+          N : {col : 0,  row : 1},
+          W : {col : -1, row:  0},
+          S : {col : 0,  row: -1}},
   orthoDirs : [{col: 1,  row:  0},
                {col: 0,  row:  1},
                {col: -1, row:  0},
@@ -118,6 +122,75 @@ var Map = {
     return pathMap;
   },
 
+  partForCell : function(cell){
+    code = this.partCodeForCell(cell);
+    
+    // // Use this to generate the lookup table:
+    // parts = [
+    //   {"name": "emt", "codes": ["0000"]},
+    //   {"name": "wll", "codes": ["1000", "0100", "0010", "0001"]},
+    //   {"name": "dor", "codes": ["2000", "0200", "0020", "0002"]},
+    //   {"name": "hll", "codes": ["1010", "0101"]},
+    //   {"name": "hdr", "codes": ["2010", "1020", "0102", "0201"]},
+    //   {"name": "cnr", "codes": ["0011", "1100", "0110", "0011", "1001"]},
+    //   {"name": "cd1", "codes": ["0021", "1002", "2100", "0210"]},
+    //   {"name": "cd2", "codes": ["0012", "2001", "1200", "0120"]}
+    // ];
+
+    // partDictionary = {}
+    // for(var i = 0; i < parts.length; i++){
+    //   for(var j = 0; j < parts[i].codes.length; j++){
+    //     partDictionary[parts[i].codes[j]] = parts[i].name;
+    //   }
+    // }
+    // parts = JSON.stringify(partDictionary)
+
+
+    parts = {"1000":"wll","1001":"cnr","1002":"cd1","1010":"hll","1020":"hdr","1100":"cnr","1200":"cd2","2000":"dor","2001":"cd2","2010":"hdr","2100":"cd1","0000":"emt","0100":"wll","0010":"wll","0001":"wll","0200":"dor","0020":"dor","0002":"dor","0101":"hll","0102":"hdr","0201":"hdr","0011":"cnr","0110":"cnr","0021":"cd1","0210":"cd1","0012":"cd2","0120":"cd2"};
+    return parts[this.partCodeForCell(cell)];
+
+  },
+
+  partCodeForCell : function(cell){
+    // only indoor cells get wall parts to prevent duplication
+    if(!cell.indoors){
+      return "0000";
+    }
+
+    n = this.getNeighbor(cell, this.DIRS.N);
+    e = this.getNeighbor(cell, this.DIRS.E);
+    w = this.getNeighbor(cell, this.DIRS.W);
+    s = this.getNeighbor(cell, this.DIRS.S);
+
+    neighbors = [n,e,s,w]; // clockwise order from north
+
+    partCode = "";
+    for(var i = 0; i < neighbors.length; i++){
+      if(!neighbors[i]){
+        if(cell.indoors){
+          partCode += "1"; // outer wall
+        } else {
+          partCode += "0";
+        }
+      } else {
+        if(Map.areCellsConnected(cell, neighbors[i])){
+          if(cell.doorTo && Util.sameSquare(cell.doorTo, neighbors[i])){
+            partCode += "2"; // door
+          } else {
+            partCode += "0"; // no wall
+          }
+  
+          } else {
+            partCode += "1"; // wall
+          }
+      }
+      
+    }
+
+    return partCode;
+
+  },
+
   getConnectedCells : function(cell){
     result = this.getPathMap(cell).keys();
     // isolated cells should be connected to themselves
@@ -229,6 +302,10 @@ var Map = {
   },
 
   areCellsConnected : function(cell1, cell2){
+    if(!cell || !cell2){
+      return false;
+    }
+
     if(cell1.indoors == cell2.indoors){
       return true;
     }
