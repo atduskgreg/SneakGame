@@ -491,7 +491,6 @@
     <script src="js/app.js"></script>
     <script>
       var gridSize = 50;
-      var mapDrawNeeded = true;
 
       function setup(){
         Map.setup();
@@ -661,7 +660,14 @@
       function drawMap(){
         for(var i = 0; i < Map.cells.length; i++){
           drawCell(Map.cells[i]);
+          drawCellLabel(Map.cells[i]);
         }
+      }
+
+      function drawCellLabel(cell){
+        pos = cellPos(cell);
+        stroke(255,0,0);
+        text(Map.partForCell(cell), pos.x +10, pos.y+25);
       }
 
 
@@ -671,7 +677,6 @@
         drawGrid();
         drawDoors();
         drawMap();
-
       }
 
 

@@ -123,6 +123,35 @@ var Map = {
   },
 
   partForCell : function(cell){
+    code = this.partCodeForCell(cell);
+    
+    // // Use this to generate the lookup table:
+    // parts = [
+    //   {"name": "empty",       "codes": ["0000"]},
+    //   {"name": "one\nwall",     "codes": ["1000", "0100", "0010", "0001"]},
+    //   {"name": "one\ndoor",    "codes": ["2000", "0200", "0020", "0002"]},
+    //   {"name": "hallway",     "codes": ["1010", "0101"]},
+    //   {"name": "hallway\ndoor", "codes": ["2010", "1020", "0102", "0201"]},
+    //   {"name": "corner",      "codes": ["0011", "1100", "0110", "0011", "1001"]},
+    //   {"name": "corner\ndoor1", "codes": ["0021", "1002", "2100", "0210"]},
+    //   {"name": "corner\ndoor2", "codes": ["0012", "2001", "1200", "0120"]}
+    // ];
+
+    // partDictionary = {}
+    // for(var i = 0; i < parts.length; i++){
+    //   for(var j = 0; j < parts[i].codes.length; j++){
+    //     partDictionary[parts[i].codes[j]] = parts[i].name;
+    //   }
+    // }
+    // parts = JSON.stringify(partDictionary)
+
+
+    parts = {"1000":"one\nwall","1001":"corner","1002":"corner\ndoor1","1010":"hallway","1020":"hallway\ndoor","1100":"corner","1200":"corner\ndoor2","2000":"one\ndoor","2001":"corner\ndoor2","2010":"hallway\ndoor","2100":"corner\ndoor1","0000":"empty","0100":"one\nwall","0010":"one\nwall","0001":"one\nwall","0200":"one\ndoor","0020":"one\ndoor","0002":"one\ndoor","0101":"hallway","0102":"hallway\ndoor","0201":"hallway\ndoor","0011":"corner","0110":"corner","0021":"corner\ndoor1","0210":"corner\ndoor1","0012":"corner\ndoor2","0120":"corner\ndoor2"}
+    return parts[this.partCodeForCell(cell)];
+
+  },
+
+  partCodeForCell : function(cell){
     // only indoor cells get wall parts to prevent duplication
     if(!cell.indoors){
       return "0000";
