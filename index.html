@@ -491,11 +491,23 @@
     <script src="js/app.js"></script>
     <script>
       var gridSize = 50;
+      var mapSize = {};
+      var images = [];
+      var filenames = ["emt", "wll", "dor", "hll", "hdr", "cnr", "cd1"];
+
+
+      function preload(){
+
+        for(var i = 0; i < filenames.length; i++){
+          images.push(loadImage( "/public/pieces/" + filenames[i] +".png"));
+        }
+      }
 
       function setup(){
         Map.setup();
         console.log(Game.boardWidth + "," + Game.boardHeight)
-        canvas = createCanvas(50*Game.boardWidth + 50,50*Game.boardHeight+50);
+        mapSize = {width : (50*Game.boardWidth + 50), height : (50*Game.boardHeight+50)}
+        canvas = createCanvas(mapSize.width + 200,mapSize.height);
         noLoop();
       }
 
@@ -526,7 +538,7 @@
             // Debug: draw coordinate labels
             // if(col < Game.boardWidth && row < Game.boardHeight){
             //   stroke(125);
-            //   text(col + "," + row,  col * gridSize , canvas.height - row*gridSize );
+            //   text(col + "," + row,  col * gridSize , mapSize.height - row*gridSize );
             // }
           }
         }
@@ -534,7 +546,7 @@
 
       function cellPos(cell){
         x = gridSize/2 + gridSize * cell.col - 5;
-        y = (canvas.height-gridSize/2) - gridSize*(cell.row+1) - 5;
+        y = (mapSize.height-gridSize/2) - gridSize*(cell.row+1) - 5;
         return {x: x, y: y};
       }
 
@@ -666,10 +678,38 @@
 
       function drawCellLabel(cell){
         pos = cellPos(cell);
-        stroke(255,0,0);
-        text(Map.partForCell(cell), pos.x +10, pos.y+25);
+        noStroke();
+        fill(125,125,255);
+        text(Map.partForCell(cell), pos.x +20, pos.y+(gridSize-20));
       }
 
+      function drawKey(){
+        w = 354;
+        h = 479;
+
+        scaledW = 70;
+        scaledH = (scaledW / 354) * h;
+
+        col = 0;
+        row = 0;
+        noStroke();
+        fill(125);
+        textAlign(CENTER);
+        textSize(14);
+
+        for(var i = 0; i < images.length; i++){
+          x = mapSize.width + col*90;
+          y = 25 + scaledH*row;
+          console.log(col)
+          image(images[i], x, y + 20*row, 70, scaledH);
+          text(filenames[i], x + 30, y + scaledH + 20*row + 15);
+          col++;
+          if(col > 1){
+            col = 0;
+            row++;
+          }
+        }
+      }
 
       function draw(){
         background(0,0,255);
@@ -677,6 +717,8 @@
         drawGrid();
         drawDoors();
         drawMap();
+
+        drawKey();
       }
 
 
