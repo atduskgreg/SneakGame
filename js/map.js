@@ -1,6 +1,10 @@
 var Map = {
   setupDone : false,
   cells : [],
+  DIRS : {E : {col : 1,  row : 0},
+          N : {col : 0,  row : 1},
+          W : {col : -1, row:  0},
+          S : {col : 0,  row: -1}},
   orthoDirs : [{col: 1,  row:  0},
                {col: 0,  row:  1},
                {col: -1, row:  0},
@@ -118,6 +122,46 @@ var Map = {
     return pathMap;
   },
 
+  partForCell : function(cell){
+    // only indoor cells get wall parts to prevent duplication
+    if(!cell.indoors){
+      return "0000";
+    }
+
+    n = this.getNeighbor(cell, this.DIRS.N);
+    e = this.getNeighbor(cell, this.DIRS.E);
+    w = this.getNeighbor(cell, this.DIRS.W);
+    s = this.getNeighbor(cell, this.DIRS.S);
+
+    neighbors = [n,e,s,w]; // clockwise order from north
+
+    partCode = "";
+    for(var i = 0; i < neighbors.length; i++){
+      if(!neighbors[i]){
+        if(cell.indoors){
+          partCode += "1"; // outer wall
+        } else {
+          partCode += "0";
+        }
+      } else {
+        if(Map.areCellsConnected(cell, neighbors[i])){
+          if(cell.doorTo && Util.sameSquare(cell.doorTo, neighbors[i])){
+            partCode += "2"; // door
+          } else {
+            partCode += "0"; // no wall
+          }
+  
+          } else {
+            partCode += "1"; // wall
+          }
+      }
+      
+    }
+
+    return partCode;
+
+  },
+
   getConnectedCells : function(cell){
     result = this.getPathMap(cell).keys();
     // isolated cells should be connected to themselves
@@ -229,6 +273,10 @@ var Map = {
   },
 
   areCellsConnected : function(cell1, cell2){
+    if(!cell || !cell2){
+      return false;
+    }
+
     if(cell1.indoors == cell2.indoors){
       return true;
     }
