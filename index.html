@@ -561,47 +561,46 @@
           stroke(125);
 
           if(doorDir == "n"){
-            // line(pos.x, pos.y, pos.x+gridSize-5, pos.y+10)
-
-            arc(pos.x+50, pos.y, 100, 100, HALF_PI, PI);
-            line(pos.x+50,pos.y, pos.x+50, pos.y+50);
+            arc(pos.x+gridSize+5, pos.y+5, 100, 100, HALF_PI, PI);
+            line(pos.x+gridSize+5,pos.y+5, pos.x+gridSize+5, pos.y+gridSize+5);
           }
+
           if(doorDir == "s"){
-            arc(pos.x+gridSize,pos.y+gridSize, 100, 100, PI, PI+HALF_PI);
-            line(pos.x+gridSize,pos.y+gridSize, pos.x+gridSize, pos.y);
+            arc(pos.x+gridSize+5,pos.y+gridSize+5, 100, 100, PI, PI+HALF_PI);
+            line(pos.x+gridSize+5,pos.y+gridSize+5, pos.x+gridSize+5, pos.y+5);
 
           }
 
           if(doorDir == "w"){
-            arc(pos.x, pos.y, 100, 100, 0, HALF_PI);
-            line(pos.x,pos.y, pos.x+50, pos.y);
+            arc(pos.x+5, pos.y+5, 100, 100, 0, HALF_PI);
+            line(pos.x+5,pos.y+5, pos.x+gridSize+5, pos.y+5);
           }
 
-          if(doorDir == "w"){
-            arc(pos.x, pos.y, 100, 100, 0, HALF_PI);
-            line(pos.x,pos.y, pos.x+50, pos.y);
+          if(doorDir == "e"){
+            arc(pos.x+5+gridSize, pos.y+5, 100, 100, HALF_PI, PI);
+            line(pos.x+5,pos.y+5, pos.x+gridSize+5, pos.y+5);
           }
         }
       }
 
       function westWall(){
-        rect(pos.x, pos.y, 10, gridSize);
+        rect(pos.x, pos.y+5, 10, gridSize);
         // line(pos.x, pos.y, pos.x, pos.y+gridSize);
         // line(pos.x+10, pos.y, pos.x+10, pos.y+gridSize);
       }
       function eastWall(){
-        rect(pos.x+gridSize, pos.y, 10, gridSize);
+        rect(pos.x+gridSize, pos.y+5, 10, gridSize);
         // line(pos.x+gridSize, pos.y, pos.x+gridSize, pos.y+gridSize);
         // line(pos.x+gridSize+10, pos.y+10, pos.x+gridSize+10, pos.y+gridSize+10);
       }
       function northWall(){
-        rect(pos.x, pos.y, gridSize, 10);
+        rect(pos.x+5, pos.y, gridSize, 10);
         // line(pos.x, pos.y, pos.x+gridSize, pos.y);
         // line(pos.x, pos.y+10, pos.x+gridSize, pos.y+10);
       }
 
       function southWall(){
-        rect(pos.x,pos.y+gridSize, gridSize, 10);
+        rect(pos.x+5,pos.y+gridSize, gridSize, 10);
         // line(pos.x, pos.y+gridSize, pos.x+gridSize, pos.y+gridSize);
         // line(pos.x, pos.y+gridSize+10, pos.x+gridSize, pos.y+gridSize+10);
       }
@@ -700,7 +699,6 @@
         for(var i = 0; i < images.length; i++){
           x = mapSize.width + col*90;
           y = 25 + scaledH*row;
-          console.log(col)
           image(images[i], x, y + 20*row, 70, scaledH);
           text(filenames[i], x + 30, y + scaledH + 20*row + 15);
           col++;
