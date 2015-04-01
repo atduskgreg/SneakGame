@@ -196,7 +196,7 @@
         {{ else }}
 
           <form {{action "poison" on="submit"}}>
-            {{view "select" contentBinding="targets" valueBinding='targetColor' selection=firstTarget}}
+            {{view "select" contentBinding="targets" valueBinding='targetColor'}}
             <button type="submit">Poison</button>
           </form>
           or
