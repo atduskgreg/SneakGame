@@ -585,23 +585,23 @@
       }
 
       function westWall(){
-        rect(pos.x, pos.y+5, 10, gridSize);
+        rect(pos.x+5, pos.y+5, 10, gridSize);
         // line(pos.x, pos.y, pos.x, pos.y+gridSize);
         // line(pos.x+10, pos.y, pos.x+10, pos.y+gridSize);
       }
       function eastWall(){
-        rect(pos.x+gridSize, pos.y+5, 10, gridSize);
+        rect(pos.x+gridSize-5, pos.y+5, 10, gridSize);
         // line(pos.x+gridSize, pos.y, pos.x+gridSize, pos.y+gridSize);
         // line(pos.x+gridSize+10, pos.y+10, pos.x+gridSize+10, pos.y+gridSize+10);
       }
       function northWall(){
-        rect(pos.x+5, pos.y, gridSize, 10);
+        rect(pos.x+5, pos.y+5, gridSize, 10);
         // line(pos.x, pos.y, pos.x+gridSize, pos.y);
         // line(pos.x, pos.y+10, pos.x+gridSize, pos.y+10);
       }
 
       function southWall(){
-        rect(pos.x+5,pos.y+gridSize, gridSize, 10);
+        rect(pos.x+5,pos.y+gridSize-5, gridSize, 10);
         // line(pos.x, pos.y+gridSize, pos.x+gridSize, pos.y+gridSize);
         // line(pos.x, pos.y+gridSize+10, pos.x+gridSize, pos.y+gridSize+10);
       }
@@ -630,29 +630,31 @@
             line(pos.x+5 +  gridSize/nHatches * i, pos.y +gridSize+5, pos.x +gridSize+5, pos.y +  gridSize/nHatches * i + 5);
 
           }
-        }
+        } 
 
         strokeWeight(1);
         stroke(255);
 
         for(var i = 0; i < dNeighbors.length; i++){
-          wallDir = Util.cardinalDescription(cell,dNeighbors[i]);
-          if(wallDir == "n"){
-            // rect(pos.x, pos.y, gridSize , 10);
-            northWall();
-          }
-          if(wallDir == "s"){
-            // rect(pos.x, pos.y + gridSize, gridSize , 10);
-            southWall();
-          }
-          if(wallDir == "e"){
-            // rect(pos.x+gridSize, pos.y, 10 , gridSize);
-            eastWall();
-          }
-          if(wallDir == "w" ){
-            westWall();
-            // rect(pos.x, pos.y, 10 , gridSize);
-          }
+          if(cell.indoors){
+            wallDir = Util.cardinalDescription(cell,dNeighbors[i]);
+            if(wallDir == "n"){
+              // rect(pos.x, pos.y, gridSize , 10);
+              northWall();
+            }
+            if(wallDir == "s"){
+              // rect(pos.x, pos.y + gridSize, gridSize , 10);
+              southWall();
+            }
+            if(wallDir == "e"){
+              // rect(pos.x+gridSize, pos.y, 10 , gridSize);
+              eastWall();
+            }
+            if(wallDir == "w" ){
+              westWall();
+              // rect(pos.x, pos.y, 10 , gridSize);
+            }
+          } 
         
          
         }
@@ -684,8 +686,8 @@
       function drawCellLabel(cell){
         pos = cellPos(cell);
         noStroke();
-        fill(125,125,255);
-        text(Map.partForCell(cell), pos.x +20, pos.y+(gridSize-20));
+        fill(85,85,255);
+        text(Map.partForCell(cell), pos.x +20, pos.y+(gridSize-15));
       }
 
       function drawKey(){
@@ -722,10 +724,6 @@
         }
         console.log(entry.join(","));
       }
-
-
-
-
 
       function draw(){
         background(0,0,255);
