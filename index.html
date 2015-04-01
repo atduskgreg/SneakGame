@@ -494,6 +494,7 @@
       var mapSize = {};
       var images = [];
       var filenames = ["emt", "wll", "dor", "hll", "hdr", "cnr", "cd1"];
+      var partCount = {};
 
 
       function preload(){
@@ -607,7 +608,12 @@
 
       function drawCell(cell){
 
-
+        cellPart = Map.partForCell(cell);
+        if(partCount[cellPart]){
+            partCount[cellPart]++;
+        } else {
+          partCount[cellPart] = 1;
+        }
 
         dNeighbors = Map.getDisconnectedNeighbors(cell);
         pos = cellPos(cell);
@@ -695,19 +701,31 @@
         fill(125);
         textAlign(CENTER);
         textSize(14);
-
+         
         for(var i = 0; i < images.length; i++){
           x = mapSize.width + col*90;
           y = 25 + scaledH*row;
           image(images[i], x, y + 20*row, 70, scaledH);
-          text(filenames[i], x + 30, y + scaledH + 20*row + 15);
+          text(filenames[i] + " [" + (partCount[filenames[i]] || 0) +"]", x + 30, y + scaledH + 20*row + 15);
+
           col++;
           if(col > 1){
             col = 0;
             row++;
           }
         }
+
+        entry = [];
+        console.log(filenames.join(","));
+        for(var i = 0 ; i  < filenames.length; i++){
+          entry.push("" + (partCount[filenames[i]] || 0) +"" );
+        }
+        console.log(entry.join(","));
       }
+
+
+
+
 
       function draw(){
         background(0,0,255);

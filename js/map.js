@@ -148,7 +148,6 @@ var Map = {
 
     parts = {"1000":"wll","1001":"cnr","1002":"cd1","1010":"hll","1020":"hdr","1100":"cnr","1200":"cd2","2000":"dor","2001":"cd2","2010":"hdr","2100":"cd1","0000":"emt","0100":"wll","0010":"wll","0001":"wll","0200":"dor","0020":"dor","0002":"dor","0101":"hll","0102":"hdr","0201":"hdr","0011":"cnr","0110":"cnr","0021":"cd1","0210":"cd1","0012":"cd2","0120":"cd2"};
     return parts[this.partCodeForCell(cell)];
-
   },
 
   partCodeForCell : function(cell){
