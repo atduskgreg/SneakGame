@@ -1,17 +1,17 @@
 body {
   font-family: 'Baskerville';
-  /*src: url('DinC.ttf')  format('truetype');*/
+  src: url('style/fonts/baskerville.ttf')  format('truetype');
   font-size: 12px;
 }
 
 h1 {
   font-family: 'DinC';
-  src: url('DinC.ttf')  format('truetype')
+  src: url('style/fonts/DinC.ttf')  format('truetype');
 }
 
 h3 {
   font-family: 'Baskerville';
-  /*src: url('baskerville.ttf')  format('truetype');*/
+  src: url('style/fonts/baskerville.ttf')  format('truetype');
   text-transform: uppercase;
   letter-spacing: 2px;
 }
@@ -42,7 +42,7 @@ tbody tr:nth-child(even) td, tbody tr.even td {background:#fff;}
   display: none;
 }
 
-#mugshots .circled img {
+#candidates .circled img {
   width: 100px;
   height: 100px;
   border: none;
@@ -98,9 +98,67 @@ h3 {
   /*text-transform: uppercase;*/
 }
 
-#mugshots img{
+#candidates img{
   /*width: 100px;*/
   border: 1px solid #aaa;
   padding:11px;
   margin-bottom: 21px;
+}
+
+#inventory {
+  margin-top: 30px;
+}
+
+.inventoryItem {
+  border-bottom:1px dotted #aaa;
+  margin-bottom: 10px;
+}
+
+.itemName {
+  float:left;
+}
+
+.itemPossession {
+  float: right;
+  font-style: italic;
+}
+.possessed {
+  font-weight: bold;
+}
+
+#logo {
+  width: 60px;
+  float: left;
+  margin-top: 10px;
+}
+
+#header h1 {
+  margin: 0;
+  border-bottom: 3px solid #000;
+  margin-left: -5px;
+  padding-left: 5px;
+  border-right: 3px solid #000;
+}
+
+#header {
+  margin-bottom: 20px;
+}
+
+.slogan {
+  text-transform: uppercase;
+  font-size: 8px;
+  margin:0;
+  /*margin-left: 5px;*/
+
+  font-family: 'Neutra Text TF Light Demi';
+  src: url('style/fonts/Neutra Text%20TF%20Light%20Demi.ttf')  format('truetype');*/
+  font-size: 12px;
+  color: #aaa;
+  margin-top: 5px;
+}
+
+#imageText {
+  margin-left: 65px;
+  padding-left: 5px;
+  border-left: 3px solid #000;
 }
