@@ -76,6 +76,16 @@
           playSentence(sentences.join(" "));
         });
 
+        $("#playAll").click(function(e){
+          e.preventDefault();
+          sentence = $("#moveList li")
+            .map(function(){return $(this).html()})
+            .toArray()
+            .join(" 3sec ");
+          playSentence(sentence);
+
+        });
+
         $("#playNext").click(function(e){
           e.preventDefault();
           $("#moveList li").removeClass("currSentence");
