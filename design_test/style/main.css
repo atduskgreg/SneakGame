@@ -1,3 +1,8 @@
+.container {
+  width: 510px;
+  margin: 0 auto;
+}
+
 body {
   font-family: 'Baskerville';
   src: url('style/fonts/baskerville.ttf')  format('truetype');
@@ -69,7 +74,7 @@ tbody tr:nth-child(even) td, tbody tr.even td {background:#fff;}
  text-align: center;
   vertical-align: top;
   font-family: 'Underwood Champion';
-  src: url('underwood_champion.ttf')  format('truetype');
+  src: url('style/fonts/underwood_champion.ttf')  format('truetype');
   font-size: 150px;
   margin-top: -95px;
   margin-left: -10px;
@@ -127,9 +132,9 @@ h3 {
 }
 
 #logo {
-  width: 60px;
+  width: 70px;
   float: left;
-  margin-top: 10px;
+  /*margin-top: 10px;*/
 }
 
 #header h1 {
@@ -138,6 +143,10 @@ h3 {
   margin-left: -5px;
   padding-left: 5px;
   border-right: 3px solid #000;
+  margin-top: -12px;
+  padding-top: 12px;
+  letter-spacing: 2px;
+  color: #d00;
 }
 
 #header {
@@ -148,7 +157,7 @@ h3 {
   text-transform: uppercase;
   font-size: 8px;
   margin:0;
-  /*margin-left: 5px;*/
+  margin-left: 3px;
 
   font-family: 'Neutra Text TF Light Demi';
   src: url('style/fonts/Neutra Text%20TF%20Light%20Demi.ttf')  format('truetype');*/
@@ -158,7 +167,39 @@ h3 {
 }
 
 #imageText {
-  margin-left: 65px;
+  margin-left: 80px;
   padding-left: 5px;
   border-left: 3px solid #000;
+  margin-top:-5;
+}
+
+/*#footer {
+  text-align: center;
+  margin-top: 20px;
+  border-top: 1px dotted #000;
+}*/
+
+button {
+  font-family: 'Baskerville';
+  src: url('style/fonts/baskerville.ttf')  format('truetype');
+  
+
+  background-color: #eee;
+  font-size: 18px;
+  border: 1px dotted #aaa;
+  border-top:none;
+  cursor: pointer;
+  float: right;
+
+
+    /*background-color: #ccc;*/
+    /*-moz-border-radius: 5px;*/
+    /*-webkit-border-radius: 5px;*/
+   /* border-radius:6px;
+    color: #fff;
+    font-family: 'Oswald';
+    font-size: 20px;
+    text-decoration: none;
+    cursor: pointer;
+    border:none;*/
 }
