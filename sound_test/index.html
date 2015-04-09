@@ -1,0 +1,54 @@
+<html>
+  <head>
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="howler.min.js"></script>
+    <script>
+    function playSentence(string){
+      words = string.split(" ");
+
+      howls = [];
+      for(var i = 0; i < words.length; i++){
+        howls.push(new Howl({urls : ["sounds/" + words[i] + '.mp3']}))
+      }
+
+      for(var i = 0; i < howls.length; i++){
+        (function(n){
+          howls[i]._onend.push(function(){
+            if(n < howls.length){
+              howls[n].play();
+            }
+          })
+        })(i+1)
+      }
+
+      howls[0].play();
+     
+    }
+
+    $(document).ready(function(){
+
+        colors = ["red", "green", "yellow", "pink", "blue", "black", "brown", "white", "gray", "orange"];
+
+        dirs = ["north", "north east", "east", "south east", "south", "south west", "west", "north west"];
+
+
+        for(var i = 0; i < colors.length; i++){
+          d = dirs[Math.floor(Math.random()*dirs.length)];
+          $("#moveList").append(
+            "<li>move the "+colors[i]+ " character " + d + "</li>"
+          );
+        }
+
+        $("li").click(function(){
+          playSentence($(this).html());
+        })
+
+    });
+
+    </script>
+  </head>
+  <body>
+    <ul id="moveList">
+    </ul>
+  </body>
+</html>
