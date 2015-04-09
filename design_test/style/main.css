@@ -1,0 +1,98 @@
+body {
+  font-family: 'Baskerville';
+  /*src: url('DinC.ttf')  format('truetype');*/
+  font-size: 12px;
+}
+
+h1 {
+  font-family: 'DinC';
+  src: url('DinC.ttf')  format('truetype')
+}
+
+h3 {
+  font-family: 'Baskerville';
+  /*src: url('baskerville.ttf')  format('truetype');*/
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+
+
+tbody tr:nth-child(even) td, tbody tr.even td {background:#fff;}
+
+
+.candidateContainer {
+  border: 1px solid #aaa;
+  width: 92px;
+  height: 92px; 
+  float: left;
+  margin-right: 10px
+}
+
+.candidateImage{
+  background-size: cover;
+  width:70px; 
+  height: 70px;
+  margin: 10px;
+  float: left;
+  margin-bottom: 15px;
+}
+
+.candidateImage .x {
+  display: none;
+}
+
+
+
+.name {
+  /*vertical-align: text-bottom;*/
+  /*position: absolute;*/
+  /*bottom: 0;*/
+  /*margin-bottom: -15px;*/
+  margin-top: -10;
+  font-size: 8px;
+  text-align: center;
+  font-style: italic;
+  text-transform: uppercase;
+  /*padding-top: 50px;*/
+}
+
+.xed .x {
+ text-align: center;
+  vertical-align: top;
+  font-family: 'Underwood Champion';
+  src: url('underwood_champion.ttf')  format('truetype');
+  font-size: 150px;
+  margin-top: -95px;
+  margin-left: -10px;
+  display: block;
+}
+
+td:nth-child(even) {
+  border-left: 1px solid #aaa;
+}
+
+td {
+  border-bottom : 1px dotted #aaa;
+}
+
+h3 {
+  text-align: center;
+}
+
+
+.tableHeader  td {
+  border-top: 1px solid #aaa;
+  text-align: center;
+  /*border-bottom: 1px solid #ccc;*/
+  border-bottom: none;
+  font-style: italic;
+  /*text-transform: uppercase;*/
+}
+
+#mugshots img{
+  /*width: 100px;*/
+  border: 1px solid #aaa;
+  padding:11px;
+  margin-bottom: 21px;
+}

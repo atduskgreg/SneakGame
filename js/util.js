@@ -1,7 +1,7 @@
 var Util = {
   names : ["joe", "bob", "jane", "cat", "pam", "kit", "van", "lin", "alice", "fin", "mark", "kevin", "max", "june", "tim"],
   colors : ["red", "green", "yellow", "blue","white","black", "pink", "orange","brown", "gray"],
-  ranks : ["Private", "Corporal", "Sergant", "Lieutenant", "Captain", "Major", "Colonel", "General", "Vice President", "President" ],
+  ranks : ["Private", "Corporal", "Sergeant", "Lieutenant", "Captain", "Major", "Colonel", "General", "Vice President", "President" ],
   moves : {
     nw   : {col: -1, row:  1},
     n    : {col:  0, row:  1},
