@@ -1,9 +1,26 @@
 <html>
   <head>
+    <style>
+    .currSentence {
+      background-color: #eaa;
+    }
+    button {
+      width: 200px;
+      height: 50px;
+    }
+    </style>
+
     <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
     <script src="howler.min.js"></script>
+
     <script>
-    function playSentence(string){
+    var opts = {
+      currSentence : 0,
+      playAll : true
+    }
+
+
+    function playSentence(string, callback){
       words = string.split(" ");
 
       howls = [];
@@ -16,13 +33,17 @@
           howls[i]._onend.push(function(){
             if(n < howls.length){
               howls[n].play();
+            } else {
+              if(callback){
+                callback();
+              }
             }
           })
         })(i+1)
       }
 
       howls[0].play();
-     
+      
     }
 
     $(document).ready(function(){
@@ -39,9 +60,43 @@
           );
         }
 
-        $("li").click(function(){
+        $("li").click(function(e){
+          e.preventDefault();
           playSentence($(this).html());
-        })
+        });       
+
+        $("#speak").click(function(e){
+            e.preventDefault();
+
+          sentences = [];
+          $("#moveList li").each(function(i){
+            sentences.push($(this).text());
+          });
+
+          playSentence(sentences.join(" "));
+        });
+
+        $("#playNext").click(function(e){
+          e.preventDefault();
+          $("#moveList li").removeClass("currSentence");
+          sentence = $($("#moveList li")[opts.currSentence]);
+          sentence.addClass("currSentence");
+          $("#playNext").attr('disabled', true);
+
+          playSentence(sentence.html(), function(){
+            opts.currSentence++;
+
+            if(opts.currSentence >= $("#moveList li").length){
+              $("#buttons").append("<button>Done</button>");
+            }  else {
+              $("#playNext").attr('disabled', false);
+            }
+
+          });
+
+        });
+
+         
 
     });
 
@@ -50,5 +105,10 @@
   <body>
     <ul id="moveList">
     </ul>
+    <!-- <a href="#" id="speak">speak all</a> -->
+    <div id="buttons">
+      <button id="playAll">playAll</button>
+      <button id="playNext">playNext</button>
+    </div>
   </body>
 </html>
