@@ -42,6 +42,7 @@ App.IndexRoute = Ember.Route.extend({
     });
 
     controller.set("model", config);
+
   }
 });
 
