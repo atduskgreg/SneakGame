@@ -548,7 +548,6 @@ Ember.Handlebars.helper('current-player-knowledge',function(){
     }    
 
     charKnowledge = playerKnowledge[sortedChars[i].color];
-    // result += "<td style='background-color:" + sortedChars[i].color +"'";
 
     result += "<div class='candidateContainer";
     
@@ -563,46 +562,12 @@ Ember.Handlebars.helper('current-player-knowledge',function(){
       result += "<img class='marked' src='public/images/circle.png' />";
     }
 
-
-
     result +="</div>\
               <p class='name'>("+sortedChars[i].nameAndRank()+")</p>\
             </div>"
-
-    // if(charKnowledge && (charKnowledge.when == Game.roundNum || charKnowledge.receivedAt == Game.roundNum)){
-    //   if(sortedChars[i].color == "red"){
-    //     result += " class='newKnowledgeRed'"
-    //   } else {
-    //     result += " class='newKnowledge'"
-    //   }
-    // }
-
-    // result += "'>";
-
-    // if(charKnowledge){
-
-    //   if(sortedChars[i].color == "black"){
-    //     result += "<span class='blackKnowledge'>"
-    //   }
-    //   if(charKnowledge.plans){
-    //     result += "P";
-    //   } else {
-    //     result += "X";
-
-    //   }
-
-    //   if(sortedChars[i].color == "black"){
-    //     result += "</span>"
-    //   }
-      
-    // }
-
-    // result += "</td>";
   }
 
   result += "</div>"
-
-  // result += "</tr></table>"
 
 
   return new Handlebars.SafeString(result);
@@ -712,7 +677,7 @@ Ember.Handlebars.helper('debug-view',function(){
   for(var i = Game.boardHeight-1; i >= 0; i--){
       result += "<tr>";
       for(var j = 0; j <= Game.boardWidth-1; j++){
-        result += "<td id='"+j+"x"+i+"'><span class='squareDescription'>"+Util.squareDescription({col: j, row: i})+"</span></td>";  
+        result += "<td id='"+j+"x"+i+"'><span class='squareDescription'>" +Util.squareDescription({col: j, row: i})+"</span></td>";  
       }
      result += "</tr>";
     }
