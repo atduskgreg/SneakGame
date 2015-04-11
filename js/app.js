@@ -50,7 +50,7 @@ App.IndexController = Ember.ObjectController.extend({
   actions : {
     next : function(){
       this.transitionToRoute("setup");
-
+      route.controllerFor("application").set("blueprintIsVisible", true);
     }
   }
 });
@@ -65,6 +65,16 @@ App.SetupRoute = Ember.Route.extend({
 
     controller.set('exit', Game.exit);
     controller.set('instructions', Game.setupInstructions());
+  }
+});
+
+App.SetupController = Ember.ObjectController.extend({
+  model : {},
+  actions :{
+    next :function(){
+      this.transitionToRoute("characterAssignment");
+      route.controllerFor("application").set("blueprintIsVisible", false);
+    }
   }
 });
 
@@ -354,6 +364,7 @@ App.MoveInstructionsController = Ember.ObjectController.extend({
 
 App.ApplicationController = Em.ObjectController.extend({ 
   debugIsVisible : false,
+  blueprintIsVisible : false,
 
   // needs: ['application'],
   // turnSlug : 'current-player-conversations',
@@ -387,6 +398,9 @@ App.ApplicationController = Em.ObjectController.extend({
 // });
 
 App.DebugView = Ember.View.extend();
+
+App.BlueprintView = Ember.View.extend();
+
 
 var PassManager = Ember.StateManager.create({
   initialState : 'pass',

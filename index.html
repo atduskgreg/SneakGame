@@ -121,11 +121,18 @@
             <p class="slogan">{{turnSlug}}</p>
           </div>
         </div>
+        {{#view "blueprint" isVisibleBinding="blueprintIsVisible"}}
+        <div class="span-13 section">
+          <h3>Facility Blueprints</h3>
+          <p>This is the secret facility in which your mission will take place. Setup the pieces on your <b>tactical model</b> to match this blueprint.</p>
+          <div id="blueprint"></div>
+        </div>
+        {{/view}}
 
         {{outlet}}
         
         <div class="span-13 section">
-          <div id="blueprint"></div>
+      
 
           <br style="clear:both" />
           {{#view "debug" isVisibleBinding="debugIsVisible"}}
@@ -171,7 +178,7 @@
 
       <p><b>Character rank</b> <em>breaks ties for picking up objects. If multiple characters arrive at the same object at the same time, the character with the higher rank will get to pick up the object.</em></p>
       <p><b>Rank in ascending order</b>: <em>{{rank-list}}</em></p>
-      <p>{{#link-to 'characterAssignment'}}Find out your characters{{/link-to}}</p>
+      <p><button {{action 'next'}}>Proceed to Secret Identity Briefing</button></p>
     
 
     </script>
