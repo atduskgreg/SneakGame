@@ -656,15 +656,48 @@ Ember.Handlebars.helper('current-player-inventory',function(){
   currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
   currPlayer = Game.players[currPlayerKey];
 
-  var result = "";
 
+  ownedInventory = {gun : false, poison : currPlayer.canPoison(), plans : false}
   if(currPlayer.inventory.length > 0){
     for(var k =0; k < currPlayer.inventory.length; k++){
-      result += "<li>" + currPlayer.inventory[k].name + "</li>";
+      ownedInventory[currPlayer.inventory[k].name] = true;
     }
-  } else {
-    result += "<li>You have no items</li>";
   }
+
+  var result = "<div class='inventoryItem'>\
+    <div class='itemName'>Gun</div>";
+  if(ownedInventory.gun){
+     result += "<div class='itemPossession possessed'>Yes</div>"
+
+  } else {
+    result += "<div class='itemPossession'>No</div>"
+  }
+
+    
+  result += "<br style='clear:both' /></div><div class='inventoryItem'>\
+    <div class='itemName'>Plans</div>";
+  if(ownedInventory.plans){
+     result += "<div class='itemPossession possessed'>Yes</div>"
+  } else {
+    result += "<div class='itemPossession'>No</div>"
+  }
+  result += "<br style='clear:both' /></div><div class='inventoryItem'>\
+    <div class='itemName'>Poison</div>"
+  if(ownedInventory.poison){
+     result += "<div class='itemPossession possessed'>Yes</div>"
+  } else {
+    result += "<div class='itemPossession'>No</div>"
+  }
+  result += "<br style='clear:both' /> </div>";
+
+
+  // if(currPlayer.inventory.length > 0){
+  //   for(var k =0; k < currPlayer.inventory.length; k++){
+  //     result += "<li>" + currPlayer.inventory[k].name + "</li>";
+  //   }
+  // } else {
+  //   result += "<li>You have no items</li>";
+  // }
   
   return new Handlebars.SafeString(result);
 });
