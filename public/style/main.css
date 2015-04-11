@@ -63,8 +63,19 @@ h3 {
   color: #000;
 }
 
+
 tbody tr:nth-child(even) td, tbody tr.even td {background:#fff;}
 
+#intro p{
+  font-family: '1942 report';
+  src: url('public/style/fonts/1942.ttf')  format('truetype');
+
+}
+
+#intro {
+  padding: 18px;
+  border: 1px solid #aaa;
+}
 
 .candidateContainer {
   border: 1px solid #aaa;

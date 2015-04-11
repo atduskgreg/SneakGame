@@ -119,13 +119,15 @@
             <p class='slogan'>get in. get out. dont blow your cover.</p>
             <h1>SNEAK</h1>
             <button>Done</button>
-            <p class="slogan">Turn-01-dialog-reveal</p>
+            <p class="slogan">{{turnSlug}}</p>
           </div>
         </div>
 
         {{outlet}}
         
         <div class="span-13 section">
+          <div id="blueprint"></div>
+
           <br style="clear:both" />
           {{#view "debug" isVisibleBinding="debugIsVisible"}}
             <!-- <button {{action 'refreshDebug'}}>refresh< /button> --> <!-- temporary hack until game   is   an ember model -->
@@ -133,16 +135,24 @@
           {{/view}}
     
           <p><em><a href="#" {{action "toggleDebug"}}>Toggle  debug view</a></em></p>
-          <div id="blueprint"></div>
 
         </div>
       </div>
     </script>
   
-    <script type="text/x-handlebars" id ="index">
+    <script type="text/x-handlebars" id="index">
+      <div class="span-12 border" id="intro">
+        <h3>Mission Briefing</h3>
+        <p>Welcome to Sneak, a game of stealth, deception, and social perception.</p>
+        <p>Your mission is to infiltrate the secret facility, find your contact with the secret plans, and escape without revealing your secret identity.</p>
+        <p>But beware, we have reports of agents of other governments who've also entered the facility undercover. They'll do their best to get to the secret plans first or to unmask, shoot, or poison you if they discover your identity. You must do the same to them first.</p>
+        <p>
+        Examine the floorplan of the secret facility below and setup your board to match. When you're done click below to begin the mission.
+        </p>
+      </div>
        <label>Play game on-screen?</label> {{view Ember.Checkbox checkedBinding="model.onScreen"}}
 
-      <p>{{#link-to 'setup'}}Start game{{/link-to}}</p>
+      <button {{action 'next'}}>Begin Mission</button></p>
     </script>
   
     <script type="text/x-handlebars" id="setup">

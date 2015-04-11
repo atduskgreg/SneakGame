@@ -46,6 +46,15 @@ App.IndexRoute = Ember.Route.extend({
   }
 });
 
+App.IndexController = Ember.ObjectController.extend({
+  actions : {
+    next : function(){
+      this.transitionToRoute("setup");
+
+    }
+  }
+});
+
 
 App.SetupRoute = Ember.Route.extend({
   setupController : function(controller, model){
@@ -336,8 +345,22 @@ App.MoveInstructionsController = Ember.ObjectController.extend({
   }
 });
 
+// App.ApplicationRoute = Ember.Route.extend({
+//   // model : {},
+//    setupController:function(controller) {
+//     controller.set('cats', "dogs");
+//   }
+//  });
+
 App.ApplicationController = Em.ObjectController.extend({ 
   debugIsVisible : false,
+
+  // needs: ['application'],
+  // turnSlug : 'current-player-conversations',
+
+  // updateTurnSlug : function(){
+  //   this.set('turnSlug', Game.roundNum + "-fake-turn-thing"); 
+  // }.observes('currentPath'),
 
   actions : {
     toggleDebug : function(){
