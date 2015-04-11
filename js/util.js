@@ -105,28 +105,28 @@ var Util = {
 
     if(!knowledge.receivedFrom){
       if(knowledge.plans){
-        result += this.displayCharacterWithColor(knowledge.subject) + " has the plans";
+        result += "<td>"+this.displayCharacterWithColor(knowledge.subject) + "</td><td>Has the plans</td>";
       } else {
-        result += this.displayCharacterWithColor(knowledge.subject) + " doesn't have the plans";
+        result += "<td>"+this.displayCharacterWithColor(knowledge.subject) + "</td><td>Doesn't have the plans</td>";
       }
     } else {
       if(!knowledge.plans){
         if(knowledge.subject == knowledge.receivedFrom){
-          result += this.displayCharacterWithColor(knowledge.receivedFrom) + " says, \"I don't have the plans.\""
+          result += "<td>"+this.displayCharacterWithColor(knowledge.receivedFrom) + "</td><td>\"I don't have the plans.\"</td>"
         } else {
-          result += this.displayCharacterWithColor(knowledge.receivedFrom) + " says, \"" + this.displayCharacterWithColor(knowledge.subject) + " didn't have the plans when I saw them " + this.timeSinceInWords(knowledge.when) + ".\"";
+          result += "<td>"+this.displayCharacterWithColor(knowledge.receivedFrom) + "</td><td>\"" + this.displayCharacterWithColor(knowledge.subject) + " didn't have the plans when I saw them " + this.timeSinceInWords(knowledge.when) + ".\"</td>";
         }    
       } else {
         if(knowledge.subject == knowledge.receivedFrom){
 
           if(Game.characterWithAttribute("color", knowledge.receivedFrom).isPlayer){
-            result += this.displayCharacterWithColor(knowledge.receivedFrom) + " says, \"I have the plans, but I'm keeping them. Shoo!\""
+            result += "<td>"+this.displayCharacterWithColor(knowledge.receivedFrom) + "</td><td>\"I have the plans, but I'm keeping them. Shoo!\"</td>"
           } else {
-            result += this.displayCharacterWithColor(knowledge.receivedFrom) + " says, \"I have the plans. Take them and escape to the exit!\""
+            result += "<td>"+this.displayCharacterWithColor(knowledge.receivedFrom) + "</td><td>\"I have the plans. Take them and escape to the exit!\"</td>"
           }
 
         } else {
-          result += this.displayCharacterWithColor(knowledge.receivedFrom) + " says, \"" + this.displayCharacterWithColor(knowledge.subject) + " had the plans when I saw them " + this.timeSinceInWords(knowledge.when) + ".\"";
+          result += "<td>"+this.displayCharacterWithColor(knowledge.receivedFrom) + "</td><td>\"" + this.displayCharacterWithColor(knowledge.subject) + " had the plans when I saw them " + this.timeSinceInWords(knowledge.when) + ".\"</td>";
         }
       }
     }

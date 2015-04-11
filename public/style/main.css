@@ -50,8 +50,13 @@ h3 {
   color: #aaa;
 }
 
+.brown {
+  color: #6C3427;
+}
+
 .black {
   color: #000;
+  font-weight: bold;
 }
 
 .white {
@@ -78,11 +83,11 @@ tbody tr:nth-child(even) td, tbody tr.even td {background:#fff;}
   margin-bottom: 15px;
 }
 
-.candidateImage .x {
+/*.candidateImage .x {
   display: none;
-}
+}*/
 
-#candidates .marked img {
+#candidates img.marked {
   width: 100px;
   height: 100px;
   border: none;
@@ -103,10 +108,10 @@ tbody tr:nth-child(even) td, tbody tr.even td {background:#fff;}
   text-transform: uppercase;
   /*padding-top: 50px;*/
 }
-
+/*
 .xed .x {
   display: block;
-}
+}*/
 
 td:nth-child(even) {
   border-left: 1px solid #aaa;

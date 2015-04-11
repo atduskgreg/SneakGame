@@ -537,9 +537,84 @@ Ember.Handlebars.helper('rank-list',function(){
 Ember.Handlebars.helper('current-player-knowledge',function(){
   currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
   currPlayer = Game.players[currPlayerKey];
+  playerKnowledge = currPlayer.currentKnowledge();
 
-  var result = "<p>Learned this turn:</p>"
-  result += "<ul>"
+  result = "<div class='span-14' style='margin-bottom: 20px'>";
+  sortedChars = Util.sortBy(Game.characters, Util.compareRank);
+
+  for(var i = 0; i < sortedChars.length; i++){
+    if(i == 5){
+      result += "</div><div class='span-14'>"
+    }    
+
+    charKnowledge = playerKnowledge[sortedChars[i].color];
+    // result += "<td style='background-color:" + sortedChars[i].color +"'";
+
+    result += "<div class='candidateContainer";
+    
+    result += "'>\
+              <div class='candidateImage";
+    
+    result += "' style=\"background-image: url(\'public/images/"+sortedChars[i].color+".png\');\"  class='span-2'>";
+    if(charKnowledge && !charKnowledge.plans){
+      result += "<img class='marked' src='public/images/x.png' />";
+    }
+    if(charKnowledge && charKnowledge.plans){
+      result += "<img class='marked' src='public/images/circle.png' />";
+    }
+
+
+
+    result +="</div>\
+              <p class='name'>("+sortedChars[i].nameAndRank()+")</p>\
+            </div>"
+
+    // if(charKnowledge && (charKnowledge.when == Game.roundNum || charKnowledge.receivedAt == Game.roundNum)){
+    //   if(sortedChars[i].color == "red"){
+    //     result += " class='newKnowledgeRed'"
+    //   } else {
+    //     result += " class='newKnowledge'"
+    //   }
+    // }
+
+    // result += "'>";
+
+    // if(charKnowledge){
+
+    //   if(sortedChars[i].color == "black"){
+    //     result += "<span class='blackKnowledge'>"
+    //   }
+    //   if(charKnowledge.plans){
+    //     result += "P";
+    //   } else {
+    //     result += "X";
+
+    //   }
+
+    //   if(sortedChars[i].color == "black"){
+    //     result += "</span>"
+    //   }
+      
+    // }
+
+    // result += "</td>";
+  }
+
+  result += "</div>"
+
+  // result += "</tr></table>"
+
+
+  return new Handlebars.SafeString(result);
+
+});
+
+Ember.Handlebars.helper('current-player-conversations',function(){
+  currPlayerKey = Object.keys(Game.players)[PassManager.playerIdx];
+  currPlayer = Game.players[currPlayerKey];
+
+  var result = "<table>"
+  result += "<tr class='tableHeader'><td>Source</td> <td>Statement</td></tr>"
 
   numLearned = 0;
 
@@ -550,9 +625,9 @@ Ember.Handlebars.helper('current-player-knowledge',function(){
   for(var i = 0; i < itemActions.length; i++){
     if(itemActions[0].action == "got"){
       acquiredFrom.push(itemActions[0].from);
-      result += "<li>";
-      result += Util.displayCharacterWithColor(itemActions[0].from) + " says, \"I have the plans. Take them and escape to the exit!\"";
-      result += "</li>";
+      result += "<tr>";
+      result += "<td>"+Util.displayCharacterWithColor(itemActions[0].from) +"</td><td>\"I have the plans. Take them and escape to the exit!\"</td>";
+      result += "</tr>";
     }
   }
 
@@ -561,70 +636,18 @@ Ember.Handlebars.helper('current-player-knowledge',function(){
       if(color != currPlayer.color){
         numLearned++;
         if(acquiredFrom.indexOf(playerKnowledge[color].receivedFrom) == -1){
-          result += "<li>";
+          result += "<tr>";
           result += Util.knowledgeDescription(playerKnowledge[color]);
-          result += "</li>";
+          result += "</tr>";
         }
       }
     }
   }
+
   if(numLearned == 0){
-    result += "<li>Nothing learned this turn.</li>";
+    result += "<td><em>none</em></td><td><em>none</em></td>";
   }
-
-  result += "</ul>"
-
-  // itemize (highlight) new knowledge gained
-  // show total knowledge
-  result +=  "<p>Characters you've been told don't have the plans are marked with an 'X'. The character you believe has the plans is marked with a 'P'.</p>";
-
-  result += "<table id='checklist'>";
-  result += "<tr>"
-  sortedChars = Util.sortBy(Game.characters, Util.compareRank);
-
-  for(var i = 0; i < sortedChars.length; i++){
-    if( i == sortedChars.length/2){
-      result += "</tr><tr>";
-    }  
-
-    charKnowledge = playerKnowledge[sortedChars[i].color];
-
-
-    result += "<td style='background-color:" + sortedChars[i].color +"'";
-    if(charKnowledge && (charKnowledge.when == Game.roundNum || charKnowledge.receivedAt == Game.roundNum)){
-      if(sortedChars[i].color == "red"){
-        result += " class='newKnowledgeRed'"
-      } else {
-        result += " class='newKnowledge'"
-      }
-    }
-
-    result += "'>";
-
-    if(charKnowledge){
-
-      if(sortedChars[i].color == "black"){
-        result += "<span class='blackKnowledge'>"
-      }
-      if(charKnowledge.plans){
-        result += "P";
-      } else {
-        result += "X";
-
-      }
-
-      if(sortedChars[i].color == "black"){
-        result += "</span>"
-      }
-
-      
-    }
-
-    result += "</td>";
-  }
-
-  result += "</tr></table>"
-
+  result += "</table>";
 
   return new Handlebars.SafeString(result);
 });

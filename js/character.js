@@ -228,7 +228,11 @@ Character.prototype = {
 	},
 
 	presentationString : function(){
-		return new Handlebars.SafeString("<span class='characterDisplay "+this.color+"Character'>"+this.rank() + " " + Util.capitalize(this.color)+"</span>");
+		return new Handlebars.SafeString("<span class='characterDisplay "+this.color +"'>"+this.nameAndRank()+"</span>");
+	},
+
+	nameAndRank : function(){
+		return new Handlebars.SafeString(this.rank() + " " + Util.capitalize(this.color));
 	},
 
 	setupInstruction : function(){

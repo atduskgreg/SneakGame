@@ -479,16 +479,23 @@
     </script>
   
      <script type="text/x-handlebars" id="dialogReveals">
-      <h3>Dialog Reveal</h3>
       {{#if PassManager.isPassing}}
         {{partial 'pass'}}
       {{else}}
-        <h3>Your Knowledge</h3>
-        {{ current-player-knowledge }}
-        <h3>Your Inventory</h3>
-        <ul>
-        {{current-player-inventory}}
-        </ul>
+        <div id="conversations" class="span-13 section">
+          <h3>Conversations</h3>
+          {{ current-player-conversations }}
+        </div>
+        <div id="candidates" class="span-13 section">
+          <h3>Suspects</h3>
+          {{ current-player-knowledge }}
+
+        </div>
+        <div id="inventory" class="span-13 section">
+          <h3>Inventory</h3>
+          {{current-player-inventory}}
+
+        </div>
         <p><button {{action 'next'}}>Got it</button></p>
       {{/if}}
     </script>
