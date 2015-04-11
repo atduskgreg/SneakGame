@@ -118,7 +118,6 @@
           <div id='imageText'>
             <p class='slogan'>get in. get out. dont blow your cover.</p>
             <h1>SNEAK</h1>
-            <button>Done</button>
             <p class="slogan">{{turnSlug}}</p>
           </div>
         </div>
@@ -160,13 +159,13 @@
 
       {{# if onScreen}}
       {{ else }}
-      <p>Exit is: {{format-square exit}}</p>
       
-      <ul>
+      <table>
+      <tr class="tableHeader"><td>Character or Object</td><td>Location</td></tr>
       {{#each item in instructions}}
-        <li>{{item.instruction}}</li>
+        <tr><td>{{item.gameObject}}</td><td>{{item.instruction}}</td></li>
       {{/each}}
-      </ul>
+      </table>
 
       {{/if}}
 

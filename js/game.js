@@ -134,14 +134,17 @@ var Game = {
     orderedCharacters = Util.sortBy(this.characters, Util.comparePosition);
 
     for(var i = 0 ; i < orderedCharacters.length; i++){
-      setupInstructions.push({"instruction" : orderedCharacters[i].setupInstruction()});
+      setupInstructions.push({"gameObject" : orderedCharacters[i].presentationString(), "instruction" : Util.squareDescription(orderedCharacters[i].position)});
     }
 
     console.log("place " + Game.inventory.length + " inventory items");
 
     for(var i = 0; i < Game.inventory.length; i++){
-      setupInstructions.push({"instruction" : "Place a " + Game.inventory[i].name + " on " + Util.squareDescription(Game.inventory[i].position)});
+      setupInstructions.push({"gameObject" : Util.capitalize(Game.inventory[i].name), "instruction" : Util.squareDescription(Game.inventory[i].position)});
     }
+
+    setupInstructions.push({"gameObject" : "Exit", "instruction" : Util.squareDescription(Game.exit)})
+
     return setupInstructions;
   },
 
