@@ -5,17 +5,17 @@
 
 @font-face {
   font-family: 'Baskerville';
-  src: url('style/fonts/baskerville.ttf')  format('truetype');
+  src: url('public/style/fonts/baskerville.ttf')  format('truetype');
 }
 
 @font-face {
   font-family: 'Leviathan';
-  src: url('style/fonts/leviathan.otf')  format('opentype');
+  src: url('public/style/fonts/leviathan.otf')  format('opentype');
 }
 
 @font-face {
   font-family: 'Baskerville';
-  src: url('style/fonts/baskerville.ttf')  format('truetype');
+  src: url('public/style/fonts/Baskerville.ttc')  format('truetype');
 }
 
 
