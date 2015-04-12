@@ -1,11 +1,11 @@
 @font-face {
     font-family: '1942_report1942_report';
-    src: url('public/style/fonts/1942-webfont.eot');
-    src: url('public/style/fonts/1942-webfont.eot?#iefix') format('embedded-opentype'),
-         url('public/style/fonts/1942-webfont.woff2') format('woff2'),
-         url('public/style/fonts/1942-webfont.woff') format('woff'),
-         url('public/style/fonts/1942-webfont.ttf') format('truetype'),
-         url('public/style/fonts/1942-webfont.svg#1942_report1942_report') format('svg');
+    src: url('/fonts/1942-webfont.eot');
+    src: url('/fonts/1942-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/fonts/1942-webfont.woff2') format('woff2'),
+         url('/fonts/1942-webfont.woff') format('woff'),
+         url('/fonts/1942-webfont.ttf') format('truetype'),
+         url('/fonts/1942-webfont.svg#1942_report1942_report') format('svg');
     font-weight: normal;
     font-style: normal;
 
@@ -13,12 +13,12 @@
 
 @font-face {
     font-family: 'leviathan_htf-blackregular';
-    src: url('public/style/fonts/leviathan-webfont.eot');
-    src: url('public/style/fonts/leviathan-webfont.eot?#iefix') format('embedded-opentype'),
-         url('public/style/fonts/leviathan-webfont.woff2') format('woff2'),
-         url('public/style/fonts/leviathan-webfont.woff') format('woff'),
-         url('public/style/fonts/leviathan-webfont.ttf') format('truetype'),
-         url('public/style/fonts/leviathan-webfont.svg#leviathan_htf-blackregular') format('svg');
+    src: url('/public/style/fonts/leviathan-webfont.eot');
+    src: url('/public/style/fonts/leviathan-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/public/style/fonts/leviathan-webfont.woff2') format('woff2'),
+         url('/public/style/fonts/leviathan-webfont.woff') format('woff'),
+         url('/public/style/fonts/leviathan-webfont.ttf') format('truetype'),
+         url('/public/style/fonts/leviathan-webfont.svg#leviathan_htf-blackregular') format('svg');
     font-weight: normal;
     font-style: normal;
 }
