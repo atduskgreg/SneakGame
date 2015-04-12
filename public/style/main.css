@@ -3,20 +3,36 @@
   margin: 0 auto;
 }
 
-body {
+@font-face {
   font-family: 'Baskerville';
   src: url('style/fonts/baskerville.ttf')  format('truetype');
+}
+
+@font-face {
+  font-family: 'Leviathan';
+  src: url('style/fonts/leviathan.otf')  format('opentype');
+}
+
+@font-face {
+  font-family: 'Baskerville';
+  src: url('style/fonts/baskerville.ttf')  format('truetype');
+}
+
+
+body {
+  font-family: 'Baskerville';
+  /*src: url('style/fonts/baskerville.ttf')  format('truetype');*/
   font-size: 12px;
 }
 
 h1 {
   font-family: 'Leviathan';
-  src: url('style/fonts/leviathan.otf')  format('opentype');
+  /*src: url('style/fonts/leviathan.otf')  format('opentype');*/
 }
 
 h3 {
   font-family: 'Baskerville';
-  src: url('style/fonts/baskerville.ttf')  format('truetype');
+  /*src: url('style/fonts/baskerville.ttf')  format('truetype');*/
   text-transform: uppercase;
   letter-spacing: 2px;
 }
