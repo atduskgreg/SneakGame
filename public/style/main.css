@@ -63,8 +63,8 @@ h3 {
   color: #000;
 }
 
-
-tbody tr:nth-child(even) td, tbody tr.even td {background:#fff;}
+/*tbody tr:nth-child(even) td*/
+tbody tr:nth-child(even) td, tbody tr.even td {background-color:#fff;}
 
 #intro p{
   font-family: '1942 report';

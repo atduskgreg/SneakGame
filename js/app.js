@@ -118,6 +118,8 @@ App.MoveInstructionsRoute = Ember.Route.extend({
     }
 
     controller.set("onScreen", this.store.all("config").get("firstObject").get("onScreen"));
+    
+    controller.set('anyVictims', Game.newVictims.length > 0);
     controller.set('instructions', Game.moveInstructions);
     controller.set('victims', Game.newVictims());
   }

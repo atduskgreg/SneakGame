@@ -16,10 +16,10 @@
     #board td{
       border: 1px solid #000;
       margin: 0;
-      min-width: 75;
-      width: 75;
-      height: 75;
-      min-height: 75;
+      min-width: 50px;
+      width: 50px;
+      height: 60px;
+      min-height: 60px;
     }
 
     table p {
@@ -36,6 +36,10 @@
       background-color: #cca;
     }
 
+    #toggleDebug {
+      color: #eee;
+    }
+
     #board td.nDoor{
       border-top: 5px solid brown;
     }
@@ -50,7 +54,7 @@
     }
 
     .gun {
-      background-image: url('public/gun.jpg');
+      background-image: url('public/images/gun.jpg');
       background-repeat: no-repeat;
       background-position: center;
       border: 2px solid #000;
@@ -64,12 +68,12 @@
     
 
     #moveInput button {
-      width: 200px;
+      width: 170px;
       height: 30px;
     }
 
     #moveInput .buttonSpacer {
-      min-width: 200px;
+      min-width: 170px;
       min-height: 30px;
     }
     /*
@@ -140,7 +144,7 @@
             {{debug-view}}
           {{/view}}
     
-          <p><em><a href="#" {{action "toggleDebug"}}>Toggle  debug view</a></em></p>
+          <p><em><a id="toggleDebug" href="#" {{action "toggleDebug"}}>Toggle  debug view</a></em></p>
 
         </div>
       </div>
@@ -158,7 +162,7 @@
       </div>
        <label>Play game on-screen?</label> {{view Ember.Checkbox checkedBinding="model.onScreen"}}
 
-      <button {{action 'next'}}>Begin Mission</button></p>
+      <button class="next" {{action 'next'}}>Begin Mission</button></p>
     </script>
   
     <script type="text/x-handlebars" id="setup">
@@ -178,7 +182,7 @@
 
       <p><b>Character rank</b> <em>breaks ties for picking up objects. If multiple characters arrive at the same object at the same time, the character with the higher rank will get to pick up the object.</em></p>
       <p><b>Rank in ascending order</b>: <em>{{rank-list}}</em></p>
-      <p><button {{action 'next'}}>Proceed to Secret Identity Briefing</button></p>
+      <p><button class="next" {{action 'next'}}>Proceed to Secret Identity Briefing</button></p>
     
 
     </script>
@@ -189,7 +193,7 @@
         {{partial 'pass'}}
       {{else}}
         <p>You are {{current-player-rank-color}}.</p>
-        <p><button {{action 'next'}}>Got it</button></p>
+        <p><button class="next" {{action 'next'}}>Got it</button></p>
       {{/if}}
     </script>
     
@@ -220,190 +224,191 @@
 
     <script type="text/x-handlebars" id="moves">
       <h3>Input moves</h3>
-      {{#if PassManager.isPassing}}
-        {{partial 'pass'}}
-      {{else}}
-        <p>You are {{current-player-rank-color}}.</p>
-        <div id="moveInput">
-        <p>
-          {{#if shoot}}
-            <button {{action "submitMove" "shoot" }}>shoot gun</button>
-            <button {{action "submitMove" "drop" }}>drop gun</button>
-          {{else }}
-            {{#if onScreen}}
-              <p>
-                {{#if nw}}
-                  <button {{action "submitMove" "nw" }}>nw</button>
-                {{else}}
-                  <button disabled>nw</button> 
-                {{/if}}
-                
-                {{#if n}}
-                <button {{action "submitMove" "n" }}>n</button>
-                {{else}}
-                  <button disabled>n</button> 
-                {{/if}}
+      <div class="span-13">
+        {{#if PassManager.isPassing}}
+          {{partial 'pass'}}
+        {{else}}
+          <p>You are {{current-player-rank-color}}.</p>
+          <div id="moveInput">
+            {{#if shoot}}
+              <button {{action "submitMove" "shoot" }}>shoot gun</button>
+              <button {{action "submitMove" "drop" }}>drop gun</button>
+            {{else }}
+              {{#if onScreen}}
+                <p>
+                  {{#if nw}}
+                    <button {{action "submitMove" "nw" }}>nw</button>
+                  {{else}}
+                    <button disabled>nw</button> 
+                  {{/if}}
+                  
+                  {{#if n}}
+                  <button {{action "submitMove" "n" }}>n</button>
+                  {{else}}
+                    <button disabled>n</button> 
+                  {{/if}}
+        
+                  {{#if ne}}
+                  <button {{action "submitMove" "ne" }}>ne</button>
+                  {{else}}
+                    <button disabled>ne</button> 
+                  {{/if}}
+                </p>
+  
+                <p>        
+                  {{#if w}}
+                    <button {{action "submitMove" "w" }}>w</button>
+                  {{else}}
+                    <button disabled>w</button> 
+                  {{/if}}
       
-                {{#if ne}}
-                <button {{action "submitMove" "ne" }}>ne</button>
-                {{else}}
-                  <button disabled>ne</button> 
-                {{/if}}
-              </p>
-
-              <p>        
-                {{#if w}}
-                  <button {{action "submitMove" "w" }}>w</button>
-                {{else}}
-                  <button disabled>w</button> 
-                {{/if}}
+                  <button {{action "submitMove" "hold" }}>hold</button>
+                  
+                  {{#if e}}
+                    <button {{action "submitMove" "e" }}>e</button>
+                  {{else}}
+                    <button disabled>e</button> 
+                  {{/if}}
+                </p>
+                <p>        
+                  {{#if sw}}
+                    <button {{action "submitMove" "sw" }}>sw</button>
+                  {{else}}
+                    <button disabled>sw</button> 
+                  {{/if}}
+        
+                  {{#if s}}
+                    <button {{action "submitMove" "s" }}>s</button>
+                  {{else}}
+                    <button disabled>s</button> 
+                  {{/if}}
+        
+                  {{#if se}}
+                   <button {{action "submitMove" "se" }}>se</button>
+                  {{else}}
+                    <button disabled>se</button> 
+                  {{/if}}
+                </p>
+              {{ else }}
+  
+                {{#if position-top}} <!-- south is up, west is right -->
+                  <p>        
+                    {{#if se}}
+                     <button {{action "submitMove" "se" }}>se</button>
+                    {{else}}
+                      <button disabled>se</button> 
+                    {{/if}}
+          
+                    {{#if s}}
+                      <button {{action "submitMove" "s" }}>s</button>
+                    {{else}}
+                      <button disabled>s</button> 
+                    {{/if}}
+          
+                    {{#if sw}}
+                      <button {{action "submitMove" "sw" }}>sw</button>
+                    {{else}}
+                      <button disabled>sw</button> 
+                    {{/if}}
+                  </p>
+                  <p>        
+        
+                    {{#if e}}
+                      <button {{action "submitMove" "e" }}>e</button>
+                    {{else}}
+                      <button disabled>e</button> 
+                    {{/if}}
     
-                <button {{action "submitMove" "hold" }}>hold</button>
+                    <button {{action "submitMove" "hold" }}>hold</button>
+                    
+                    {{#if w}}
+                      <button {{action "submitMove" "w" }}>w</button>
+                    {{else}}
+                      <button disabled>w</button> 
+                    {{/if}}
+                  </p>
+                  <p>
+                    {{#if ne}}
+                    <button {{action "submitMove" "ne" }}>ne</button>
+                    {{else}}
+                      <button disabled>ne</button> 
+                    {{/if}}
+                    
+                    {{#if n}}
+                    <button {{action "submitMove" "n" }}>n</button>
+                    {{else}}
+                      <button disabled>n</button> 
+                    {{/if}}
+    
+                    {{#if nw}}
+                      <button {{action "submitMove" "nw" }}>nw</button>
+                    {{else}}
+                      <button disabled>nw</button> 
+                    {{/if}}
+                  </p>
                 
-                {{#if e}}
-                  <button {{action "submitMove" "e" }}>e</button>
                 {{else}}
-                  <button disabled>e</button> 
-                {{/if}}
-              </p>
-              <p>        
-                {{#if sw}}
-                  <button {{action "submitMove" "sw" }}>sw</button>
-                {{else}}
-                  <button disabled>sw</button> 
-                {{/if}}
-      
-                {{#if s}}
-                  <button {{action "submitMove" "s" }}>s</button>
-                {{else}}
-                  <button disabled>s</button> 
-                {{/if}}
-      
-                {{#if se}}
-                 <button {{action "submitMove" "se" }}>se</button>
-                {{else}}
-                  <button disabled>se</button> 
-                {{/if}}
-              </p>
-            {{ else }}
-
-              {{#if position-top}} <!-- south is up, west is right -->
-                <p>        
-                  {{#if se}}
-                   <button {{action "submitMove" "se" }}>se</button>
-                  {{else}}
-                    <button disabled>se</button> 
-                  {{/if}}
+                  <p>
+                    {{#if nw}}
+                      <button {{action "submitMove" "nw" }}>nw</button>
+                    {{else}}
+                      <button disabled>nw</button> 
+                    {{/if}}
+                    
+                    {{#if n}}
+                    <button {{action "submitMove" "n" }}>n</button>
+                    {{else}}
+                      <button disabled>n</button> 
+                    {{/if}}
+          
+                    {{#if ne}}
+                    <button {{action "submitMove" "ne" }}>ne</button>
+                    {{else}}
+                      <button disabled>ne</button> 
+                    {{/if}}
+                  </p>
+    
+                  <p>        
+                    {{#if w}}
+                      <button {{action "submitMove" "w" }}>w</button>
+                    {{else}}
+                      <button disabled>w</button> 
+                    {{/if}}
         
-                  {{#if s}}
-                    <button {{action "submitMove" "s" }}>s</button>
-                  {{else}}
-                    <button disabled>s</button> 
-                  {{/if}}
-        
-                  {{#if sw}}
-                    <button {{action "submitMove" "sw" }}>sw</button>
-                  {{else}}
-                    <button disabled>sw</button> 
-                  {{/if}}
-                </p>
-                <p>        
-      
-                  {{#if e}}
-                    <button {{action "submitMove" "e" }}>e</button>
-                  {{else}}
-                    <button disabled>e</button> 
-                  {{/if}}
-  
-                  <button {{action "submitMove" "hold" }}>hold</button>
-                  
-                  {{#if w}}
-                    <button {{action "submitMove" "w" }}>w</button>
-                  {{else}}
-                    <button disabled>w</button> 
-                  {{/if}}
-                </p>
-                <p>
-                  {{#if ne}}
-                  <button {{action "submitMove" "ne" }}>ne</button>
-                  {{else}}
-                    <button disabled>ne</button> 
-                  {{/if}}
-                  
-                  {{#if n}}
-                  <button {{action "submitMove" "n" }}>n</button>
-                  {{else}}
-                    <button disabled>n</button> 
-                  {{/if}}
-  
-                  {{#if nw}}
-                    <button {{action "submitMove" "nw" }}>nw</button>
-                  {{else}}
-                    <button disabled>nw</button> 
-                  {{/if}}
-                </p>
-              
-              {{else}}
-                <p>
-                  {{#if nw}}
-                    <button {{action "submitMove" "nw" }}>nw</button>
-                  {{else}}
-                    <button disabled>nw</button> 
-                  {{/if}}
-                  
-                  {{#if n}}
-                  <button {{action "submitMove" "n" }}>n</button>
-                  {{else}}
-                    <button disabled>n</button> 
-                  {{/if}}
-        
-                  {{#if ne}}
-                  <button {{action "submitMove" "ne" }}>ne</button>
-                  {{else}}
-                    <button disabled>ne</button> 
-                  {{/if}}
-                </p>
-  
-                <p>        
-                  {{#if w}}
-                    <button {{action "submitMove" "w" }}>w</button>
-                  {{else}}
-                    <button disabled>w</button> 
-                  {{/if}}
-      
-                  <button {{action "submitMove" "hold" }}>hold</button>
-                  
-                  {{#if e}}
-                    <button {{action "submitMove" "e" }}>e</button>
-                  {{else}}
-                    <button disabled>e</button> 
-                  {{/if}}
-                </p>
-                <p>        
-                  {{#if sw}}
-                    <button {{action "submitMove" "sw" }}>sw</button>
-                  {{else}}
-                    <button disabled>sw</button> 
-                  {{/if}}
-        
-                  {{#if s}}
-                    <button {{action "submitMove" "s" }}>s</button>
-                  {{else}}
-                    <button disabled>s</button> 
-                  {{/if}}
-        
-                  {{#if se}}
-                   <button {{action "submitMove" "se" }}>se</button>
-                  {{else}}
-                    <button disabled>se</button> 
-                  {{/if}}
-                </p>
-              {{/if}} <!-- /position-top/bottom  -->
-            {{/if}} <!-- /onScreen -->
+                    <button {{action "submitMove" "hold" }}>hold</button>
+                    
+                    {{#if e}}
+                      <button {{action "submitMove" "e" }}>e</button>
+                    {{else}}
+                      <button disabled>e</button> 
+                    {{/if}}
+                  </p>
+                  <p>        
+                    {{#if sw}}
+                      <button {{action "submitMove" "sw" }}>sw</button>
+                    {{else}}
+                      <button disabled>sw</button> 
+                    {{/if}}
+          
+                    {{#if s}}
+                      <button {{action "submitMove" "s" }}>s</button>
+                    {{else}}
+                      <button disabled>s</button> 
+                    {{/if}}
+          
+                    {{#if se}}
+                     <button {{action "submitMove" "se" }}>se</button>
+                    {{else}}
+                      <button disabled>se</button> 
+                    {{/if}}
+                  </p>
+                {{/if}} <!-- /position-top/bottom  -->
+              {{/if}} <!-- /onScreen -->
+            {{/if}}
+          
+          </div>
           {{/if}}
-
-        </div>
-        {{/if}}
+      </div>
     </script>
 
     <script type="text/x-handlebars" id="shoot">
@@ -425,12 +430,14 @@
         {{/each}}
       </ul>
       {{/if}}
-      <h2>Victims</h2>
-      <ul>
-      {{#each deathDescription in victims}}
-        <li>{{ deathDescription }}</li>
-      {{/each}}
-      </ul>
+      {{#if anyVictims}}
+        <h2>Victims</h2>
+        <ul>
+        {{#each deathDescription in victims}}
+          <li>{{ deathDescription }}</li>
+        {{/each}}
+        </ul>
+      {{/if}}
       {{#if onScreen}}
         <button {{action "confirm"}}>Next</button>
       {{ else }}
