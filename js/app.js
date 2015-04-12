@@ -461,8 +461,19 @@ PassManager.reopen({
 
 var GameManager = Ember.StateManager.create({
   initialState: 'start',
+  sounds : {},
+  initSounds : function(){
+    console.log("initSounds");
+    this.sounds.openingTheme = new Howl({
+      urls : ["public/sounds/opening_theme.mp3"],
+      volume : 0.5
+    });
+  },
 
   start: Ember.State.create({
+    enter :function(stateManager){
+      stateManager.initSounds();
+    },
     exit: function(stateManager) {
       console.log("exiting the start state");
     }
@@ -471,6 +482,7 @@ var GameManager = Ember.StateManager.create({
   setup: Ember.State.create({
     enter: function(stateManager) {
       console.log("entering the setup state. Time to do some setup");
+      stateManager.sounds.openingTheme.play();
       Game.setup();
     }
   }),
@@ -478,6 +490,7 @@ var GameManager = Ember.StateManager.create({
   characterAssignment : Ember.State.create({
     enter: function(stateManager) {
       console.log("enter characterAssignment");
+      stateManager.sounds.openingTheme.fadeOut(0, 2000);
       PassManager.reset();
     }
   }),
