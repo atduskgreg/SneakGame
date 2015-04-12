@@ -373,7 +373,7 @@ App.ApplicationController = Em.ObjectController.extend({
 
   updateTurnSlug : function(){
     console.log("updateTurnSlug");
-    $("#header .slogan").html(Game.roundNum + "-" + this.get("currentPath"));
+    $("#header .modeDisplay").html(Game.roundNum + "-" + this.get("currentPath"));
     // this.set('turnSlug', Game.roundNum + "-fake-turn-thing"); 
   }.observes('currentPath'),
 
