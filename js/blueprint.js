@@ -8,7 +8,7 @@ var partCount = {};
 function preload(){
 
   for(var i = 0; i < filenames.length; i++){
-    images.push(loadImage( "/public/pieces/" + filenames[i] +".png"));
+    images.push(loadImage( "public/pieces/" + filenames[i] +".png"));
   }
 }
 
