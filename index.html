@@ -200,6 +200,7 @@
               <button {{action "submitMove" "shoot" }}>shoot gun</button>
               <button {{action "submitMove" "drop" }}>drop gun</button>
             {{else }}
+              <div id="moves">
               {{#if onScreen}}
                 <p>
                   {{#if nw}}
@@ -370,6 +371,7 @@
                   </p>
                 {{/if}} <!-- /position-top/bottom  -->
               {{/if}} <!-- /onScreen -->
+              </div>
             {{/if}}
           
           </div>

@@ -468,6 +468,12 @@ var GameManager = Ember.StateManager.create({
       urls : ["public/sounds/opening_theme.mp3"],
       volume : 0.5
     });
+
+    this.sounds.chatter = new Howl({
+      urls : ["public/sounds/crowd_noise.mp3"],
+      volume : 0.5,
+      loop : true
+    });
   },
 
   start: Ember.State.create({
@@ -484,13 +490,15 @@ var GameManager = Ember.StateManager.create({
       console.log("entering the setup state. Time to do some setup");
       stateManager.sounds.openingTheme.play();
       Game.setup();
+    },
+    exit : function(stateManager){
+      stateManager.sounds.openingTheme.fadeOut(0, 2000);
     }
   }),
 
   characterAssignment : Ember.State.create({
     enter: function(stateManager) {
       console.log("enter characterAssignment");
-      stateManager.sounds.openingTheme.fadeOut(0, 2000);
       PassManager.reset();
     }
   }),
@@ -532,12 +540,13 @@ var GameManager = Ember.StateManager.create({
   dialogs : Ember.State.create({
     enter: function(stateManager) {
       console.log("begin dialogs");
-            PassManager.reset();
+      PassManager.reset();
+      stateManager.sounds.chatter.play();
+
 
     },
     exit : function(stateManager){
       PassManager.reset();
-
     }
   }),
 
@@ -546,11 +555,13 @@ var GameManager = Ember.StateManager.create({
       console.log("begin dialogReveal");
       Game.transferKnowledgeAndItems(Game.currentDialogs());
       // Game.pickupItems();
+
       
       PassManager.reset();
     }, 
     exit : function(stateManager) {
       Game.endRound();
+      stateManager.sounds.chatter.fadeOut(0, 2000);
     } 
   }),
 
