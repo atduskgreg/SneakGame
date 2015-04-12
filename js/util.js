@@ -72,7 +72,7 @@ var Util = {
         return result;
       // drop or shoot a gun you were already holding
       } else {
-        return character.presentationString() + itemActions[0].action + " a gun";
+        return character.presentationString() + " " + itemActions[0].action + " a gun";
       }
     }
 
