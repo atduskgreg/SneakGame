@@ -63,6 +63,24 @@ h3 {
   color: #000;
 }
 
+
+.passButton{
+  text-align: center;
+}
+.passButton button {
+  float: none;
+  margin-top: 10px;
+  background-color: #93161A;
+  color: #fff;
+}
+
+.passButton img{
+  width: 200px;
+      /*  background-image: url('/public/images/top-secret.png');
+      background-repeat: no-repeat;
+      background-position: center;*/
+}
+
 /*tbody tr:nth-child(even) td*/
 tbody tr:nth-child(even) td, tbody tr.even td {background-color:#fff;}
 

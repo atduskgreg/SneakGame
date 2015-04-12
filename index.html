@@ -413,8 +413,10 @@
     </script>
 
     <script type="text/x-handlebars" id="_pass">
-      <p>Pass the screen to {{ current-player-public }}</p>
-      <p><button {{action 'next'}}>Done</button></p>
+      <p class='passButton'>
+      <img src='public/images/top-secret.png' /><br />
+      <em class='red'>Warning <b>{{ current-player-public }}</b>'s eyes only</em>
+      <br /><button class="red" {{action 'next'}}>Ready</button></p>
     </script>
 
     <script type="text/x-handlebars" id="dialogs">
