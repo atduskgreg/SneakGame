@@ -368,12 +368,14 @@ App.ApplicationController = Em.ObjectController.extend({
   debugIsVisible : false,
   blueprintIsVisible : false,
 
-  // needs: ['application'],
+  needs: ['application'],
   // turnSlug : 'current-player-conversations',
 
-  // updateTurnSlug : function(){
-  //   this.set('turnSlug', Game.roundNum + "-fake-turn-thing"); 
-  // }.observes('currentPath'),
+  updateTurnSlug : function(){
+    console.log("updateTurnSlug");
+    $("#header .slogan").html(Game.roundNum + "-" + this.get("currentPath"));
+    // this.set('turnSlug', Game.roundNum + "-fake-turn-thing"); 
+  }.observes('currentPath'),
 
   actions : {
     toggleDebug : function(){
