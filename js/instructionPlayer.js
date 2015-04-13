@@ -1,6 +1,7 @@
 var InstructionPlayer = {
   soundPath : 'public/sounds',
   colors : ["red", "green", "yellow", "blue","white","black", "pink", "orange","brown", "gray"],
+  delay : 3000,
   sounds : {},
   instructions : [],
   loadSounds : function(){
@@ -32,8 +33,6 @@ var InstructionPlayer = {
 
   currInstruction : 0,
   playNextInstruction : function(){
-    console.log("next instruction");
-    console.log(this.instructions[this.currInstruction]);
     this.playInstruction(this.instructions[this.currInstruction], function(){
     InstructionPlayer.currInstruction++;
       if(InstructionPlayer.currInstruction < InstructionPlayer.instructions.length){
@@ -54,14 +53,11 @@ var InstructionPlayer = {
   },
 
   playInstruction : function(opts, callback){
-    console.log(opts)
-
-
     if(opts.move == "holds"){
       this.sounds[opts.color].holds._onend = [];
       this.sounds[opts.color].holds._onend.push(function(){
         if(callback){
-          callback();
+          setTimeout(callback, delay);
         }
       });
       this.sounds[opts.color].holds.play();
@@ -72,7 +68,7 @@ var InstructionPlayer = {
           InstructionPlayer.sounds.dirs[dir]._onend = [];
           InstructionPlayer.sounds.dirs[dir]._onend.push(function(){
             if(callback){
-              callback();
+              setTimeout(callback, delay);
             }
           });
           InstructionPlayer.sounds.dirs[dir].play();
