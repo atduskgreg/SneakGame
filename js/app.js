@@ -351,8 +351,13 @@ App.MoveInstructionsController = Ember.ObjectController.extend({
   actions : {
     confirm : function(){
       console.log("confirm moves");
-
       this.transitionToRoute("dialogs");
+    },
+    playInstructions : function(){
+      $("#playButton").attr('disabled', true);
+      InstructionPlayer.playInstructions($("#moveInstructions"),function(){
+        $("#playButton").attr('disabled', false);
+      });
     }
   }
 });
@@ -461,8 +466,25 @@ PassManager.reopen({
 
 var GameManager = Ember.StateManager.create({
   initialState: 'start',
+  sounds : {},
+  initSounds : function(){
+    console.log("initSounds");
+    this.sounds.openingTheme = new Howl({
+      urls : ["public/sounds/opening_theme.mp3"],
+      volume : 0.5
+    });
+
+    this.sounds.chatter = new Howl({
+      urls : ["public/sounds/crowd_noise.mp3"],
+      volume : 0.5,
+      loop : true
+    });
+  },
 
   start: Ember.State.create({
+    enter :function(stateManager){
+      stateManager.initSounds();
+    },
     exit: function(stateManager) {
       console.log("exiting the start state");
     }
@@ -471,7 +493,11 @@ var GameManager = Ember.StateManager.create({
   setup: Ember.State.create({
     enter: function(stateManager) {
       console.log("entering the setup state. Time to do some setup");
+      stateManager.sounds.openingTheme.play();
       Game.setup();
+    },
+    exit : function(stateManager){
+      stateManager.sounds.openingTheme.fadeOut(0, 2000);
     }
   }),
 
@@ -509,6 +535,8 @@ var GameManager = Ember.StateManager.create({
   moveInstructions : Ember.State.create({
     enter: function(stateManager) {
       console.log("begin moveInstructions");
+      InstructionPlayer.loadSounds();
+
       Game.makeMoves();
       Game.checkPoisonings();
       Game.pickupItems();
@@ -519,12 +547,13 @@ var GameManager = Ember.StateManager.create({
   dialogs : Ember.State.create({
     enter: function(stateManager) {
       console.log("begin dialogs");
-            PassManager.reset();
+      PassManager.reset();
+      stateManager.sounds.chatter.play();
+
 
     },
     exit : function(stateManager){
       PassManager.reset();
-
     }
   }),
 
@@ -533,11 +562,13 @@ var GameManager = Ember.StateManager.create({
       console.log("begin dialogReveal");
       Game.transferKnowledgeAndItems(Game.currentDialogs());
       // Game.pickupItems();
+
       
       PassManager.reset();
     }, 
     exit : function(stateManager) {
       Game.endRound();
+      stateManager.sounds.chatter.fadeOut(0, 2000);
     } 
   }),
 

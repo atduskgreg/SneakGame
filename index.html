@@ -200,6 +200,7 @@
               <button {{action "submitMove" "shoot" }}>shoot gun</button>
               <button {{action "submitMove" "drop" }}>drop gun</button>
             {{else }}
+              <div id="moves">
               {{#if onScreen}}
                 <p>
                   {{#if nw}}
@@ -370,6 +371,7 @@
                   </p>
                 {{/if}} <!-- /position-top/bottom  -->
               {{/if}} <!-- /onScreen -->
+              </div>
             {{/if}}
           
           </div>
@@ -390,7 +392,8 @@
       {{#if onScreen}}
       {{ else }}
         <h3>Move Instructions</h3>
-        <ul>
+        <button id="playButton" {{action "playInstructions"}}>Play</button>
+        <ul id="moveInstructions">
         {{#each instruction in instructions}}
           <li>{{ instruction }}</li>
         {{/each}}
@@ -471,15 +474,18 @@
     <script src="js/libs/ember-states.js"></script>
     <script src="js/libs/Queue.js"></script>
     <script src="js/libs/p5.min.js"></script>
+    <script src="js/libs/howler.min.js"></script>
 
     <script src="js/map.js"></script>
     <script src="js/game.js"></script>
     <script src="js/util.js"></script>
     <script src="js/character.js"></script>
     <script src="js/player.js"></script>
+    <script src="js/instructionPlayer.js"></script>
 
     <script src="js/app.js"></script>
-                      <script src="js/blueprint.js"></script>
+    <script src="js/blueprint.js"></script>
+
 
   </head>
   <body>
