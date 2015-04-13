@@ -392,6 +392,7 @@
       {{#if onScreen}}
       {{ else }}
         <h3>Move Instructions</h3>
+        <button id="playButton" {{action "playInstructions"}}>Play</button>
         <ul id="moveInstructions">
         {{#each instruction in instructions}}
           <li>{{ instruction }}</li>

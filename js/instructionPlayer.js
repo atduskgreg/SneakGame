@@ -26,17 +26,21 @@ var InstructionPlayer = {
     }
   },
 
-  playInstructions : function(elems){
+  playInstructions : function(elems, callback){
     this.instructions = this.parseInstructions(elems);
-    this.playNextInstruction();
+    this.playNextInstruction(callback);
   },
 
   currInstruction : 0,
-  playNextInstruction : function(){
+  playNextInstruction : function(callback){
     this.playInstruction(this.instructions[this.currInstruction], function(){
     InstructionPlayer.currInstruction++;
       if(InstructionPlayer.currInstruction < InstructionPlayer.instructions.length){
-        InstructionPlayer.playNextInstruction();
+        InstructionPlayer.playNextInstruction(callback);
+      } else {
+        if(callback){
+          callback();
+        }
       }
     });
   },
@@ -57,7 +61,7 @@ var InstructionPlayer = {
       this.sounds[opts.color].holds._onend = [];
       this.sounds[opts.color].holds._onend.push(function(){
         if(callback){
-          setTimeout(callback, delay);
+          setTimeout(callback, InstructionPlayer.delay);
         }
       });
       this.sounds[opts.color].holds.play();
@@ -68,7 +72,7 @@ var InstructionPlayer = {
           InstructionPlayer.sounds.dirs[dir]._onend = [];
           InstructionPlayer.sounds.dirs[dir]._onend.push(function(){
             if(callback){
-              setTimeout(callback, delay);
+              setTimeout(callback, InstructionPlayer.delay);
             }
           });
           InstructionPlayer.sounds.dirs[dir].play();

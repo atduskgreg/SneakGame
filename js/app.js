@@ -351,8 +351,13 @@ App.MoveInstructionsController = Ember.ObjectController.extend({
   actions : {
     confirm : function(){
       console.log("confirm moves");
-
       this.transitionToRoute("dialogs");
+    },
+    playInstructions : function(){
+      $("#playButton").attr('disabled', true);
+      InstructionPlayer.playInstructions($("#moveInstructions"),function(){
+        $("#playButton").attr('disabled', false);
+      });
     }
   }
 });
@@ -530,6 +535,8 @@ var GameManager = Ember.StateManager.create({
   moveInstructions : Ember.State.create({
     enter: function(stateManager) {
       console.log("begin moveInstructions");
+      InstructionPlayer.loadSounds();
+
       Game.makeMoves();
       Game.checkPoisonings();
       Game.pickupItems();
