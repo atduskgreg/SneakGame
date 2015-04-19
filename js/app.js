@@ -24,6 +24,12 @@ App.ApplicationStore = DS.Store.extend();
 // model for storing game config
 App.Config = DS.Model.extend({
   onScreen : DS.attr('boolean', {defaultValue: false}),
+  numPlayers : DS.attr('number', {defaultValue: 2}),
+  
+  updateNumPlayers : function(){
+    Game.nPlayers = this.get("numPlayers");
+    console.log("Game.nPlayers: " + Game.nPlayers);
+  }.observes("numPlayers"),
   updateDebug : function(){
     Game.hidePlayers = this.get("onScreen");
   }.observes("onScreen")
@@ -41,12 +47,14 @@ App.IndexRoute = Ember.Route.extend({
       route.controllerFor("application").set("debugIsVisible", config.get("onScreen"));
     });
 
+    // controller.set("numPlayerOptions", [2,3,4]);
     controller.set("model", config);
 
   }
 });
 
 App.IndexController = Ember.ObjectController.extend({
+  numPlayerOptions : [2,3,4],
   actions : {
     next : function(){
       this.transitionToRoute("setup");

@@ -174,6 +174,7 @@ var Game = {
   },
 
   createPlayers : function(){
+    console.log("createPlayers: " + Game.nPlayers);
     for(var i = 0; i < Game.nPlayers; i++){
       var pid = Game.generateId();
       var p = new Player();
@@ -478,7 +479,7 @@ var Game = {
   },
 
   getNumNPCs : function(){
-    return this.numNPCs;
+    return 10 - this.nPlayers;
   },
 
 	moveCharacters : function(characters){

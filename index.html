@@ -126,6 +126,8 @@
         Examine the floorplan of the secret facility below and setup your board to match. When you're done click below to begin the mission.
         </p>
       </div>
+       <label>Number of players</label> {{view "select" content=numPlayerOptions selection=model.numPlayers}}
+
        <label>Play game on-screen?</label> {{view Ember.Checkbox checkedBinding="model.onScreen"}}
 
       <button class="next" {{action 'next'}}>Begin Mission</button></p>
