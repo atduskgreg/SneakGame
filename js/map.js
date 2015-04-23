@@ -282,6 +282,8 @@ var Map = {
     return this.getCell(Util.getRandomSquare());
   },
 
+  // TODO: store neighbors on cell so this doesn't
+  //  requiring looping through all cells.
   getNeighbor : function(cell, dir){
     return this.getCell({row : (cell.row + dir.row), col : (cell.col + dir.col)});
   },

@@ -549,6 +549,9 @@ var GameManager = Ember.StateManager.create({
       Game.checkPoisonings();
       Game.pickupItems();
       Game.calculateMoveInstructions();
+    },
+    exit : function(stateManager){
+      InstructionPlayer.stop(2000);
     }
   }),
 

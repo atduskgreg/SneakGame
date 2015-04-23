@@ -3,6 +3,8 @@ var InstructionPlayer = {
   colors : ["red", "green", "yellow", "blue","white","black", "pink", "orange","brown", "gray"],
   delay : 3000,
   sounds : {},
+  currentSound : null,
+  stopped : true,
   instructions : [],
   loadSounds : function(){
     for(var i = 0; i < this.colors.length; i++){
@@ -28,6 +30,7 @@ var InstructionPlayer = {
 
   playInstructions : function(elems, callback){
     this.instructions = this.parseInstructions(elems);
+    this.stopped = false;
     this.playNextInstruction(callback);
   },
 
@@ -51,9 +54,21 @@ var InstructionPlayer = {
     });
   },
 
+  stop : function(fadeOutDuration){
+    this.currentSound.fadeOut(0, fadeOutDuration);
+    this.stopped = true;
+  },
+
   parseInstruction : function(e){
     words = e.text().split(".")[0].split(" ");
     return {move :  words[words.length - 1], color: words[words.length - 2].toLowerCase()};
+  },
+
+  playSound : function(sound){
+    if(!this.stopped){
+      sound.play();
+      this.currentSound = sound;
+    }
   },
 
   playInstruction : function(opts, callback){
@@ -64,7 +79,7 @@ var InstructionPlayer = {
           setTimeout(callback, InstructionPlayer.delay);
         }
       });
-      this.sounds[opts.color].holds.play();
+      this.playSound(this.sounds[opts.color].holds);
     } else {
       this.sounds[opts.color].move._onend = [];
       this.sounds[opts.color].move._onend.push(function(){
@@ -75,11 +90,12 @@ var InstructionPlayer = {
               setTimeout(callback, InstructionPlayer.delay);
             }
           });
-          InstructionPlayer.sounds.dirs[dir].play();
+          InstructionPlayer.playSound(InstructionPlayer.sounds.dirs[dir]);
+
         })(opts.move)
       });
 
-      this.sounds[opts.color].move.play();
+      this.playSound(this.sounds[opts.color].move);
     }
 
   }
