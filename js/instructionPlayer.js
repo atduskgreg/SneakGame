@@ -55,7 +55,9 @@ var InstructionPlayer = {
   },
 
   stop : function(fadeOutDuration){
-    this.currentSound.fadeOut(0, fadeOutDuration);
+    if(this.currentSound){
+      this.currentSound.fadeOut(0, fadeOutDuration);
+    }
     this.stopped = true;
   },
 
