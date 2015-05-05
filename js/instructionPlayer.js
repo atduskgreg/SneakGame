@@ -31,6 +31,7 @@ var InstructionPlayer = {
   playInstructions : function(elems, callback){
     this.instructions = this.parseInstructions(elems);
     this.stopped = false;
+    this.currInstruction = 0;
     this.playNextInstruction(callback);
   },
 
