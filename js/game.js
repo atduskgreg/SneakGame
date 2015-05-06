@@ -378,6 +378,14 @@ var Game = {
       result = {message : "Everyone is dead! It's a draw.", draw : true};
     }
 
+    // check for victory by plans
+    charKeys = Object.keys(Game.players);
+    for(var i = 0; i < charKeys.length; i++){
+      currPlayer = Game.players[charKeys[i]];
+      if(currPlayer.hasItem("plans") && Util.sameSquare(currPlayer.position, Game.exit)){
+        result = {winner : currPlayer, message : "They escaped with the plans"};
+      }
+    }
     return result;
   },
 
