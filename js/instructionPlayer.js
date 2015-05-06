@@ -64,7 +64,14 @@ var InstructionPlayer = {
 
   parseInstruction : function(e){
     words = e.text().split(".")[0].split(" ");
-    return {move :  words[words.length - 1], color: words[words.length - 2].toLowerCase()};
+
+    move = words[words.length - 1];
+    color = words[words.length - 2].toLowerCase();
+    if(move == "gun"){
+      color = words[words.length - 4].toLowerCase();
+    }
+
+    return {move :  move, color : color};
   },
 
   playSound : function(sound){
@@ -75,7 +82,8 @@ var InstructionPlayer = {
   },
 
   playInstruction : function(opts, callback){
-    if(opts.move == "holds"){
+    console.log("instruction: " + opts.move);
+    if(opts.move == "holds" || opts.move == "gun"){
       this.sounds[opts.color].holds._onend = [];
       this.sounds[opts.color].holds._onend.push(function(){
         if(callback){
