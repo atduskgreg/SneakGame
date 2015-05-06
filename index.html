@@ -401,13 +401,15 @@
         {{/each}}
       </ul>
       {{/if}}
+      <h2>Victims</h2>
       {{#if anyVictims}}
-        <h2>Victims</h2>
         <ul>
         {{#each deathDescription in victims}}
           <li>{{ deathDescription }}</li>
         {{/each}}
         </ul>
+      {{ else }}
+        <p><em>None this turn.</em></p>
       {{/if}}
       {{#if onScreen}}
         <button {{action "confirm"}}>Next</button>
