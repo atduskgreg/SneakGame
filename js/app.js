@@ -399,12 +399,7 @@ App.ApplicationController = Em.ObjectController.extend({
       this.toggleProperty('debugIsVisible');
     }.observes(""),
 
-    toggleAudio : function(){
-      
-      GameManager.mute();
-    },
-
-    // TODO:
+     // TODO:
     //  temporary hack until Game is an ember model
     //  and this can be handled with bindings
     refreshDebug : function(){
@@ -412,7 +407,30 @@ App.ApplicationController = Em.ObjectController.extend({
       if(Game.exit && Object.keys(Game.characters).length > 0){
         Game.drawDebug();
       }
+    },
+
+    toggleAudio : function(){
+      GameManager.mute();
+    },
+
+    printBoard : function(){
+      var dataUrl = $("canvas")[0].toDataURL(); 
+      var windowContent = '<!DOCTYPE html>';
+      windowContent += '<html>'
+      windowContent += '<head><title>Sneak Board</title></head>';
+      windowContent += '<body>'
+      windowContent += '<img src="' + dataUrl + '">';
+      windowContent += '</body>';
+      windowContent += '</html>';
+      var printWin = window.open('','','width=1000,height=1000');
+      printWin.document.open();
+      printWin.document.write(windowContent);
+      printWin.document.close();
+      printWin.focus();
+      printWin.print();
+      printWin.close();
     }
+   
   }
 });
 
