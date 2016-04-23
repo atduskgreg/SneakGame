@@ -1,4 +1,5 @@
 var gridSize = 50;
+var wallThickness = 5;
 var mapSize = {};
 var images = [];
 var filenames = ["emt", "wll", "dor", "hll", "hdr", "cnr", "cd1"];
@@ -97,23 +98,23 @@ function drawDoors(){
 }
 
 function westWall(){
-  rect(pos.x+5, pos.y+5, 10, gridSize);
+  rect(pos.x+5, pos.y+5, wallThickness, gridSize);
   // line(pos.x, pos.y, pos.x, pos.y+gridSize);
   // line(pos.x+10, pos.y, pos.x+10, pos.y+gridSize);
 }
 function eastWall(){
-  rect(pos.x+gridSize-5, pos.y+5, 10, gridSize);
+  rect(pos.x+gridSize, pos.y+5, wallThickness, gridSize);
   // line(pos.x+gridSize, pos.y, pos.x+gridSize, pos.y+gridSize);
   // line(pos.x+gridSize+10, pos.y+10, pos.x+gridSize+10, pos.y+gridSize+10);
 }
 function northWall(){
-  rect(pos.x+5, pos.y+5, gridSize, 10);
+  rect(pos.x+5, pos.y+5, gridSize, wallThickness);
   // line(pos.x, pos.y, pos.x+gridSize, pos.y);
   // line(pos.x, pos.y+10, pos.x+gridSize, pos.y+10);
 }
 
 function southWall(){
-  rect(pos.x+5,pos.y+gridSize-5, gridSize, 10);
+  rect(pos.x+5,pos.y+gridSize, gridSize, wallThickness);
   // line(pos.x, pos.y+gridSize, pos.x+gridSize, pos.y+gridSize);
   // line(pos.x, pos.y+gridSize+10, pos.x+gridSize, pos.y+gridSize+10);
 }
@@ -147,6 +148,9 @@ function drawCell(cell){
   strokeWeight(1);
   stroke(0);
 
+  rect(pos.x+5, pos.y+5, gridSize, gridSize);
+
+  fill(0);
   for(var i = 0; i < dNeighbors.length; i++){
     if(cell.indoors){
       wallDir = Util.cardinalDescription(cell,dNeighbors[i]);
@@ -198,7 +202,7 @@ function drawMap(){
 function drawCellLabel(cell){
   pos = cellPos(cell);
   noStroke();
-  fill(195);
+  fill(230);
   // fill(85,85,255);
   text(Map.partForCell(cell), pos.x +20, pos.y+(gridSize-15));
 }
@@ -238,12 +242,70 @@ function drawKey(){
   console.log(entry.join(","));
 }
 
+function drawGridLabels(){
+  cols = ["a", "b", "c", "d" ,"e", "f","g","h","i"];
+  rows = [0,1,2,3,4,5,6,7,8];
+
+  push();
+    fill(0);
+
+  push();
+    translate(0, height-15);
+    for(var i = 0; i < cols.length; i++){
+      text(cols[i], 50 + i*50, 10);  
+    }
+    translate(0, -(height-15));
+  
+    translate(width/2, 10);
+    rotate(PI);
+    translate(-width/2, -10);
+    cols.reverse();
+    for(var i = 0; i < cols.length; i++){
+      text(cols[i], 50 + i*50, 10);  
+    }
+  pop();
+
+  push();
+    rows.reverse();
+    for(var i = 0; i < rows.length; i++){
+        text(rows[i], 10, 50 + i*50);  
+    }
+
+    translate(10, height/2);
+    rotate(PI);
+    translate(-10, -height/2);
+    rows.reverse();
+    for(var i = 0; i < rows.length; i++){
+        text(rows[i], -width + 30, 50 + i*50);  
+    }
+    pop();
+  pop();
+}
+
+function drawExit(){
+  x = Game.exit.col * gridSize + 25;
+  y = (8-Game.exit.row) * gridSize + 25;
+
+  push();
+
+  fill(255,0,0);
+  rect(x + 5, y + 15, 40, 20);
+  fill(255);
+  textAlign(CENTER);
+  // textSize(20);
+  text("EXIT", x + 25, y +30);
+  pop();
+}
+
 function draw(){
   // background(0,0,255);
   background(255);
   drawGrid();
   drawDoors();
   drawMap();
+  drawExit();
+  drawGridLabels();
+
 
   // drawKey();
 }

@@ -4,9 +4,6 @@
 
 ## Make the blueprint printable
 
-* Black on white instead of white on blue
-* Add grid coordinates
-* Indicate exit (or as piece)
 * Add Compasses
 
 ## Interface for printing the board

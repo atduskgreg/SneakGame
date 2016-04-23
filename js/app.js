@@ -503,6 +503,8 @@ var GameManager = Ember.StateManager.create({
 
   start: Ember.State.create({
     enter :function(stateManager){
+            Game.setup();
+
       stateManager.initSounds();
     },
     exit: function(stateManager) {
@@ -514,7 +516,7 @@ var GameManager = Ember.StateManager.create({
     enter: function(stateManager) {
       console.log("entering the setup state. Time to do some setup");
       stateManager.sounds.openingTheme.play();
-      Game.setup();
+      // Game.setup();
     },
     exit : function(stateManager){
       stateManager.sounds.openingTheme.fadeOut(0, 2000);
