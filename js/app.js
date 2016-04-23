@@ -399,6 +399,11 @@ App.ApplicationController = Em.ObjectController.extend({
       this.toggleProperty('debugIsVisible');
     }.observes(""),
 
+    toggleAudio : function(){
+      
+      GameManager.mute();
+    },
+
     // TODO:
     //  temporary hack until Game is an ember model
     //  and this can be handled with bindings
@@ -488,6 +493,12 @@ var GameManager = Ember.StateManager.create({
       volume : 0.5,
       loop : true
     });
+  },
+
+  mute : function(){
+    for(key in this.sounds){
+      this.sounds[key].mute();
+    }
   },
 
   start: Ember.State.create({

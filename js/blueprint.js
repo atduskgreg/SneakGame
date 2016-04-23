@@ -5,12 +5,12 @@ var filenames = ["emt", "wll", "dor", "hll", "hdr", "cnr", "cd1"];
 var partCount = {};
 
 
-function preload(){
+// function preload(){
 
-  for(var i = 0; i < filenames.length; i++){
-    images.push(loadImage( "public/pieces/" + filenames[i] +".png"));
-  }
-}
+//   for(var i = 0; i < filenames.length; i++){
+//     images.push(loadImage( "public/pieces/" + filenames[i] +".png"));
+//   }
+// }
 
 function setup(){
   Map.setup();
@@ -30,13 +30,16 @@ function drawGrid(){
     for(var col = 0; col < Game.boardWidth*4+1; col++){
       x = 25 + col*gridSize/squaresPerCell;
       y = 25 + Game.boardHeight*gridSize;
-              stroke(75,75,255);
+      
+      stroke(230);
+      // stroke(75,75,255);
 
       if(col % 4 == 0){
         strokeWeight(1);
       } else {
         strokeWeight(0.5);
-        stroke(40,40, 255);
+        stroke(215);
+//        stroke(40,40, 255);
       }
       line(x, 25, x, y);
 
@@ -68,7 +71,7 @@ function drawDoors(){
   for(var i = 0; i < doorCells.length; i++){
     doorDir = Map.doorDirection(doorCells[i]);
     pos = cellPos(doorCells[i]);
-    stroke(125);
+    stroke(175);
 
     if(doorDir == "n"){
       arc(pos.x+gridSize+5, pos.y+5, 100, 100, HALF_PI, PI);
@@ -129,7 +132,7 @@ function drawCell(cell){
 
   noFill();
   strokeWeight(1);
-  stroke(125);
+  stroke(200);
 
   if(!cell.indoors){
     nHatches = 5;
@@ -142,7 +145,7 @@ function drawCell(cell){
   } 
 
   strokeWeight(1);
-  stroke(255);
+  stroke(0);
 
   for(var i = 0; i < dNeighbors.length; i++){
     if(cell.indoors){
@@ -195,7 +198,8 @@ function drawMap(){
 function drawCellLabel(cell){
   pos = cellPos(cell);
   noStroke();
-  fill(85,85,255);
+  fill(195);
+  // fill(85,85,255);
   text(Map.partForCell(cell), pos.x +20, pos.y+(gridSize-15));
 }
 
@@ -235,8 +239,8 @@ function drawKey(){
 }
 
 function draw(){
-  background(0,0,255);
-
+  // background(0,0,255);
+  background(255);
   drawGrid();
   drawDoors();
   drawMap();

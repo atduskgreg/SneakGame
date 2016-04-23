@@ -2,29 +2,19 @@
 
 ### TODO
 
-#### Movement Prototype
+## Make the blueprint printable
 
-* Implement inventory item transfer to player
-* Convert dialog GM screen into something more readable
+* Black on white instead of white on blue
+* Add grid coordinates
+* Indicate exit (or as piece)
+* Add Compasses
 
-#### Networking
+## Interface for printing the board
 
-* Synchronize generated characters between clients
-* Waiting screen
-* Alternate move instructions between players 
+* Add link that opens board in new window
 
-#### Dialog Prototype
+## Make printable pieces
 
-* Add features to script format to control who speaks.
-* Randomly decide if each player is an NPC or not.
-* Lock-in timer
+* Guns
+* Player pieces (or suggest meeples)
 
-#### Other
-
-* Use arrows (and text of destination square) for move buttons
-* Identify squares with multiple characters that need dialog
-
-#### Questions?
-
-* Maybe player inputs destinations instead of step-by-step moves? Or we have a pathing assistant?
-* Rael-suggested move stack?
