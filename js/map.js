@@ -391,6 +391,17 @@ var Map = {
     }
   },
 
+  highlightDoorCells : function(){
+    doorCells = this.getDoorCells();
+    console.log("door cells");
+    for(var i = 0; i < doorCells.length; i++){
+      dir = this.doorDirection(doorCells[i])
+      $(Util.squareSelector(doorCells[i])).addClass(dir + "Door");
+    }
+  },
+
+
+
   clearHighlights : function(className){
     $("td").removeClass(className || 'highlight');
   },

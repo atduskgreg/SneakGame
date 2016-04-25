@@ -23,6 +23,8 @@ var Game = {
     this.drawCharacters(this.characters);
     this.drawExit();
     this.drawInventory();
+    Map.highlightIndoorCells();
+    Map.highlightDoorCells();
 
     if(!this.hidePlayers){
       this.drawPlayerDebug();

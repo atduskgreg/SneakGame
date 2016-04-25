@@ -94,7 +94,7 @@
         {{#view "blueprint" isVisibleBinding="blueprintIsVisible"}}
         <div class="span-13 section">
           <h3>Facility Blueprints</h3>
-          <p>This is the secret facility in which your mission will take place. Setup the pieces on your <b>tactical model</b> to match this blueprint. Or <a id="printBoard" href="#" {{action "printBoard"}}>Print the Board</a>.</p>
+          <p>This is the secret facility in which your mission will take place. Setup the pieces on your <b>tactical model</b> to match this blueprint. Or <a id="printBoard" href="#" {{action "printBoard"}}>Print this board</a>. Or print <a href="http://gregborenstein.com/games/sneak/blank_board.pdf" target="new">the board template</a> and fill it out yourself.</p>
           <div id="blueprint"></div>
         </div>
         {{/view}}
@@ -125,6 +125,10 @@
         <p>
         Examine the floorplan of the secret facility below and setup your board to match. When you're done click below to begin the mission.
         </p>
+        <h4>Important Materials</h4>
+        <p>If you don't have a physical copy of Sneak you can print your own before you get started:</p>
+        <p><a target="_new" href="http://gregborenstein.com/games/sneak/sneak_print_and_play_pieces.pdf">The Pieces</a><br /><a target="new" href="http://gregborenstein.com/games/sneak/blank_board.pdf">The Board Template</a></p>
+
       </div>
        <label>Number of players</label> {{view "select" content=numPlayerOptions selection=model.numPlayers}}
 
