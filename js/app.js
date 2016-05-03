@@ -132,12 +132,18 @@ Dog.route("/player", new Dog.Controller({
     console.log(characters);
     you = PM.currentPlayer();
 
+    firstRound = (Game.roundNum == 1);
+
     return {
       receivedItems : receivedItems,
       knowledge : characters,
       newKnowledge : newKnowledge,
       somethingLearned : somethingLearned,
-      you : you
+      you : you,
+      hasGun : you.hasItem("gun"),
+      canPoison : you.canPoison(),
+      hasPlans : you.hasItem("plans"),
+      firstRound : firstRound
     }
   }, actions :{
     next: function(e){

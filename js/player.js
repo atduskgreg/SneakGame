@@ -22,6 +22,7 @@ Player = function() {
 
 Player.prototype = new Character();
 
+// TODO: make this use inventory
 Player.prototype.canPoison = function(){
   return (this.poisoningsCommitted.length == 0);
 }

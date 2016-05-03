@@ -60,9 +60,10 @@
     }
 
     .gun {
-      background-image: url('public/images/gun.jpg');
+      background-image: url('public/images/gun.png');
       background-repeat: no-repeat;
       background-position: center;
+      background-size: 40px 40px;
       border: 2px solid #000;
 
     }
@@ -156,9 +157,18 @@
 
     <script type="text/html" id="player">
     <div id="conversations" class="span-14 section">
-      <h3>Conversations</h3>
-      <table>
-      <tr class='tableHeader'><td>Source</td> <td>Statement</td></tr>
+      {{#if firstRound}}
+      <div class='span-12'>
+              <h2>Your Identity</h2>
+              <div class='candidateImage span-2' style="background-image: url('/public/images/{{ you.color }}.png')">
+              
+              </div>
+              <p>{{formatCharacter you}}</p>
+          </div>
+      {{else}}
+        <h3>Conversations</h3>
+        <table>
+        <tr class='tableHeader'><td>Source</td> <td>Statement</td></tr>
         {{#each receivedItems}}
         <tr>
         <td>{{formatCharacter this.from}}</td><td>"I have the plans. Take them and escape to the exit!"</td>
@@ -167,13 +177,14 @@
         {{#each newKnowlege}}
         <tr>{{knowledgeDescription this}}</tr>
         {{/each}}
-
+  
         {{#unless somethingLearned}}
         <td><em>none</em></td><td><em>none</em></td>
         {{/unless}}
         </table>
+      {{/if}}
     </div>
-        <div id="candidates" class="span-14 section">
+        <div id="candidates" class="span-16 section">
           <h3>Suspects</h3>
           <div style='margin-bottom: 20px'>
           <div class='candidateContainer you'>
@@ -200,17 +211,29 @@
 
         </div>
         <div id="actions" class="span-13 section">
-          <div id="shoot">
-            <div style="background-image:url('/public/images/gun.jpg'); background-repeat: no-repeat; width:40px; height:40px">
+          <div id="shoot" class="span-4">
+            <div style="background-image:url('/public/images/gun.png'); background-repeat: no-repeat; background-size: 100px 100px; background-position:center; width: 100px; height:100px">
             {{#unless hasGun}}
-              <img class='marked' src='/public/images/x.png' style="width:40px; height:40px" />
+              <img class='marked' src='/public/images/x.png' style="width:100px; height:100px" />
             {{/unless}}
             </div>
             {{#if hasGun}}
             <button>shoot</button>
             {{/if}}
           </div>
-          <div id="poison">
+          <div id="plans" class="span-4">
+            <div style="background-image:url('/public/images/briefcase.png'); background-repeat: no-repeat; background-size: 100px 100px; background-position:center; width: 100px; height:100px">
+            {{#unless hasPlans}}
+              <img class='marked' src='/public/images/x.png' style="width:100px; height:100px" />
+            {{/unless}}
+            </div>
+          </div>
+          <div id="poison" class="span-4">
+          <div style="background-image:url('/public/images/poison.jpg'); background-repeat: no-repeat; background-size: 100px 100px; background-position:center; width: 100px; height:100px">
+            {{#unless canPoison}}
+              <img class='marked' src='/public/images/x.png' style="width:100px; height:100px" />
+            {{/unless}}
+            </div>
           </div>
           <div id="move">
           </div>

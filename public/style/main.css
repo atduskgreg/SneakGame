@@ -130,7 +130,8 @@ tbody tr:nth-child(even) td, tbody tr.even td {background-color:#fff;}
   width: 92px;
   height: 92px; 
   float: left;
-  margin-right: 10px
+  margin-right: 10px;
+  margin-bottom: 20px;
 }
 
 .candidateImage{

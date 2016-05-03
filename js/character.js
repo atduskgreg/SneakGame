@@ -121,13 +121,21 @@ Character.prototype = {
 		return result;
 	},
 
-	hasPlans : function(){
+	hasItem : function(itemName){
 		for(var i = 0; i < this.inventory.length; i++){
-			if(this.inventory[i].name == "plans"){
+			if(this.inventory[i].name == itemName){
 				return true;
 			}
 		}
 		return false;
+	},
+
+	hasPlans : function(){
+		return this.hasItem("plans")
+	},
+
+	hasGun : function(){
+		return this.hasItem("gun");
 	},
 
 	// learn knowledge from other character's knowledge and items
