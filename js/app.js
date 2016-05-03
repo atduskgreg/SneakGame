@@ -200,6 +200,12 @@ Dog.route("/move", new Dog.Controller({
     Game.calculateMoveInstructions();
     Game.drawDebug();
 
+    gameResult = Game.checkVictory();
+    if(gameResult){
+      Game.result = gameResult;
+      Dog.goToRoute("gameOver");
+    }
+
   },
   exit : function(){
     Game.endRound();
@@ -229,11 +235,25 @@ Dog.route("/move", new Dog.Controller({
   }
 }));
 
+Dog.route("/gameOver", new Dog.Controller({
+  template : "gameOver",
+  getData : function(){
+    Game.result.message = new Handlebars.SafeString(Game.result.message);
+    return {
+      oneWinner: !Game.result.draw,
+      result : Game.result
+    }
+  },
+  actions : {
+
+  }
+}));
+
 Dog.route("/pass", new Dog.Controller({
   template : "pass",
   getData : function(){
     return {
-      nextPlayerNum : (PM.i+1)
+      nextPlayerNum : (PM.currentPlayer().tablePosition+1)
     }
   },
   actions : {
@@ -258,21 +278,30 @@ $(document).ready(function(){
 })
 
 PassManager = function(args){
-  this.n = Game.nPlayers;
   this.i = 0;
   this.complete = false;
   this.currentRoute = args.current;
   this.nextRoute = args.next;
+  this.updateActivePlayers();
+}
+
+PassManager.prototype.updateActivePlayers = function(){
+  this.activePlayers = [];
+  for(key in Game.players){
+    if(!Game.players[key].dead){
+      this.activePlayers.push(Game.players[key]);
+    }
+  }
 }
 
 PassManager.prototype.currentPlayer = function(){
-  currPlayerKey = Object.keys(Game.players)[this.i];
-  return Game.players[currPlayerKey];
+  return this.activePlayers[this.i];
 }
 
 PassManager.prototype.next = function(){
   this.i++;
-  if(this.i >= this.n){
+
+  if(this.i >= this.activePlayers.length){
     this.complete = true;
   }
 }

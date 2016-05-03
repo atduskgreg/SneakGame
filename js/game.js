@@ -14,7 +14,7 @@ var Game = {
   numGuns : 4,
   inventory : [],
   result : {},
-  victims : [],
+  killings : [],
   moveInstructions : null,
   colorRanks : [],
   hidePlayers : false,
@@ -368,12 +368,9 @@ var Game = {
     numDeadPlayers = 0;
 
     soleWinner = null;
-    deathCauses = [];
     for(i in this.players){
       if(this.players[i].dead){
-        if(this.players[i].poisonings.length > 0){
-          deathCauses.push(this.players[i].color + " was poisoned by " + this.players[i].poisonings[0].poisoner.color) +".";
-        } // do something with shootings?
+
         numDeadPlayers++;
       } else {
         // only use this if all the other players are dead
@@ -382,6 +379,13 @@ var Game = {
     }
 
     if(numDeadPlayers == (this.nPlayers-1)){
+      deathCauses = [];
+      for(var i = 0 ; i < Game.killings.length; i++){
+        if(Game.killings[i].victim instanceof Player){
+          deathCauses.push(Game.deathDescription(Game.killings[i]));
+        }
+      }
+
       result = {winner : soleWinner, message : deathCauses.join(" ")};
     }
 
@@ -410,24 +414,24 @@ var Game = {
       }
     }
 
-    Game.victims.push({killer : opts.killer, method : opts.method, name : character.name, color : character.color, position : character.position, when : Game.roundNum});
+    Game.killings.push({killer : opts.killer, method : opts.method, victim : character, when : Game.roundNum});
   },
 
   deathDescription : function(death){
     if(death.method == "shooting"){
-      return death.color + " was shot by " + death.killer.color + ".";
+      return death.killer.presentationString() + " shot " + death.victim.presentationString() + ".";
 
     }
     if(death.method == "poisoning"){
-      return death.color + " died of poison."
+      return death.victim.presentationString() + " died of poison.";
     }
   },
 
   newVictims : function(){
     var result = [];
-    for(var i = 0; i < Game.victims.length; i++){
-      if(Game.victims[i].when == Game.roundNum){
-        result.push(Game.deathDescription(Game.victims[i]));
+    for(var i = 0; i < Game.killings.length; i++){
+      if(Game.killings[i].when == Game.roundNum){
+        result.push(new Handlebars.SafeString(Game.deathDescription(Game.killings[i])));
       }
     }
     return result;
