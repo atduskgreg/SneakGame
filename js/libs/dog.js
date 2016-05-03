@@ -5,32 +5,21 @@
  
   // A hash to store our routes:
   var routes = {};
-  // An array of the current route's events:
-  var events = [];
+
   // The element where the routes are rendered:
   var el = null;
-  // Context functions shared between all controllers:
-  var ctx = {
-    refresh: function (listeners) {
-      listeners.forEach(function (fn) { fn(); });
-    }
-  };
 
   function route (path, controller) {
     var listeners = []; 
-    controller["$refresh"] = ctx.refresh.bind(undefined, listeners);
 
-    routes[path] = {templateId: controller.template, controller: controller, onRefresh: listeners.push.bind(listeners)};
+    routes[path] = {templateId: controller.template, controller: controller};
   }
 
   function component (selector, controller){
-    listeners = [];
-    controller["$refresh"] = ctx.refresh.bind(undefined, listeners);
 
     for(var i = 0; i < $(selector).length; i++){
       render(controller.template, controller, $(selector)[i]);
     }
-    controller.$refresh();
   }
 
   routeHistory = [];
@@ -44,7 +33,7 @@
     }
 
 
-  console.log("binding actions for " + templateId ); 
+    console.log("binding actions for " + templateId ); 
     for(action in ctrl.actions){
 
 
@@ -56,7 +45,7 @@
         // ele.bind("submit", ctrl.$refresh);
       } else if(ele.is("select")){
         ele.unbind("change");
-        // ele.bind("change", ctrl.actions[action]);
+        ele.bind("change", ctrl.actions[action]);
         // ele.bind("change", ctrl.$refresh);
       }
       else {
@@ -72,7 +61,7 @@
     // TODO: make this setable in the api
     // Lazy load view element:
     el = el || document.getElementById('view');
-    // events = [];
+
     // Current route url (getting rid of '#' in hash as well):
     var url = location.hash.slice(1) || '/';
     // Get route by url or fallback if it does not exist:
@@ -101,12 +90,9 @@
         // If there's nothing to render, abort:
         return;
       }
-      // Listen on route refreshes:
-      route.onRefresh(function () {
-        render(route.templateId, route.controller, el);
-      });
-      // Trigger the first refresh:
-      ctrl.$refresh();
+
+      render(route.templateId, route.controller, el);
+
     }
   }
   // Listen on hash change:
