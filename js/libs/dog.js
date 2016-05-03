@@ -11,24 +11,28 @@
   var el = null;
   // Context functions shared between all controllers:
   var ctx = {
-    // on: function (selector, evt, handler) {
-    //   events.push([selector, evt, handler]);
-    // },
     refresh: function (listeners) {
       listeners.forEach(function (fn) { fn(); });
     }
   };
 
-  // Defines a route:
   function route (path, controller) {
     var listeners = []; 
-    //controller["$on"] = ctx.on;
     controller["$refresh"] = ctx.refresh.bind(undefined, listeners);
 
     routes[path] = {templateId: controller.template, controller: controller, onRefresh: listeners.push.bind(listeners)};
   }
 
-      // log of routes
+  function component (selector, controller){
+    listeners = [];
+    controller["$refresh"] = ctx.refresh.bind(undefined, listeners);
+
+    for(var i = 0; i < $(selector).length; i++){
+      render(controller.template, controller, $(selector)[i]);
+    }
+    controller.$refresh();
+  }
+
   routeHistory = [];
 
   function render(templateId, ctrl, target){
@@ -64,6 +68,7 @@
   }
 
   function router () {
+    // TODO: make this setable in the api
     // Lazy load view element:
     el = el || document.getElementById('view');
     // events = [];
@@ -108,19 +113,7 @@
   // Listen on page load:
   this.addEventListener('load', router);
 
-  component = function(selector, controller){
-    console.log("render component: " + selector);
-    console.log(controller);
-    console.log($(selector).length);
-    listeners = [];
-    controller["$refresh"] = ctx.refresh.bind(undefined, listeners);
 
-    for(var i = 0; i < $(selector).length; i++){
-      console.log("here")
-      render(controller.template, controller, $(selector)[i]);
-    }
-    controller.$refresh();
-  }
 
   //public api
 

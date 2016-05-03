@@ -42,13 +42,16 @@ Dog.route("/", new Dog.Controller({
   }
 }));
 
+var sketch;
 Dog.route("/setupMap", new Dog.Controller({
   template : "setupMap",
   enter : function(){
+    sketch = new p5(blueprint);
     $("#blueprint").show();
   },
   exit : function(){
     $("#blueprint").hide();
+    sketch.remove();
   },
   actions : {
     next : function(e){
@@ -128,10 +131,7 @@ Dog.route("/player", new Dog.Controller({
       characters.push(result);
     }
 
-    console.log("characters");
-    console.log(characters);
     you = PM.currentPlayer();
-
     firstRound = (Game.roundNum == 1);
 
     return {
