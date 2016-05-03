@@ -427,7 +427,7 @@ var Game = {
     var result = [];
     for(var i = 0; i < Game.victims.length; i++){
       if(Game.victims[i].when == Game.roundNum){
-        result.push(this.deathDescription(Game.victims[i]));
+        result.push(Game.deathDescription(Game.victims[i]));
       }
     }
     return result;

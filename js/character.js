@@ -138,6 +138,10 @@ Character.prototype = {
 		return this.hasItem("gun");
 	},
 
+	shootingTargets : function(){
+		return Game.shootingTargetsFor(this);
+	},
+
 	// learn knowledge from other character's knowledge and items
 	learnFrom : function(other){
 		if(this.dead){

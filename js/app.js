@@ -87,7 +87,6 @@ Dog.route("/setupCharacters", new Dog.Controller({
 
 Dog.route("/player", new Dog.Controller({
   template : "player",
-
   
   getData : function(){
     console.log("/player.getData()");
@@ -98,8 +97,7 @@ Dog.route("/player", new Dog.Controller({
     newKnowledge = [];
     for(color in playerKnowledge){
       if(playerKnowledge[color].when == Game.roundNum || playerKnowledge[color].receivedAt == Game.roundNum){
-        if(color != currPlayer.color){
-          numLearned++;
+        if(color != PM.currentPlayer().color){
           // TODO: eliminated knowledge about the plans on the round you receive them
           //if(acquiredFrom.indexOf(playerKnowledge[color].receivedFrom) == -1){
             newKnowledge.push(Util.knowledgeDescription(playerKnowledge[color]));
@@ -136,17 +134,19 @@ Dog.route("/player", new Dog.Controller({
 
     order = Player.moveInputOrder[PM.currentPlayer().tablePosition]
     legalMoves = you.legalMoves();
-    console.log("legalMoves");
-    console.log(legalMoves);
     moveInputs = [];
     for(var i = 0; i < order.length; i++){
       dir = order[i];
-      console.log("dir: " + dir);
       moveInputs.push({dir : dir, legal : legalMoves[dir]});
     }
 
-    console.log("moveInputs");
-    console.log(moveInputs);
+    others = PM.currentPlayer().shootingTargets();
+
+    shootingTargets = [];
+    for(var i =0 ; i< others.length; i++){
+      shootingTargets.push({color: others[i].color, displayName : others[i].presentationString()});
+    }
+
 
     return {
       receivedItems : receivedItems,
@@ -155,16 +155,76 @@ Dog.route("/player", new Dog.Controller({
       somethingLearned : somethingLearned,
       you : you,
       hasGun : you.hasItem("gun"),
+      shootingTargets : shootingTargets,
       canPoison : you.canPoison(),
       hasPlans : you.hasItem("plans"),
       firstRound : firstRound,
       moveInputs : moveInputs
     }
   }, actions :{
-    next: function(e){
+    submitMove : function(e){
       e.preventDefault();
+      move = $(this).attr("x-move");
+      
+      if(move == "shoot"){
+        // do shooting things
+        target = Game.characterWithAttribute("color", $(".targetColor").val())
+        Game.killCharacter(target, {killer : PM.currentPlayer(), method : "shooting"});
+
+        gun = PM.currentPlayer().itemWithAttribute("name", "gun");
+        PM.currentPlayer().dropItem(gun);
+        Game.removeItem(gun);
+      } else if(move == "drop"){
+        //drop the gun
+        gun = PM.currentPlayer().itemWithAttribute("name", "gun");
+        PM.currentPlayer().dropItem(gun);
+      } else if(move == "poison"){
+        //do poisoning things
+      } else { // it's a movement with a direction
+        PM.currentPlayer().setNextMove(Util.moves[move]);
+      }
+
       PM.next();
       Dog.goToRoute(PM.actionRoute());
+    }
+  }
+}));
+
+
+Dog.route("/move", new Dog.Controller({
+  template : "move",
+  enter : function(){
+    Game.makeMoves();
+    Game.checkPoisonings();
+    Game.pickupItems();
+    Game.calculateMoveInstructions();
+    Game.drawDebug();
+
+  },
+  exit : function(){
+    Game.endRound();
+    Game.transferKnowledgeAndItems(Game.currentDialogs());
+
+  },
+  getData : function(){
+    anyVictims = (Game.newVictims().length > 0);
+    instructions = Game.moveInstructions;
+    victims = Game.newVictims;
+
+    return {
+      anyVictims : anyVictims,
+      instructions : instructions,
+      victims : victims
+    }
+  },
+  actions : {
+    next : function(e){
+      e.preventDefault();
+      PM = new PassManager({
+        current : "player",
+        next : "move"
+      })
+      Dog.goToRoute("pass");
     }
   }
 }));
