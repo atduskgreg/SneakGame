@@ -134,6 +134,20 @@ Dog.route("/player", new Dog.Controller({
     you = PM.currentPlayer();
     firstRound = (Game.roundNum == 1);
 
+    order = Player.moveInputOrder[PM.currentPlayer().tablePosition]
+    legalMoves = you.legalMoves();
+    console.log("legalMoves");
+    console.log(legalMoves);
+    moveInputs = [];
+    for(var i = 0; i < order.length; i++){
+      dir = order[i];
+      console.log("dir: " + dir);
+      moveInputs.push({dir : dir, legal : legalMoves[dir]});
+    }
+
+    console.log("moveInputs");
+    console.log(moveInputs);
+
     return {
       receivedItems : receivedItems,
       knowledge : characters,
@@ -143,7 +157,8 @@ Dog.route("/player", new Dog.Controller({
       hasGun : you.hasItem("gun"),
       canPoison : you.canPoison(),
       hasPlans : you.hasItem("plans"),
-      firstRound : firstRound
+      firstRound : firstRound,
+      moveInputs : moveInputs
     }
   }, actions :{
     next: function(e){
@@ -209,6 +224,14 @@ PassManager.prototype.actionRoute = function(){
     return "pass";
   }
 }
+
+Handlebars.registerHelper("everyX", function(index, x, options){
+   if(index != 0 && (index % x) == 0){
+      return options.fn(this);
+  } else {
+      return options.inverse(this);
+  }
+});
 
 Handlebars.registerHelper("formatCharacter", function(character,options){
   return character.presentationString();

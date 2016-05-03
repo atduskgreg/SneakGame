@@ -57,9 +57,16 @@ Player.prototype.hasItem = function(itemName){
 
   return result;
 }
+Player.moveInputOrder = {
+  0 : ["nw", "n", "ne", "w", "hold", "e", "sw", "s", "se"],
+  1 : ["se", "s" , "sw", "e", "hold", "w", "ne", "n", "nw"],
+  2 : ["ne", "e", "se", "n", "hold", "s", "nw", "w", "sw"],
+  3 : ["sw", "w", "nw", "s", "hold", "n" , "se", "e", "ne"]
+}
 
 Player.prototype.legalMoves = function(){
   result = {};
+  // deprecated:
   result["position-top"] = (this.tablePosition == 1);
 
   if(this.hasItem("gun")){
@@ -80,8 +87,7 @@ Player.prototype.legalMoves = function(){
       d = Util.cardinalDescription(this.position, legalDestinations[i]);
       result[d] = true;
     }
-    console.log("legalMoves for " + this.color);
-    console.log(result);
+
     // for(i in Util.moves){
     //   result[i] = this.isMoveLegal(Util.moves[i]);
     // }

@@ -75,8 +75,8 @@
     
 
     #moveInput button {
-      width: 170px;
-      height: 30px;
+      width: 50px;
+      height: 50px;
     }
 
     #moveInput .buttonSpacer {
@@ -187,13 +187,7 @@
         <div id="candidates" class="span-16 section">
           <h3>Suspects</h3>
           <div style='margin-bottom: 20px'>
-          <div class='candidateContainer you'>
-              <h4>You</h4>
-              <div class='candidateImage span-2' style="background-image: url('/public/images/{{ you.color }}.png')">
-              
-              </div>
-              <p>{{formatCharacter you}}</p>
-          </div>
+        
           {{#each knowledge}}
             <div class='candidateContainer'>
               <div class='candidateImage span-2' style="background-image: url('/public/images/{{ character.color }}.png');" >
@@ -235,7 +229,18 @@
             {{/unless}}
             </div>
           </div>
-          <div id="move">
+          <div id="moveInput">
+          {{#each moveInputs}}
+            {{#everyX @index 3}}
+              <br />
+            {{/everyX}}
+            {{#if legal}}
+              <button class="submitMove" x-dir="{{dir}}">{{dir}}</button>
+            {{else}}
+              <button disabled>{{dir}}</button> 
+            {{/if}}
+            
+          {{/each}}
           </div>
           
         </div>
@@ -247,10 +252,7 @@
     <div id="debugViewInner" style="display:none">
       {{debug-view}}
     </div>
-
     </script>
-
-
 
   </head>
   <body>
