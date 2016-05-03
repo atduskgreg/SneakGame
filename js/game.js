@@ -67,7 +67,7 @@ var Game = {
     this.roundNum++;
   },
 
-  setup : function(){
+  setupMap : function(){
     Map.setup();
 
     // these must happen first
@@ -75,11 +75,20 @@ var Game = {
     Game.placeGuns();
     Game.pickSeedSquares();
     Game.setColorRanks();
+  },
+
+  setupCharacters : function(){
 
     Game.createNPCs();
     Game.createPlayers();
     Game.assignPlans();
     Game.endRound(); // setup is round 0. mainly so plan assignment learning is distinct from first real round
+
+  },
+
+  setup : function(){
+    this.setupMap();
+    this.setupCharacters();
   },
 
   // this needs to happen before we assign

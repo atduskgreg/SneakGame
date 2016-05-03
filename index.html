@@ -1,14 +1,20 @@
 <html>
   <head>
-
      <!-- Framework CSS -->
     <link rel="stylesheet" href="public/style/blueprint/screen.css" type="text/css" media="screen, projection">
     <!--[if lt IE 8]><link rel="stylesheet" href="style/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
 
+    <!-- <link rel="stylesheet" href="public/style/main.css" type="text/css" media="screen, projection"> -->
     <link rel="stylesheet" href="public/style/main.css" type="text/css" media="screen, projection">
 
     <style>
-    #board {
+    .selected{
+      background: green;
+      width: 30px;
+      height: 30px;
+    }
+
+     #board {
       float: left;
       margin-right: 20px;
     }
@@ -77,425 +83,156 @@
       min-height: 30px;
     }
 
+    button {
+      float: none;
+    }
+
+    .you h4{
+      font-weight: bold;
+      margin-top: -17px;
+      margin-bottom: 0;
+    }
+
+    .you {
+      border: 2px solid #000;
+    }
+
+    .characterDisplay {
+    }
+
     </style>
 
-
-
-    <script type="text/x-handlebars">
-      <div class="container">
-        <div id='header' class="span-15 pull-2">
-          <img src="public/images/logo_fingers.png" id="logo" />
-          <div id='imageText'>
-            <p class='slogan'>get in. get out. dont blow your cover.</p>
-            <h1>SNEAK</h1>
-            <p class="slogan modeDisplay">0-Mission-Briefing</p>
-          </div>
-        </div>
-        {{#view "blueprint" isVisibleBinding="blueprintIsVisible"}}
-        <div class="span-13 section">
-          <h3>Facility Blueprints</h3>
-          <p>This is the secret facility in which your mission will take place. Setup the pieces on your <b>tactical model</b> to match this blueprint. Or <a id="printBoard" href="#" {{action "printBoard"}}>Print this board</a>. Or print <a href="http://gregborenstein.com/games/sneak/blank_board.pdf" target="new">the board template</a> and fill it out yourself.</p>
-          <div id="blueprint"></div>
-        </div>
-        {{/view}}
-
-        {{outlet}}
-        
-        <div class="span-13 section">
-      
-
-          <br style="clear:both" />
-          {{#view "debug" isVisibleBinding="debugIsVisible"}}
-            <!-- <button {{action 'refreshDebug'}}>refresh< /button> --> <!-- temporary hack until game   is   an ember model -->
-            {{debug-view}}
-          {{/view}}
-    
-          <p><a id="toggleAudio" href="#" {{action "toggleAudio"}}>Mute audio</a> <em><a id="toggleDebug" href="#" {{action "toggleDebug"}}>Toggle  debug view</a></em></p>
-
-        </div>
-      </div>
-    </script>
-  
-    <script type="text/x-handlebars" id="index">
-      <div class="span-12 border" id="intro">
-        <h3>Mission Briefing</h3>
-        <p>Welcome to Sneak, a game of stealth, deception, and social perception.</p>
-        <p>Your mission is to infiltrate the secret facility, find your contact with the secret plans, and escape without revealing your secret identity.</p>
-        <p>But beware, we have reports of agents of other governments who've also entered the facility undercover. They'll do their best to get to the secret plans first or to unmask, shoot, or poison you if they discover your identity. You must do the same to them first.</p>
-        <p>
-        Examine the floorplan of the secret facility below and setup your board to match. When you're done click below to begin the mission.
-        </p>
-        <h4>Important Materials</h4>
-        <p>If you don't have a physical copy of Sneak you can print your own before you get started:</p>
-        <p><a target="_new" href="http://gregborenstein.com/games/sneak/sneak_print_and_play_pieces.pdf">The Pieces</a><br /><a target="new" href="http://gregborenstein.com/games/sneak/blank_board.pdf">The Board Template</a></p>
-
-      </div>
-       <label>Number of players</label> {{view "select" content=numPlayerOptions selection=model.numPlayers}}
-
-       <label>Play game on-screen?</label> {{view Ember.Checkbox checkedBinding="model.onScreen"}}
-
-      <button class="next" {{action 'next'}}>Begin Mission</button></p>
-    </script>
-  
-    <script type="text/x-handlebars" id="setup">
-      <h3>Setup</h3>
-
-      {{# if onScreen}}
-      {{ else }}
-      
-      <table>
-      <tr class="tableHeader"><td>Character or Object</td><td>Location</td></tr>
-      {{#each item in instructions}}
-        <tr><td>{{item.gameObject}}</td><td>{{item.instruction}}</td></li>
-      {{/each}}
-      </table>
-
-      {{/if}}
-
-      <p><b>Character rank</b> <em>breaks ties for picking up objects. If multiple characters arrive at the same object at the same time, the character with the higher rank will get to pick up the object.</em></p>
-      <p><b>Rank in ascending order</b>: <em>{{rank-list}}</em></p>
-      <p><button class="next" {{action 'next'}}>Proceed to Secret Identity Briefing</button></p>
-    
-
-    </script>
-    
-    <script type="text/x-handlebars" id="characterAssignment">
-      <h3>Player character assignments</h3>
-      {{#if PassManager.isPassing}}
-        {{partial 'pass'}}
-      {{else}}
-        <p>You are {{current-player-rank-color}}.</p>
-        <p><button class="next" {{action 'next'}}>Got it</button></p>
-      {{/if}}
-    </script>
-    
-    <script type="text/x-handlebars" id="poison">
-    <h3>Select someone to poison</h3>
-    {{#if PassManager.isPassing}}
-        {{partial 'pass'}}
-    {{else}}
-      (You are {{ current-player-rank-color }})
-      {{#if canPoison }}
-        {{#if noTargets}}
-          <p>No one to poison here. <button {{action "next"}}>Continue</button></p>
-        {{ else }}
-
-          <form {{action "poison" on="submit"}}>
-            {{view "select" contentBinding="targets" valueBinding='targetColor'}}
-            <button type="submit">Poison</button>
-          </form>
-          or
-          <button {{action "next"}}>Skip</button>
-        {{/if}}
-      {{else}}
-        <p>You already used your poison. <button {{action "next"}}>Continue</button></p>
-      {{/if}}
-    {{/if}}
-
-    </script>
-
-    <script type="text/x-handlebars" id="moves">
-      <h3>Input moves</h3>
-      <div class="span-13">
-        {{#if PassManager.isPassing}}
-          {{partial 'pass'}}
-        {{else}}
-          <p>You are {{current-player-rank-color}}.</p>
-          <div id="moveInput">
-            {{#if shoot}}
-              <button {{action "submitMove" "shoot" }}>shoot gun</button>
-              <button {{action "submitMove" "drop" }}>drop gun</button>
-            {{else }}
-              <div id="moves">
-              {{#if onScreen}}
-                <p>
-                  {{#if nw}}
-                    <button {{action "submitMove" "nw" }}>nw</button>
-                  {{else}}
-                    <button disabled>nw</button> 
-                  {{/if}}
-                  
-                  {{#if n}}
-                  <button {{action "submitMove" "n" }}>n</button>
-                  {{else}}
-                    <button disabled>n</button> 
-                  {{/if}}
-        
-                  {{#if ne}}
-                  <button {{action "submitMove" "ne" }}>ne</button>
-                  {{else}}
-                    <button disabled>ne</button> 
-                  {{/if}}
-                </p>
-  
-                <p>        
-                  {{#if w}}
-                    <button {{action "submitMove" "w" }}>w</button>
-                  {{else}}
-                    <button disabled>w</button> 
-                  {{/if}}
-      
-                  <button {{action "submitMove" "hold" }}>hold</button>
-                  
-                  {{#if e}}
-                    <button {{action "submitMove" "e" }}>e</button>
-                  {{else}}
-                    <button disabled>e</button> 
-                  {{/if}}
-                </p>
-                <p>        
-                  {{#if sw}}
-                    <button {{action "submitMove" "sw" }}>sw</button>
-                  {{else}}
-                    <button disabled>sw</button> 
-                  {{/if}}
-        
-                  {{#if s}}
-                    <button {{action "submitMove" "s" }}>s</button>
-                  {{else}}
-                    <button disabled>s</button> 
-                  {{/if}}
-        
-                  {{#if se}}
-                   <button {{action "submitMove" "se" }}>se</button>
-                  {{else}}
-                    <button disabled>se</button> 
-                  {{/if}}
-                </p>
-              {{ else }}
-  
-                {{#if position-top}} <!-- south is up, west is right -->
-                  <p>        
-                    {{#if se}}
-                     <button {{action "submitMove" "se" }}>se</button>
-                    {{else}}
-                      <button disabled>se</button> 
-                    {{/if}}
-          
-                    {{#if s}}
-                      <button {{action "submitMove" "s" }}>s</button>
-                    {{else}}
-                      <button disabled>s</button> 
-                    {{/if}}
-          
-                    {{#if sw}}
-                      <button {{action "submitMove" "sw" }}>sw</button>
-                    {{else}}
-                      <button disabled>sw</button> 
-                    {{/if}}
-                  </p>
-                  <p>        
-        
-                    {{#if e}}
-                      <button {{action "submitMove" "e" }}>e</button>
-                    {{else}}
-                      <button disabled>e</button> 
-                    {{/if}}
-    
-                    <button {{action "submitMove" "hold" }}>hold</button>
-                    
-                    {{#if w}}
-                      <button {{action "submitMove" "w" }}>w</button>
-                    {{else}}
-                      <button disabled>w</button> 
-                    {{/if}}
-                  </p>
-                  <p>
-                    {{#if ne}}
-                    <button {{action "submitMove" "ne" }}>ne</button>
-                    {{else}}
-                      <button disabled>ne</button> 
-                    {{/if}}
-                    
-                    {{#if n}}
-                    <button {{action "submitMove" "n" }}>n</button>
-                    {{else}}
-                      <button disabled>n</button> 
-                    {{/if}}
-    
-                    {{#if nw}}
-                      <button {{action "submitMove" "nw" }}>nw</button>
-                    {{else}}
-                      <button disabled>nw</button> 
-                    {{/if}}
-                  </p>
-                
-                {{else}}
-                  <p>
-                    {{#if nw}}
-                      <button {{action "submitMove" "nw" }}>nw</button>
-                    {{else}}
-                      <button disabled>nw</button> 
-                    {{/if}}
-                    
-                    {{#if n}}
-                    <button {{action "submitMove" "n" }}>n</button>
-                    {{else}}
-                      <button disabled>n</button> 
-                    {{/if}}
-          
-                    {{#if ne}}
-                    <button {{action "submitMove" "ne" }}>ne</button>
-                    {{else}}
-                      <button disabled>ne</button> 
-                    {{/if}}
-                  </p>
-    
-                  <p>        
-                    {{#if w}}
-                      <button {{action "submitMove" "w" }}>w</button>
-                    {{else}}
-                      <button disabled>w</button> 
-                    {{/if}}
-        
-                    <button {{action "submitMove" "hold" }}>hold</button>
-                    
-                    {{#if e}}
-                      <button {{action "submitMove" "e" }}>e</button>
-                    {{else}}
-                      <button disabled>e</button> 
-                    {{/if}}
-                  </p>
-                  <p>        
-                    {{#if sw}}
-                      <button {{action "submitMove" "sw" }}>sw</button>
-                    {{else}}
-                      <button disabled>sw</button> 
-                    {{/if}}
-          
-                    {{#if s}}
-                      <button {{action "submitMove" "s" }}>s</button>
-                    {{else}}
-                      <button disabled>s</button> 
-                    {{/if}}
-          
-                    {{#if se}}
-                     <button {{action "submitMove" "se" }}>se</button>
-                    {{else}}
-                      <button disabled>se</button> 
-                    {{/if}}
-                  </p>
-                {{/if}} <!-- /position-top/bottom  -->
-              {{/if}} <!-- /onScreen -->
-              </div>
-            {{/if}}
-          
-          </div>
-          {{/if}}
-      </div>
-    </script>
-
-    <script type="text/x-handlebars" id="shoot">
-      <h3>Pick Target</h3>
-      <p>You are {{current-player-color}} ({{current-player-name}}).</p>
-      <form {{action "fire" on="submit"}}>
-        {{view "select" content=targets valueBinding='targetColor'}}
-        <button type="submit">Shoot</button>
-      </form>
-    </script>
-    
-    <script type="text/x-handlebars" id="moveInstructions">
-      {{#if onScreen}}
-      {{ else }}
-        <h3>Move Instructions</h3>
-        <button id="playButton" {{action "playInstructions"}}>Play</button>
-        <ul id="moveInstructions">
-        {{#each instruction in instructions}}
-          <li>{{ instruction }}</li>
-        {{/each}}
-      </ul>
-      {{/if}}
-      <h2>Victims</h2>
-      {{#if anyVictims}}
-        <ul>
-        {{#each deathDescription in victims}}
-          <li>{{ deathDescription }}</li>
-        {{/each}}
-        </ul>
-      {{ else }}
-        <p><em>None this turn.</em></p>
-      {{/if}}
-      {{#if onScreen}}
-        <button {{action "confirm"}}>Next</button>
-      {{ else }}
-      <button {{action "confirm"}}>Done moving</button>
-      {{/if}}
-
-    </script>
-
-    <script type="text/x-handlebars" id="_pass">
-      <p class='passButton'>
-      <img src='public/images/top-secret.png' /><br />
-      <em class='red'>Warning <b>{{ current-player-public }}</b>'s eyes only</em>
-      <br /><button class="red" {{action 'next'}}>Ready</button></p>
-    </script>
-
-    <script type="text/x-handlebars" id="dialogs">
-      <h3>Dialogs ({{length}})</h3>
-      <ul> 
-        {{#each item in controller}}
-        <li>
-          {{item.summary}}
-        </li>
-        {{/each}}
-      </ul>
-      <p>{{#link-to 'dialogReveals'}}Reveal dialog results{{/link-to}}</p>
-    </script>
-  
-     <script type="text/x-handlebars" id="dialogReveals">
-      {{#if PassManager.isPassing}}
-        {{partial 'pass'}}
-      {{else}}
-        <div id="conversations" class="span-13 section">
-          <h3>Conversations</h3>
-          {{ current-player-conversations }}
-        </div>
-        <div id="candidates" class="span-13 section">
-          <h3>Suspects</h3>
-          {{ current-player-knowledge }}
-
-        </div>
-        <div id="inventory" class="span-13 section">
-          <h3>Inventory</h3>
-          {{current-player-inventory}}
-        </div>
-        <p><button {{action 'next'}}>Got it</button></p>
-      {{/if}}
-    </script>
-
-    <script type="text/x-handlebars" id="victory">
-    <h3>Game Over</h3>
-    {{#if oneWinner }}
-      <h4>{{result.winner.color}} is the winner!</h4>
-      <p>{{result.message}}</p>
-    {{else}}
-      <h4>{{result.message}}</h4>
-
-    {{/if}}
-  </script>
-
-    <script src="js/libs/jquery-1.10.2.js"></script>
-    <script src="js/libs/handlebars-v2.0.0.js"></script>
-    <script src="js/libs/ember-1.9.1.js"></script>
-    <script src="js/libs/ember-data.js"></script>
-    <script src="js/libs/localstorage_adapter.js"></script>
-    <script src="js/libs/ember-states.js"></script>
+    <script src="js/libs/jquery-2.1.4.min.js"></script>
+    <script src="js/libs/handlebars-v4.0.5.js"></script>
     <script src="js/libs/Queue.js"></script>
     <script src="js/libs/p5.min.js"></script>
-    <script src="js/libs/howler.min.js"></script>
 
+    <script src="js/libs/dog.js"></script>
     <script src="js/map.js"></script>
     <script src="js/game.js"></script>
     <script src="js/util.js"></script>
     <script src="js/character.js"></script>
     <script src="js/player.js"></script>
     <script src="js/instructionPlayer.js"></script>
-
     <script src="js/app.js"></script>
     <script src="js/blueprint.js"></script>
+
+    <script type="text/html" id="404">
+      <h1>404 not implemented</h1>
+    </script>
+
+    <script type="text/html" id="start">
+      <h1>Start the game</h1>
+      <p>How many players this game?</p>
+      <p>
+        {{#each playerCountOptions}}
+          <button class="pickNumPlayers {{#if this.selected}}selected{{/if}}" value="{{this.n}}">{{this.n}}</button>
+        {{/each}}
+      </p>
+      <button class="startGame">Start</button>
+    </script>
+     <script type="text/html" id="setupMap">
+      <h3>Facility Blueprints</h3>
+      <p>Setup your board to match the layout shown here.</p>
+      <button class="next">Continue</button>
+     </script>
+
+    <script type="text/html" id="setupCharacters">
+      <table>
+      <tr class="tableHeader"><td>Character or Object</td><td>Location</td></tr>
+      {{#each instructions}}
+        <tr><td>{{this.gameObject}}</td><td>{{this.instruction}}</td></li>
+      {{/each}}
+      </table>
+
+      <button class="next">Continue</button>
+    </script>
+    <script type="text/html" id="pass">
+     <p class='passButton'>
+      <img src='public/images/top-secret.png' /><br />
+      <em class='red'>Warning <b>Player {{ nextPlayerNum }}</b> only</em>
+      <br /><button class="red next" >Ready</button></p>
+    </script>
+
+    <script type="text/html" id="player">
+    <div id="conversations" class="span-14 section">
+      <h3>Conversations</h3>
+      <table>
+      <tr class='tableHeader'><td>Source</td> <td>Statement</td></tr>
+        {{#each receivedItems}}
+        <tr>
+        <td>{{formatCharacter this.from}}</td><td>"I have the plans. Take them and escape to the exit!"</td>
+        </tr>
+        {{/each}}
+        {{#each newKnowlege}}
+        <tr>{{knowledgeDescription this}}</tr>
+        {{/each}}
+
+        {{#unless somethingLearned}}
+        <td><em>none</em></td><td><em>none</em></td>
+        {{/unless}}
+        </table>
+    </div>
+        <div id="candidates" class="span-14 section">
+          <h3>Suspects</h3>
+          <div style='margin-bottom: 20px'>
+          <div class='candidateContainer you'>
+              <h4>You</h4>
+              <div class='candidateImage span-2' style="background-image: url('/public/images/{{ you.color }}.png')">
+              
+              </div>
+              <p>{{formatCharacter you}}</p>
+          </div>
+          {{#each knowledge}}
+            <div class='candidateContainer'>
+              <div class='candidateImage span-2' style="background-image: url('/public/images/{{ character.color }}.png');" >
+                {{#if noPlans}}
+                  <img class='marked' src='/public/images/x.png' />
+                {{/if}}
+                {{#if hasPlans}}
+                  <img class='marked' src='/public/images/circle.png' />
+                {{/if}}
+              </div>
+              <p>{{formatCharacter character}}</p>
+          </div>
+          {{/each}}
+          </div>
+
+        </div>
+        <div id="actions" class="span-13 section">
+          <div id="shoot">
+            <div style="background-image:url('/public/images/gun.jpg'); background-repeat: no-repeat; width:40px; height:40px">
+            {{#unless hasGun}}
+              <img class='marked' src='/public/images/x.png' style="width:40px; height:40px" />
+            {{/unless}}
+            </div>
+            {{#if hasGun}}
+            <button>shoot</button>
+            {{/if}}
+          </div>
+          <div id="poison">
+          </div>
+          <div id="move">
+          </div>
+          
+        </div>
+        <p><button class="next">Got it</button></p>
+    </script>
+
+    <script type="text/html" id="debug">
+    <a class="toggle" href="#">toggle debug</a>
+    <div id="debugViewInner" style="display:none">
+      {{debug-view}}
+    </div>
+
+    </script>
+
 
 
   </head>
   <body>
+    <div id="blueprint" style="display:none"></div>
+    <div id="view"></div>
+    <div id="debugView"></div>
   </body>
 </html>

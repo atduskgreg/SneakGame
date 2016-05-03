@@ -204,6 +204,19 @@ Character.prototype = {
 		this.itemHistory.push({action : "dropped", itemName : item.name, when : Game.roundNum, where : this.position});
 	},
 
+	itemsReceivedInRound : function(roundNum){
+		result = [];
+
+		itemActions = this.itemHistoryForRound(roundNum);
+		for(var i = 0; i < itemActions.length; i++){
+			if(itemActions[i].action == "got"){
+				result.push(itemActions[i]);
+			}
+		}
+
+		return result;
+	},
+
 	itemHistoryForRound: function(roundNum){
 		var result = [];
 		for(var i = 0; i < this.itemHistory.length; i++){

@@ -13,14 +13,16 @@ var partCount = {};
 //   }
 // }
 
+
 function setup(){
   Map.setup();
   console.log(Game.boardWidth + "," + Game.boardHeight)
   mapSize = {width : (50*Game.boardWidth + 50), height : (50*Game.boardHeight+50)}
   canvas = createCanvas(mapSize.width,mapSize.height);
   canvas.parent("blueprint");
-  noLoop();
+  noLoop()
 }
+
 
 function drawGrid(){
   strokeWeight(0.1);
