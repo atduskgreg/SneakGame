@@ -249,11 +249,22 @@
             </div>
           </div>
           <div id="poison" class="span-4">
-          <div style="background-image:url('/public/images/poison.jpg'); background-repeat: no-repeat; background-size: 100px 100px; background-position:center; width: 100px; height:100px">
-            {{#unless canPoison}}
+            {{#if canPoison}}
+              <img src="/public/images/poison.jpg" style="width:100px;height:100px;" />
+              {{#any poisonTargets}}
+              <select class="targetColor" name="targetColor">
+                {{#each poisonTargets}}
+                <option value={{color}}>{{formatCharacter this}}</option>
+                {{/each}}
+              </select>
+                <button class="submitMove" x-move="poison">Poison</button>
+
+              {{else}}
+                <p><em>No one here to poison.</em></p> 
+              {{/any}}
+            {{else}}
               <img class='marked' src='/public/images/x.png' style="width:100px; height:100px" />
-            {{/unless}}
-            </div>
+            {{/if}}
           </div>  
         </div>
     </script>

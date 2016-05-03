@@ -147,7 +147,9 @@ Dog.route("/player", new Dog.Controller({
       shootingTargets.push({color: others[i].color, displayName : others[i].presentationString()});
     }
 
-
+    poisonTargets = Game.poisoningTargetsFor(PM.currentPlayer());
+    console.log("poisonTargets");
+    console.log(poisonTargets);
     return {
       receivedItems : receivedItems,
       knowledge : characters,
@@ -157,6 +159,7 @@ Dog.route("/player", new Dog.Controller({
       hasGun : you.hasItem("gun"),
       shootingTargets : shootingTargets,
       canPoison : you.canPoison(),
+      poisonTargets : poisonTargets,
       hasPlans : you.hasItem("plans"),
       firstRound : firstRound,
       moveInputs : moveInputs
@@ -165,10 +168,11 @@ Dog.route("/player", new Dog.Controller({
     submitMove : function(e){
       e.preventDefault();
       move = $(this).attr("x-move");
+      console.log("move: " + move);
       
       if(move == "shoot"){
         // do shooting things
-        target = Game.characterWithAttribute("color", $(".targetColor").val())
+        target = Game.characterWithAttribute("color", $("#shoot .targetColor").val())
         Game.killCharacter(target, {killer : PM.currentPlayer(), method : "shooting"});
 
         gun = PM.currentPlayer().itemWithAttribute("name", "gun");
@@ -180,10 +184,16 @@ Dog.route("/player", new Dog.Controller({
         PM.currentPlayer().dropItem(gun);
       } else if(move == "poison"){
         //do poisoning things
+        console.log("doing poisoning things");
+        target = Game.characterWithAttribute("color", $("#poison .targetColor").val())
+        Game.poisonCharacter(target, {poisoner : PM.currentPlayer()});
+        
+        // TODO: should you be able to both poison and move on the same turn?
+        PM.currentPlayer().setNextMove(Util.moves["hold"]);
+
       } else { // it's a movement with a direction
         PM.currentPlayer().setNextMove(Util.moves[move]);
       }
-
       PM.next();
       Dog.goToRoute(PM.actionRoute());
     }
@@ -313,6 +323,14 @@ PassManager.prototype.actionRoute = function(){
     return "pass";
   }
 }
+
+Handlebars.registerHelper("any", function(arr, options){
+  if(arr.length > 0){
+     return options.fn(this);
+  } else {
+    return options.inverse(this);
+  }
+})
 
 Handlebars.registerHelper("everyX", function(index, x, options){
    if(index != 0 && (index % x) == 0){
