@@ -36,7 +36,6 @@
   routeHistory = [];
 
   function render(templateId, ctrl, target){
-    console.log("render() " + templateId);
     template = Handlebars.compile($("#"+templateId).html());
     if(ctrl.getData){
       target.innerHTML = template(ctrl.getData());
@@ -44,24 +43,26 @@
       target.innerHTML = template();
     }
 
- 
+
+  console.log("binding actions for " + templateId ); 
     for(action in ctrl.actions){
+
 
       ele = $("."+action);
 
       if(ele.is("form")){
         ele.unbind("submit");
         ele.bind("submit", ctrl.actions[action]);
-        ele.bind("submit", ctrl.$refresh);
+        // ele.bind("submit", ctrl.$refresh);
       } else if(ele.is("select")){
         ele.unbind("change");
-        ele.bind("change", ctrl.actions[action]);
+        // ele.bind("change", ctrl.actions[action]);
         // ele.bind("change", ctrl.$refresh);
       }
       else {
         ele.unbind("click");
         ele.bind("click", ctrl.actions[action]);
-        ele.bind("click", ctrl.$refresh);
+        // ele.bind("click", ctrl.$refresh);
       }
       
     }

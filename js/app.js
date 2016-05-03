@@ -90,23 +90,33 @@ Dog.route("/player", new Dog.Controller({
   
   getData : function(){
     console.log("/player.getData()");
-    receivedItems = PM.currentPlayer().itemsReceivedInRound(Game.round);
 
+    receivedItems = PM.currentPlayer().itemsReceivedInRound(Game.roundNum);
+
+    // hack because from is stored as color
+    for(var i = 0; i < receivedItems.length; i++){
+      receivedItems[i].from = Game.characterWithAttribute("color", receivedItems[i].from);
+    }
+    acquiredFrom = [];
+    for(var i = 0; i < receivedItems.length; i++){
+      acquiredFrom.push(receivedItems[i].from.color);
+    }
 
     playerKnowledge = PM.currentPlayer().currentKnowledge();
+
     newKnowledge = [];
     for(color in playerKnowledge){
       if(playerKnowledge[color].when == Game.roundNum || playerKnowledge[color].receivedAt == Game.roundNum){
         if(color != PM.currentPlayer().color){
-          // TODO: eliminated knowledge about the plans on the round you receive them
-          //if(acquiredFrom.indexOf(playerKnowledge[color].receivedFrom) == -1){
+          // prevent someone who just gave you the plans from telling you they don't have them
+          if(acquiredFrom.indexOf(playerKnowledge[color].receivedFrom) == -1){
             newKnowledge.push(Util.knowledgeDescription(playerKnowledge[color]));
-          //}
+          }
         }
       }
     }
 
-    somethingLearned = (newKnowledge.length > 0);
+    somethingLearned = (newKnowledge.length > 0) || (acquiredFrom.length > 0);
 
     sortedCharacters = Util.sortBy(Game.characters, Util.compareRank);
     sortedCharacters.splice(sortedCharacters.indexOf(PM.currentPlayer()), 1);
@@ -140,16 +150,15 @@ Dog.route("/player", new Dog.Controller({
       moveInputs.push({dir : dir, legal : legalMoves[dir]});
     }
 
+    // FIXME: refactor this to just use this array in the template
     others = PM.currentPlayer().shootingTargets();
-
     shootingTargets = [];
     for(var i =0 ; i< others.length; i++){
       shootingTargets.push({color: others[i].color, displayName : others[i].presentationString()});
     }
 
     poisonTargets = Game.poisoningTargetsFor(PM.currentPlayer());
-    console.log("poisonTargets");
-    console.log(poisonTargets);
+
     return {
       receivedItems : receivedItems,
       knowledge : characters,
@@ -168,7 +177,6 @@ Dog.route("/player", new Dog.Controller({
     submitMove : function(e){
       e.preventDefault();
       move = $(this).attr("x-move");
-      console.log("move: " + move);
       
       if(move == "shoot"){
         // do shooting things
@@ -184,10 +192,9 @@ Dog.route("/player", new Dog.Controller({
         PM.currentPlayer().dropItem(gun);
       } else if(move == "poison"){
         //do poisoning things
-        console.log("doing poisoning things");
         target = Game.characterWithAttribute("color", $("#poison .targetColor").val())
         Game.poisonCharacter(target, {poisoner : PM.currentPlayer()});
-        
+
         // TODO: should you be able to both poison and move on the same turn?
         PM.currentPlayer().setNextMove(Util.moves["hold"]);
 
@@ -280,7 +287,6 @@ $(document).ready(function(){
     actions : {
       toggle : function(e){
         e.preventDefault();
-        console.log("toggle");
         $("#debugViewInner").toggle();
       }
     }

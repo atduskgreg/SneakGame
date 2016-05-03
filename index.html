@@ -174,8 +174,9 @@
         <td>{{formatCharacter this.from}}</td><td>"I have the plans. Take them and escape to the exit!"</td>
         </tr>
         {{/each}}
-        {{#each newKnowlege}}
-        <tr>{{knowledgeDescription this}}</tr>
+
+        {{#each newKnowledge}}
+        <tr>{{ this}}</tr>
         {{/each}}
   
         {{#unless somethingLearned}}

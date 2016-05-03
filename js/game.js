@@ -148,7 +148,6 @@ var Game = {
       setupInstructions.push({"gameObject" : orderedCharacters[i].presentationString(), "instruction" : Util.squareDescription(orderedCharacters[i].position)});
     }
 
-    console.log("place " + Game.inventory.length + " inventory items");
 
     for(var i = 0; i < Game.inventory.length; i++){
       setupInstructions.push({"gameObject" : Util.capitalize(Game.inventory[i].name), "instruction" : Util.squareDescription(Game.inventory[i].position)});
