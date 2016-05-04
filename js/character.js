@@ -148,20 +148,23 @@ Character.prototype = {
 			return false;
 		}
 
-		// observe whether or not they have the plans
-		// this.learned.push({subject : other.color, when : Game.roundNum, plans : other.hasPlans()});
-		
-		// learn from their current best knowledge
-		theirKnowledge = other.currentKnowledge();
-		for(subject in theirKnowledge){
-			// don't learn things about myself
-			if(subject != this.color){
-				item = JSON.parse(JSON.stringify(theirKnowledge[subject]));
-				item.receivedFrom = other.color;
-				item.receivedAt = Game.roundNum;
-				this.learned.push(item);
+		// if they're dead we can only observe whether or not they have the plans
+		if(other.dead){
+			this.learned.push({subject : other.color, receivedAt : Game.roundNum, receivedFrom : other.color, plans : other.hasPlans()});
+		} else{// if they're alive learn from their current best knowledge
+			theirKnowledge = other.currentKnowledge();
+			for(subject in theirKnowledge){
+				// don't learn things about myself
+				if(subject != this.color){
+					item = JSON.parse(JSON.stringify(theirKnowledge[subject]));
+					item.receivedFrom = other.color;
+					item.receivedAt = Game.roundNum;
+					this.learned.push(item);
+				}
 			}
 		}
+		
+		
 	},
 
 	acquireItemsFrom : function(other){

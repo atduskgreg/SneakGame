@@ -112,17 +112,28 @@ var Util = {
     } else {
       if(!knowledge.plans){
         if(knowledge.subject == knowledge.receivedFrom){
-          result += "<td>"+this.displayCharacterWithColor(knowledge.receivedFrom) + "</td><td>\"I don't have the plans.\"</td>"
+          if(Game.characterWithAttribute("color", knowledge.receivedFrom).dead){
+            result += "<td>"+this.displayCharacterWithColor(knowledge.receivedFrom)+"</td><td>No plans found on this corpse.</td>"
+          } else{
+            result += "<td>"+this.displayCharacterWithColor(knowledge.receivedFrom) + "</td><td>\"I don't have the plans.\"</td>"
+
+          }
         } else {
           result += "<td>"+this.displayCharacterWithColor(knowledge.receivedFrom) + "</td><td>\"" + this.displayCharacterWithColor(knowledge.subject) + " didn't have the plans when I saw them " + this.timeSinceInWords(knowledge.when) + ".\"</td>";
         }    
       } else {
         if(knowledge.subject == knowledge.receivedFrom){
-
           if(Game.characterWithAttribute("color", knowledge.receivedFrom).isPlayer){
             result += "<td>"+this.displayCharacterWithColor(knowledge.receivedFrom) + "</td><td>\"I have the plans, but I'm keeping them. Shoo!\"</td>"
           } else {
-            result += "<td>"+this.displayCharacterWithColor(knowledge.receivedFrom) + "</td><td>\"I have the plans. Take them and escape to the exit!\"</td>"
+            console.log("knowledge.receivedFrom: " + knowledge.receivedFrom);
+            console.log(Game.characterWithAttribute("color", knowledge.receivedFrom));
+            if(Game.characterWithAttribute("color", knowledge.receivedFrom).dead){
+              result += "<td>"+this.displayCharacterWithColor(knowledge.receivedFrom) + "</td><td>Rifling this corpse reveals a set of plans!</td>"
+            } else {
+              result += "<td>"+this.displayCharacterWithColor(knowledge.receivedFrom) + "</td><td>\"I have the plans. Take them and escape to the exit!\"</td>"
+
+            }
           }
 
         } else {

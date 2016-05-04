@@ -171,7 +171,14 @@
         <tr class='tableHeader'><td>Source</td> <td>Statement</td></tr>
         {{#each receivedItems}}
         <tr>
-        <td>{{formatCharacter this.from}}</td><td>"I have the plans. Take them and escape to the exit!"</td>
+        <td>{{formatCharacter this.from}}</td>
+        <td>
+        {{#if this.from.dead}}
+        <em>Rifling this corpse reveals a set of plans!</em>
+        {{else}}
+        "I have the plans. Take them and escape to the exit!"
+        {{/if}}
+        </td>
         </tr>
         {{/each}}
 
