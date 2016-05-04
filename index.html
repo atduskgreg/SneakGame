@@ -154,14 +154,17 @@
      </script>
 
     <script type="text/html" id="setupCharacters">
+    <div id="setupCharacters">
+    <h3>Personnel/Equipment</h3>
       <table>
       <tr class="tableHeader"><td>Character or Object</td><td>Location</td></tr>
       {{#each instructions}}
-        <tr><td>{{this.gameObject}}</td><td>{{this.instruction}}</td></li>
+        <tr><td class="object">{{this.gameObject}}</td><td class="instruction">{{this.instruction}}</td></li>
       {{/each}}
       </table>
 
       <button class="next">Continue</button>
+      </div>
     </script>
     <script type="text/html" id="pass">
      <p class='passButton'>

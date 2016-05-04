@@ -63,6 +63,28 @@ p {
   margin:0 auto;
 }
 
+table {
+  width: 100%;
+  font-size: 20px;
+}
+
+.tableHeader td {
+  border: none;
+  border-bottom: 1px solid #aaa;
+}
+
+.object, .instruction {
+  width: 50%;
+}
+
+.object {
+  text-align: right
+}
+
+table td {
+  padding: 20px;
+}
+
 button.next {
   font-size: 34px;
   border: 5px solid #ccc;
