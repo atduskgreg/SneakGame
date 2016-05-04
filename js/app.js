@@ -34,6 +34,7 @@ Dog.route("/", new Dog.Controller({
     pickNumPlayers : function(e){
       e.preventDefault();
       Game.nPlayers = parseInt($(this).val());
+      e.data.controller.refresh();
     },
     startGame : function(e){
       e.preventDefault;

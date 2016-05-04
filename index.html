@@ -1,7 +1,7 @@
 <html>
   <head>
      <!-- Framework CSS -->
-    <link rel="stylesheet" href="public/style/blueprint/screen.css" type="text/css" media="screen, projection">
+    <!-- <link rel="stylesheet" href="public/style/blueprint/screen.css" type="text/css" media="screen, projection"> -->
     <!--[if lt IE 8]><link rel="stylesheet" href="style/blueprint/ie.css" type="text/css" media="screen, projection"><![endif]-->
 
     <!-- <link rel="stylesheet" href="public/style/main.css" type="text/css" media="screen, projection"> -->
@@ -101,7 +101,11 @@
     .characterDisplay {
     }
 
+
     </style>
+
+    <link rel="stylesheet" media="screen and (max-device-width: 800px)" href="/public/style/tablet.css" />
+
 
     <script src="js/libs/jquery-2.1.4.min.js"></script>
     <script src="js/libs/handlebars-v4.0.5.js"></script>
@@ -123,14 +127,17 @@
     </script>
 
     <script type="text/html" id="start">
-      <h1>Start the game</h1>
-      <p>How many players this game?</p>
-      <p>
-        {{#each playerCountOptions}}
-          <button class="pickNumPlayers {{#if this.selected}}selected{{/if}}" value="{{this.n}}">{{this.n}}</button>
-        {{/each}}
-      </p>
-      <button class="startGame">Start</button>
+      <div id="start">
+        <div id="startInterface">
+          <p>How many players this game?</p>
+          <p>
+            {{#each playerCountOptions}}
+              <button class="pickNumPlayers {{#if this.selected}}selected{{/if}}" value="{{this.n}}">{{this.n}}</button >
+            {{/each}}
+          </p>
+          <button class="startGame">Start</button>
+        </div>
+      </div>
     </script>
      <script type="text/html" id="setupMap">
       <h3>Facility Blueprints</h3>

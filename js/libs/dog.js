@@ -36,21 +36,21 @@
     console.log("binding actions for " + templateId ); 
     for(action in ctrl.actions){
 
-
+      // ctrl.actions[action]
       ele = $("."+action);
 
       if(ele.is("form")){
         ele.unbind("submit");
-        ele.bind("submit", ctrl.actions[action]);
+        ele.bind("submit", {controller : ctrl}, ctrl.actions[action]);
         // ele.bind("submit", ctrl.$refresh);
       } else if(ele.is("select")){
         ele.unbind("change");
-        ele.bind("change", ctrl.actions[action]);
+        ele.bind("change", {controller : ctrl}, ctrl.actions[action]);
         // ele.bind("change", ctrl.$refresh);
       }
       else {
         ele.unbind("click");
-        ele.bind("click", ctrl.actions[action]);
+        ele.bind("click", {controller : ctrl}, ctrl.actions[action]);
         // ele.bind("click", ctrl.$refresh);
       }
       
@@ -113,6 +113,10 @@
     Controller : function(args){
       for(val in args){
         this[val] = args[val];
+      }
+
+      this.refresh = function(){
+        render(this.template, this, document.getElementById('view'));
       }
     },
     component : component
