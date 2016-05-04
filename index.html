@@ -104,7 +104,7 @@
 
     </style>
 
-    <link rel="stylesheet" media="screen and (max-device-width: 800px)" href="/public/style/tablet.css" />
+    <link rel="stylesheet" media="screen and (max-device-width: 800px)" href="public/style/tablet.css" />
 
 
     <script src="js/libs/jquery-2.1.4.min.js"></script>
@@ -127,7 +127,7 @@
     </script>
 
     <script type="text/html" id="start">
-      <div id="start">
+      <div id="start" class="page">
         <div id="startInterface">
           <p>How many players this game?</p>
           <p>
@@ -140,9 +140,17 @@
       </div>
     </script>
      <script type="text/html" id="setupMap">
-      <h3>Facility Blueprints</h3>
-      <p>Setup your board to match the layout shown here.</p>
-      <button class="next">Continue</button>
+      <div id="setupMap" class="page">
+        <h3>Facility Blueprints</h3>
+        <div id="blueprintInstructions">
+          <p>Setup your board to match the layout shown here.</p>
+        </div>
+
+        <div id="blueprintWrapper"></div>
+        <p>
+        <button class="next">Continue</button>
+        </p>
+      </div>
      </script>
 
     <script type="text/html" id="setupCharacters">

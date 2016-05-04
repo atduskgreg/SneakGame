@@ -1,7 +1,8 @@
 var blueprint = function(p){
 
-  var gridSize = 50;
-  var wallThickness = 5;
+  // var mapSize = 768;
+  var gridSize = 90;
+  var wallThickness = 10;
   var mapSize = {};
   var images = [];
   var filenames = ["emt", "wll", "dor", "hll", "hdr", "cnr", "cd1"];
@@ -10,10 +11,12 @@ var blueprint = function(p){
   
   p.setup =  function(){
     Map.setup();
+    // console.log(mapSize);
+    // gridSize = (mapSize-50)/Game.boardWidth;
+    // console.log(gridSize);
     console.log(Game.boardWidth + "," + Game.boardHeight)
-    mapSize = {width : (50*Game.boardWidth + 50), height : (50*Game.boardHeight+50)}
-    canvas = p.createCanvas(mapSize.width,mapSize.height);
-    canvas.parent("blueprint");
+    mapSize = {width : (gridSize*Game.boardWidth + gridSize), height : (gridSize*Game.boardHeight+gridSize)}
+    p.createCanvas(mapSize.width,mapSize.height);
     p.noLoop()
   }
   
@@ -25,23 +28,28 @@ var blueprint = function(p){
   
     for(var row = 0; row < Game.boardHeight*4+1; row++){
       for(var col = 0; col < Game.boardWidth*4+1; col++){
-        x = 25 + col*gridSize/squaresPerCell;
-        y = 25 + Game.boardHeight*gridSize;
+        x = gridSize/2 + col*gridSize/squaresPerCell;
+        y = gridSize/2 + Game.boardHeight*gridSize;
         
-        p.stroke(230);
-        // stroke(75,75,255);
+        // p.stroke(230);
   
         if(col % 4 == 0){
+
           p.strokeWeight(1);
+
+          p.stroke(125,125,255);
+
+
         } else {
           p.strokeWeight(0.5);
-          p.stroke(215);
-  //        stroke(40,40, 255);
+          p.stroke(75,75,255);
+
+          // p.stroke(215);
         }
-        p.line(x, 25, x, y);
+        p.line(x, gridSize/2, x, y);
   
   
-        p.line(25,x,y,x);
+        p.line(gridSize/2,x,y,x);
   
   
   
@@ -71,23 +79,23 @@ var blueprint = function(p){
       p.stroke(175);
   
       if(doorDir == "n"){
-        p.arc(pos.x+gridSize+5, pos.y+5, 100, 100, p.HALF_PI, p.PI);
+        p.arc(pos.x+gridSize+5, pos.y+5, gridSize*2, gridSize*2, p.HALF_PI, p.PI);
         p.line(pos.x+gridSize+5,pos.y+5, pos.x+gridSize+5, pos.y+gridSize+5);
       }
   
       if(doorDir == "s"){
-        p.arc(pos.x+gridSize+5,pos.y+gridSize+5, 100, 100, p.PI, p.PI+p.HALF_PI);
+        p.arc(pos.x+gridSize+5,pos.y+gridSize+5, gridSize*2, gridSize*2, p.PI, p.PI+p.HALF_PI);
         p.line(pos.x+gridSize+5,pos.y+gridSize+5, pos.x+gridSize+5, pos.y+5);
   
       }
   
       if(doorDir == "w"){
-        p.arc(pos.x+5, pos.y+5, 100, 100, 0, p.HALF_PI);
+        p.arc(pos.x+5, pos.y+5, gridSize*2, gridSize*2, 0, p.HALF_PI);
         p.line(pos.x+5,pos.y+5, pos.x+gridSize+5, pos.y+5);
       }
   
       if(doorDir == "e"){
-        p.arc(pos.x+5+gridSize, pos.y+5, 100, 100, p.HALF_PI, p.PI);
+        p.arc(pos.x+5+gridSize, pos.y+5, gridSize*2, gridSize*2, p.HALF_PI, p.PI);
         p.line(pos.x+5,pos.y+5, pos.x+gridSize+5, pos.y+5);
       }
     }
@@ -99,7 +107,7 @@ var blueprint = function(p){
     // line(pos.x+10, pos.y, pos.x+10, pos.y+gridSize);
   }
   function eastWall(){
-    p.rect(pos.x+gridSize, pos.y+5, wallThickness, gridSize);
+    p.rect(pos.x+gridSize-wallThickness/2, pos.y+5, wallThickness, gridSize);
     // line(pos.x+gridSize, pos.y, pos.x+gridSize, pos.y+gridSize);
     // line(pos.x+gridSize+10, pos.y+10, pos.x+gridSize+10, pos.y+gridSize+10);
   }
@@ -110,7 +118,7 @@ var blueprint = function(p){
   }
   
   function southWall(){
-    p.rect(pos.x+5,pos.y+gridSize, gridSize, wallThickness);
+    p.rect(pos.x+5,pos.y+gridSize-wallThickness/2, gridSize, wallThickness);
     // line(pos.x, pos.y+gridSize, pos.x+gridSize, pos.y+gridSize);
     // line(pos.x, pos.y+gridSize+10, pos.x+gridSize, pos.y+gridSize+10);
   }
@@ -129,7 +137,7 @@ var blueprint = function(p){
   
     p.noFill();
     p.strokeWeight(1);
-    p.stroke(200);
+    p.stroke(125,125,255);
   
     if(!cell.indoors){
       nHatches = 5;
@@ -142,11 +150,12 @@ var blueprint = function(p){
     } 
   
     p.strokeWeight(1);
-    p.stroke(0);
+    // p.stroke(125,125,255);
+    p.noFill();
   
-    p.rect(pos.x+5, pos.y+5, gridSize, gridSize);
-  
-    p.fill(0);
+    // p.rect(pos.x+5, pos.y+5, gridSize, gridSize);
+    p.stroke(255);
+    // p.fill(255);
     for(var i = 0; i < dNeighbors.length; i++){
       if(cell.indoors){
         wallDir = Util.cardinalDescription(cell,dNeighbors[i]);
@@ -198,9 +207,9 @@ var blueprint = function(p){
   function drawCellLabel(cell){
     pos = cellPos(cell);
     p.noStroke();
-    p.fill(230);
-    // fill(85,85,255);
-    p.text(Map.partForCell(cell), pos.x +20, pos.y+(gridSize-15));
+    // p.fill(25);
+    p.fill(85,85,255);
+    p.text(Map.partForCell(cell), pos.x +gridSize/2, pos.y+(gridSize/2));
   }
   
   function drawKey(){
@@ -243,12 +252,12 @@ var blueprint = function(p){
     rows = [0,1,2,3,4,5,6,7,8];
   
     p.push();
-      p.fill(0);
+      p.fill(255);
   
     p.push();
       p.translate(0, p.height-15);
       for(var i = 0; i < cols.length; i++){
-        p.text(cols[i], 50 + i*50, 10);  
+        p.text(cols[i], gridSize + i*gridSize, 10);  
       }
       p.translate(0, -(p.height-15));
     
@@ -257,14 +266,14 @@ var blueprint = function(p){
       p.translate(-p.width/2, -10);
       cols.reverse();
       for(var i = 0; i < cols.length; i++){
-        p.text(cols[i], 50 + i*50, 10);  
+        p.text(cols[i], gridSize + i*gridSize, 10);  
       }
     p.pop();
   
     p.push();
       rows.reverse();
       for(var i = 0; i < rows.length; i++){
-          p.text(rows[i], 10, 50 + i*50);  
+          p.text(rows[i], 10, gridSize + i*gridSize);  
       }
   
       p.translate(10, p.height/2);
@@ -272,30 +281,30 @@ var blueprint = function(p){
       p.translate(-10, -p.height/2);
       rows.reverse();
       for(var i = 0; i < rows.length; i++){
-          p.text(rows[i], -p.width + 30, 50 + i*50);  
+          p.text(rows[i], -p.width + 30, gridSize + i*gridSize);  
       }
       p.pop();
     p.pop();
   }
   
   function drawExit(){
-    x = Game.exit.col * gridSize + 25;
-    y = (8-Game.exit.row) * gridSize + 25;
+    x = Game.exit.col * gridSize + gridSize/2;
+    y = (8-Game.exit.row) * gridSize + gridSize/2;
   
     p.push();
   
     p.fill(255,0,0);
-    p.rect(x + 5, y + 15, 40, 20);
+    p.rect(x + 25, y + 35, 40, 20);
     p.fill(255);
     p.textAlign(p.CENTER);
     // textSize(20);
-    p.text("EXIT", x + 25, y +30);
+    p.text("EXIT", x + 45, y +50);
     p.pop();
   }
   
   p.draw = function(){
     // background(0,0,255);
-    p.background(255);
+    p.background(58, 85, 162);
     drawGrid();
     drawDoors();
     drawMap();

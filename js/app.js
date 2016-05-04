@@ -47,8 +47,19 @@ var sketch;
 Dog.route("/setupMap", new Dog.Controller({
   template : "setupMap",
   enter : function(){
-    sketch = new p5(blueprint);
-    $("#blueprint").show();
+      var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
+      var observer = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+              if(mutation.addedNodes.length > 0 && mutation.addedNodes[0].nodeName == "CANVAS"){
+                $("#blueprintWrapper").append($("#blueprint")); 
+                $("#blueprint").show();
+              }
+          });
+      });
+      var config = { attributes: false, childList: true, characterData: false }
+      target = $("#blueprint")[0];
+      observer.observe(target, config);
+      sketch = new p5(blueprint, target);
   },
   exit : function(){
     $("#blueprint").hide();
