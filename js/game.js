@@ -168,7 +168,7 @@ var Game = {
     for(var i = 0 ; i < orderedCharacters.length; i++){
       currentCharacter = orderedCharacters[i];
       if(!currentCharacter.dead){
-        result.push(new Handlebars.SafeString(Util.moveDescription(currentCharacter)));
+        result.push({character : currentCharacter.presentationString(), move : new Handlebars.SafeString(Util.moveDescription(currentCharacter))});
       }
     }
     this.moveInstructions = result;

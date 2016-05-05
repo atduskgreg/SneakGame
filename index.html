@@ -147,33 +147,40 @@
         </div>
 
         <div id="blueprintWrapper"></div>
-        <p>
+        <div class="clipButton">
         <button class="next">Continue</button>
-        </p>
+        </div>
       </div>
      </script>
 
     <script type="text/html" id="setupCharacters">
-    <div id="setupCharacters">
-    <h3>Personnel/Equipment</h3>
+    <div id="setupCharacters" class="page">
+      <h3>Personnel & Equip.</h3>
       <table>
       <tr class="tableHeader"><td>Character or Object</td><td>Location</td></tr>
       {{#each instructions}}
         <tr><td class="object">{{this.gameObject}}</td><td class="instruction">{{this.instruction}}</td></li>
       {{/each}}
       </table>
-
+      <div class="clipButton">
       <button class="next">Continue</button>
       </div>
+    </div>
     </script>
     <script type="text/html" id="pass">
+    <div id="pass" class="page">
      <p class='passButton'>
-      <img src='public/images/top-secret.png' /><br />
-      <em class='red'>Warning <b>Player {{ nextPlayerNum }}</b> only</em>
-      <br /><button class="red next" >Ready</button></p>
+      <img src='public/images/top-secret.png' />
+      </p>
+      <h2 class='red'>Player {{ nextPlayerNum }}</b> only</h2>
+      <div class="clipButton">
+        <button class="red next" >Ready</button>
+      </div>
+    </div>
     </script>
 
     <script type="text/html" id="player">
+    <div id="player" class="page">
     <div id="conversations" class="span-14 section">
       <div class='span-12'>
               <h2>Your Identity</h2>
@@ -295,28 +302,36 @@
         </div>
     </script>
     <script type="text/html" id="move">
+    <div id="move" class="page">
       <h3>Move Instructions</h3>
         <button id="playButton" class="playInstructions">Play</button>
-        <ul id="moveInstructions">
+        <table>
+        <tr class='tableHeader'><td>Character</td><td>Move</td></tr>
         {{#each instructions}}
-          <li>{{ this }}</li>
+          <tr><td class="character">{{ character }}</td><td class="move">{{ move }}</td></tr>
         {{/each}}
-      </ul>
-      <h2>Victims</h2>
+        </table>
+      <table id="victims">
+        <tr class='tableHeader'><td>Victims</td></tr>
+
       {{#if anyVictims}}
-        <ul>
+        
         {{#each victims}}
-          <li>{{ this }}</li>
+          <tr><td>{{ this }}</td></tr>
         {{/each}}
-        </ul>
+        
       {{ else }}
-        <p><em>None this turn.</em></p>
+       <tr><td><em>None this turn.</td></tr>
       {{/if}}
 
-      <button class="next">Continue</button>
+      <div class="clipButton">
+        <button class="next">Continue</button>
+      </div>
+    </div>
     </script>
 
     <script type="text/x-handlebars" id="gameOver">
+    <div id="gameOver" class="page">
     <h3>Game Over</h3>
     {{#if oneWinner }}
       <h4>{{formatCharacter result.winner}} is the winner!</h4>
@@ -325,6 +340,7 @@
       <h4>{{result.message}}</h4>
 
     {{/if}}
+    </div>
   </script>
 
     <script type="text/html" id="debug">
