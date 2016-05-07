@@ -113,7 +113,7 @@ h3 {
 }
 
 /*tbody tr:nth-child(even) td*/
-tbody tr:nth-child(even) td, tbody tr.even td {background-color:#fff;}
+/*tbody tr:nth-child(even) td, tbody tr.even td {background-color:#fff;}*/
 
 #intro p{
   font-family: '1942_report1942_report';

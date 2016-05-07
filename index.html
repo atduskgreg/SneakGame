@@ -181,46 +181,91 @@
 
     <script type="text/html" id="player">
     <div id="player" class="page">
-    <div id="conversations" class="span-14 section">
-      <div class='span-12'>
-              <h2>Your Identity</h2>
-              <div class='candidateImage span-2' style="background-image: url('/public/images/{{ you.color }}.png')">
-              
-              </div>
-              <p>{{formatCharacter you}}</p>
+      <div id="conversations" class="section">
+        <div id="you">
+          <div id="identity">
+            <h2>You Are: {{formatCharacter you}}</h2>
+            <img src="../../public/images/{{ you.color }}.png" /><br />
           </div>
-      {{#unless firstRound}}
+          <div id="plans">
+            {{#if hasPlans}}
+              <img src='../../public/images/briefcase.png' /><br />
+            {{else}}
+              <img src='../../public/images/no_briefcase.png'/><br />
+              <p>No plans.</p>
+            {{/if}}
+          </div>
+        </div>
+        <div id="actions" class="section">
+        <h4>{{#if hasGun}}Shoot{{else}}Move{{/if}} <span class="or">or</span> Poison</h4>
+          {{#if hasGun}}
+            <div id="shoot">
+             <img src="/public/images/gun.png" style="width:100px;height:100px" >
+             <div class="listOfTargets">
+              <!-- <select class="targetColor" name="targetColor">-->
+                {{#each shootingTargets}}
+                <p>
+                  <input name="targetColor" type="radio" value={{color}}><label>{{displayName}}</label>
+                  </p>
+                {{/each}}
+              <!-- </select> -->
+              <button class="submitMove" x-move="shoot">shoot</button>
+              </div>
+              <p>or
+                <button class="submitMove" x-move="drop">Drop Gun</button>
+              </p>
+            </div>
+          {{else}}
+            <div id="moveInput">
+              {{#each moveInputs}}
+                {{#everyX @index 3}}
+                  <br />
+                {{/everyX}}
+                {{#if legal}}
+                  <button class="submitMove" x-move="{{dir}}">{{dir}}</button>
+                {{else}}
+                  <button disabled>{{dir}}</button> 
+                {{/if}}
+                
+              {{/each}}
+            </div>
+          {{/if}}
+          
 
-        <h3>Conversations</h3>
-        <table>
-        <tr class='tableHeader'><td>Source</td> <td>Statement</td></tr>
-        {{#each receivedItems}}
-        <tr>
-        <td>{{formatCharacter this.from}}</td>
-        <td>
-        {{#if this.from.dead}}
-        <em>Rifling this corpse reveals a set of plans!</em>
-        {{else}}
-        "I have the plans. Take them and escape to the exit!"
-        {{/if}}
-        </td>
-        </tr>
-        {{/each}}
-
-        {{#each newKnowledge}}
-        <tr>{{ this}}</tr>
-        {{/each}}
+          <div id="poison">
+            {{#if canPoison}}
+              <img src="/public/images/poison.jpg" style="width:100px;height:100px;" />
+              {{#any poisonTargets}}
+                  <div class="listOfTargets">
+                    <!-- <select class="targetColor" name="targetColor"> -->
   
-        {{#unless somethingLearned}}
-        <td><em>none</em></td><td><em>none</em></td>
-        {{/unless}}
-        </table>
-      {{/unless}}
-    </div>
-        <div id="candidates" class="span-16 section">
-          <h3>Suspects</h3>
-          <div style='margin-bottom: 20px'>
+                    {{#each poisonTargets}}
+                    <p>
+                      <input type="radio" checked="checked" name="targetColor" value="{{color}}"><label>{{  formatCharacter this}}</label>
+                      </p>
+                    {{/each}}
+                    <!-- </select> -->
+  
+                    <button class="submitMove" x-move="poison">Poison</button>
+
+                  </div>
+              {{else}}
+                <p><em>No one here to poison.</em></p> 
+              {{/any}}
+            {{else}}
+              <div style="background: url(../../public/images/poison.jpg); background-size:contain; background-repeat:no-repeat; height:100px">
+                <img class='marked' src='/public/images/x.png' style="width:100px; height:100px" />
+                <p><em>Poison used.</em></p> 
+
+              </div>
+            {{/if}}
+          </div>  
+        </div><!-- /actions -->
+        <br style="clear:both" />
         
+      </div> <!-- /conversations -->
+        <div id="candidates" class="section">
+          <!-- <h3>Who Has the Plans?</h3> -->
           {{#each knowledge}}
             <div class='candidateContainer'>
               <div class='candidateImage span-2' style="background-image: url('/public/images/{{ character.color }}.png');" >
@@ -232,75 +277,38 @@
                 {{/if}}
               </div>
               <p>{{formatCharacter character}}</p>
-          </div>
+            </div>
           {{/each}}
-          </div>
-
-        </div>
-        <div id="actions" class="span-13 section">
-        <div class="span-6">
-          {{#if hasGun}}
-          <div id="shoot">
-           <img src="/public/images/gun.png" style="width:100px;height:100px" >
-            <select class="targetColor" name="targetColor">
-              {{#each shootingTargets}}
-              <option value={{color}}>{{displayName}}</option>
-              {{/each}}
-            </select>
-            <button class="submitMove" x-move="shoot">shoot</button>
-            <p>or
-            <button class="submitMove" x-move="drop">Drop Gun</button>
-            </p>
-          </div>
-          
-
-          {{else}}
-            <div id="moveInput">
-            {{#each moveInputs}}
-              {{#everyX @index 3}}
-                <br />
-              {{/everyX}}
-              {{#if legal}}
-                <button class="submitMove" x-move="{{dir}}">{{dir}}</button>
+        </div> <!-- /candidates -->
+        {{#unless firstRound}}
+          <table>
+            <tr class='tableHeader'><td>Source</td> <td>Statement</td></tr>
+            {{#each receivedItems}}
+              <tr>
+              <td>{{formatCharacter this.from}}</td>
+              <td>
+              {{#if this.from.dead}}
+                <em>Rifling this corpse reveals a set of plans!</em>
               {{else}}
-                <button disabled>{{dir}}</button> 
+                "I have the plans. Take them and escape to the exit!"
               {{/if}}
-              
+              </td>
+              </tr>
             {{/each}}
-            </div>
-          {{/if}}
-          </div>
-          
-          <div id="plans" class="span-4">
-            
-            {{#if hasPlans}}
-              <img src='/public/images/briefcase.png' style="width:100px; height:100px" />
-
-            {{else}}
-              <img src='/public/images/no_briefcase.png' style="width:100px; height:100px" />
-            {{/if}}
-            </div>
-          </div>
-          <div id="poison" class="span-4">
-            {{#if canPoison}}
-              <img src="/public/images/poison.jpg" style="width:100px;height:100px;" />
-              {{#any poisonTargets}}
-              <select class="targetColor" name="targetColor">
-                {{#each poisonTargets}}
-                <option value={{color}}>{{formatCharacter this}}</option>
-                {{/each}}
-              </select>
-                <button class="submitMove" x-move="poison">Poison</button>
-
-              {{else}}
-                <p><em>No one here to poison.</em></p> 
-              {{/any}}
-            {{else}}
-              <img class='marked' src='/public/images/x.png' style="width:100px; height:100px" />
-            {{/if}}
-          </div>  
-        </div>
+    
+            {{#each newKnowledge}}
+              <tr>{{ this}}</tr>
+            {{/each}}
+      
+            {{#unless somethingLearned}}
+              <td><em>none</em></td><td><em>none</em></td>
+          {{/unless}}
+          </table>
+        {{/unless}}
+        
+      </div><!-- /player -->
     </script>
+
     <script type="text/html" id="move">
     <div id="move" class="page">
       <h3>Move Instructions</h3>

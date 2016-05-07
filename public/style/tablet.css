@@ -21,6 +21,8 @@ margin-top: 2%;
   border-right:1px solid #dcd9c1;
   border-bottom:1px solid #dcd9c1;
 
+  background: url("../../public/images/paper@2x.png");
+
 }
 
 .clipButton {
@@ -76,8 +78,8 @@ p {
 
 
 
-#setupMap {
-  background-color: #3954A0;
+#setupMap{
+  background: #3954A0;
   color: #fff;
 }
 
@@ -123,6 +125,155 @@ table {
   background: none;
 }
 
+#player .candidateContainer{
+  width: 293px;
+  height: 170;
+  margin: 0;
+  border: 1px solid #ddd;
+}
+
+#candidates {
+  margin-left:20px;
+}
+
+.candidateImage {
+  border-right: 1px solid #ddd;
+}
+
+#candidates p {
+  font-size: 30px;
+}
+
+.candidateImage {
+  width: 150px;
+  height: 150px;
+}
+
+#actions {
+   float: left;
+  /* border: 1px dashed #000; */
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+
+#actions h4 {
+  font-size: 24px;
+  text-align: center;
+  font-weight: normal;
+  font-style: italic;
+  border-bottom: 1px dashed #000;
+  margin-top: 0;
+  margin-bottom: 0;
+  width: 100%;
+  padding: 5px 0;
+}
+
+.or {
+  border: 1px dotted #000;
+  padding: 10px;
+  background: url('../../public/images/paper@2x.png');
+  margin: 0px 5px;
+}
+
+#shoot, #poison, #plans {
+  width: 250px;
+  float: left;
+}
+
+#poison {
+  margin: 50px 25px;
+  width: 235px;
+}
+
+#poison img, #shoot img {
+  float: left;
+}
+
+.listOfTargets {
+  margin-left: 10px;
+}
+
+.listOfTargets p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.listOfTargets button {
+  margin-top: 20px;
+}
+
+#shoot {
+  border-right: 1px dashed #000;
+  padding-top: 40px;
+}
+
+#shoot img {
+  width: 100px;
+  height: 100px;
+  float: left;
+  margin-bottom: 150px;
+  margin-right: 15px;
+}
+
+
+#plans {
+  text-align: center;
+  border: 1px solid #000;
+  padding: 10;
+  background: url('../../public/images/paper@2x.png');
+  margin-left: -82px;
+  margin-top: 277px;
+  width: 50px;
+  height: 60px;
+}
+
+#plans p {
+  margin: 0;
+  font-size: 12px;
+}
+
+#you #plans img{
+  width: 50px;
+  height: 50px;
+}
+
+#you img {
+  width: 255px;
+}
+
+#identity img {
+  border: 1px solid #ccc;
+  padding: 10px;
+}
+
+#identity {
+  float: left;
+  padding: 17px;
+  margin: 10px;
+  text-align: center;
+  border: 1px solid #000;
+  margin-top: 0;
+  margin-left: 0;
+  border-top: none;
+  border-left: none;
+}
+
+#identity h2 {
+  font-size: 22px;
+  border: 1px solid #ccc;
+  margin: 0;
+  border-bottom: none;
+  padding: 10px;
+}
+
+#candidates img.marked {
+  width: 150px;
+  height: 150px;
+  margin-left: -10px;
+  margin-top: -10px;
+}
+
 #move td {
   width: 50%;
 }
@@ -144,6 +295,27 @@ table {
   text-align: center;
 }
 
+button:disabled {
+  color: #ccc;
+  background: none;
+}
+
+#moveInput {
+  float: left;
+  padding: 45px 29px;
+  border-right: 1px dashed #000;
+}
+
+#moveInput button {
+  width: 70px;
+  height: 70px;
+  font-size: 20px;
+  text-transform: uppercase;
+}
+
+#player tr td:first-child {
+  width: 50%;
+}
 
 table td {
   padding: 20px;
