@@ -1,6 +1,6 @@
 var Game = {
-	boardWidth : 9,
-	boardHeight: 9,
+	boardWidth : 6,
+	boardHeight: 6,
 	numNPCs : 8,
   nPlayers : 2,
 	characters : {},

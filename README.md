@@ -2,7 +2,6 @@
 
 ### TODO
 
-* Improve start page design
 * Design tile pieces
 * Finish box design
 * Highlight the plans when you've just gotten them

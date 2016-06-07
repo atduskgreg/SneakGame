@@ -248,8 +248,8 @@ var blueprint = function(p){
   }
   
   function drawGridLabels(){
-    cols = ["a", "b", "c", "d" ,"e", "f","g","h","i"];
-    rows = [0,1,2,3,4,5,6,7,8];
+    cols = "abcdefghijklmnopqrstuvwxyz".split("").slice(0,Game.boardHeight)
+    rows = [0,1,2,3,4,5,6,7,8].slice(0,Game.boardWidth)
   
     p.push();
       p.fill(255);
@@ -289,7 +289,7 @@ var blueprint = function(p){
   
   function drawExit(){
     x = Game.exit.col * gridSize + gridSize/2;
-    y = (8-Game.exit.row) * gridSize + gridSize/2;
+    y = ((Game.boardHeight-1)-Game.exit.row) * gridSize + gridSize/2;
   
     p.push();
   

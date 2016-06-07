@@ -41,6 +41,35 @@ var Map = {
     }
   },
 
+  getMiniArea : function(square){
+    console.log(square);
+    result = [square];
+
+    if(square.col == Game.boardWidth-1 && square.row == Game.boardHeight - 1){
+      result.push(this.getCell({col: square.col-1, row: square.row-1}));
+      result.push(this.getCell({col: square.col, row: square.row-1}));
+      result.push(this.getCell({col: square.col-1, row: square.row}));
+    }
+
+    else if(square.col == Game.boardWidth-1){
+      result.push(this.getCell({col: square.col-1, row: square.row}));
+      result.push(this.getCell({col: square.col, row : square.row+1}));
+      result.push(this.getCell({col: square.col-1, row: square.row+1}));
+    }
+
+    else if(square.row == Game.boardHeight-1){
+      result.push(this.getCell({col: square.col, row: square.row-1}));
+      result.push(this.getCell({col: square.col+1, row : square.row}));
+      result.push(this.getCell({col: square.col, row: square.row-1}));
+    } else {
+      result.push(this.getCell({col: square.col+1, row: square.row}));
+      result.push(this.getCell({col: square.col, row : square.row+1}));
+      result.push(this.getCell({col: square.col+1, row: square.row+1}));
+
+    }
+    return result;
+  },
+
   buildMap_connectedRooms : function(){
     var nSeeds = 3;
     seeds = [];
@@ -48,7 +77,7 @@ var Map = {
       seed = this.randomCell();
       seeds.push(seed);
       seed.indoors = true;
-      Map.makeCellsIndoors(Map.getNeighbors(seed));
+      Map.makeCellsIndoors(Map.getMiniArea(seed));
     }
 
     for(var i = 0; i < seeds.length; i++){
