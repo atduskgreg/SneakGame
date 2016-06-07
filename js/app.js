@@ -11,7 +11,6 @@ Dog.route("/", new Dog.Controller({
   template : "start",
   enter : function(){
     Game.setupMap();
-
   },
   exit : function(){
     console.log("/.exit()");

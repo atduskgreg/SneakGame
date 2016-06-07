@@ -48,6 +48,41 @@ margin-top: 2%;
   background-size: cover;
 }
 
+#start {
+  text-align: center;
+}
+
+#start .clipButton {
+  width: 700px;
+  height: 214px;
+  position: absolute;
+  bottom: 10px;
+  left: 125px;
+}
+
+.startGame {
+  width: 200px;
+  font-size: 30px;
+}
+
+
+#start button {
+  background: none;
+  border: 1px dotted #000;
+  margin: 0 10px;
+}
+
+#start .selected{
+  border : 1px dotted green;
+  font-weight: bold;
+  color: green;
+}
+
+p#howMany {
+  margin-bottom: 10px;
+  font-size: 30px;
+}
+
 #startInterface{
   background: #fff;
   border: 2px solid #000;

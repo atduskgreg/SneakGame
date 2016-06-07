@@ -128,14 +128,16 @@
 
     <script type="text/html" id="start">
       <div id="start" class="page">
-        <div id="startInterface">
-          <p>How many players this game?</p>
+        <div class="clipButton">
+
+          <p id="howMany">How many players?</p>
           <p>
             {{#each playerCountOptions}}
               <button class="pickNumPlayers {{#if this.selected}}selected{{/if}}" value="{{this.n}}">{{this.n}}</button >
             {{/each}}
-          </p>
+           </p>
           <button class="startGame">Start</button>
+         
         </div>
       </div>
     </script>
