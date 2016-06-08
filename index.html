@@ -187,13 +187,13 @@
         <div id="you">
           <div id="identity">
             <h2>You Are: {{formatCharacter you}}</h2>
-            <img src="../../public/images/{{ you.color }}.png" /><br />
+            <img src="public/images/{{ you.color }}.png" /><br />
           </div>
           <div id="plans">
             {{#if hasPlans}}
-              <img src='../../public/images/briefcase.png' /><br />
+              <img src='public/images/briefcase.png' /><br />
             {{else}}
-              <img src='../../public/images/no_briefcase.png'/><br />
+              <img src='public/images/no_briefcase.png'/><br />
               <p>No plans.</p>
             {{/if}}
           </div>
@@ -202,7 +202,7 @@
         <h4>{{#if hasGun}}Shoot{{else}}Move{{/if}} <span class="or">or</span> Poison</h4>
           {{#if hasGun}}
             <div id="shoot">
-             <img src="/public/images/gun.png" style="width:100px;height:100px" >
+             <img src="public/images/gun.png" style="width:100px;height:100px" >
              <div class="listOfTargets">
               <!-- <select class="targetColor" name="targetColor">-->
                 {{#each shootingTargets}}
@@ -236,7 +236,7 @@
 
           <div id="poison">
             {{#if canPoison}}
-              <img src="/public/images/poison.jpg" style="width:100px;height:100px;" />
+              <img src="public/images/poison.jpg" style="width:100px;height:100px;" />
               {{#any poisonTargets}}
                   <div class="listOfTargets">
                     <!-- <select class="targetColor" name="targetColor"> -->
@@ -255,8 +255,8 @@
                 <p><em>No one here to poison.</em></p> 
               {{/any}}
             {{else}}
-              <div style="background: url(../../public/images/poison.jpg); background-size:contain; background-repeat:no-repeat; height:100px">
-                <img class='marked' src='/public/images/x.png' style="width:100px; height:100px" />
+              <div style="background: url(public/images/poison.jpg); background-size:contain; background-repeat:no-repeat; height:100px">
+                <img class='marked' src='public/images/x.png' style="width:100px; height:100px" />
                 <p><em>Poison used.</em></p> 
 
               </div>
@@ -270,12 +270,12 @@
           <!-- <h3>Who Has the Plans?</h3> -->
           {{#each knowledge}}
             <div class='candidateContainer'>
-              <div class='candidateImage span-2' style="background-image: url('/public/images/{{ character.color }}.png');" >
+              <div class='candidateImage span-2' style="background-image: url('public/images/{{ character.color }}.png');" >
                 {{#if noPlans}}
-                  <img class='marked' src='/public/images/x.png' />
+                  <img class='marked' src='public/images/x.png' />
                 {{/if}}
                 {{#if hasPlans}}
-                  <img class='marked' src='/public/images/circle.png' />
+                  <img class='marked' src='public/images/circle.png' />
                 {{/if}}
               </div>
               <p>{{formatCharacter character}}</p>
