@@ -22,6 +22,7 @@ var blueprint = function(p){
   
   
   function drawGrid(){
+    p.push();
     p.strokeWeight(0.1);
     squaresPerCell = 4;
   
@@ -35,7 +36,7 @@ var blueprint = function(p){
   
         if(col % 4 == 0){
 
-          p.strokeWeight(1);
+          p.strokeWeight(3);
 
           p.stroke(125,125,255);
 
@@ -60,6 +61,7 @@ var blueprint = function(p){
         // }
       }
     }
+    p.pop();
   }
   
   function cellPos(cell){
@@ -302,6 +304,19 @@ var blueprint = function(p){
     p.pop();
   }
   
+  p.drawPrintable = function(){
+    p.filter("gray");
+    p.filter("invert");
+    p.filter("threshold"); 
+  }
+
+  p.drawBlankBoard = function(){
+    p.background(255);
+    drawGrid();
+    drawGridLabels();
+    p.filter("gray");
+  }
+
   p.draw = function(){
     // background(0,0,255);
     p.background(58, 85, 162);
@@ -309,8 +324,7 @@ var blueprint = function(p){
     drawDoors();
     drawMap();
     drawExit();
-    drawGridLabels();
-  
+    drawGridLabels();  
   
     // drawKey();
   }

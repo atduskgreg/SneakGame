@@ -59,12 +59,55 @@ Dog.route("/setupMap", new Dog.Controller({
       target = $("#blueprint")[0];
       observer.observe(target, config);
       sketch = new p5(blueprint, target);
+
+      printableSketch = new p5(blueprint, $("#printableCanvasWrapper")[0]);
+      printableSketch.drawPrintable();
+
+      blankSketch = new p5(blueprint, $("#blankBoardWrapper")[0]);
+      blankSketch.drawBlankBoard();
+      console.log(printableSketch);
   },
   exit : function(){
     $("#blueprint").hide();
     sketch.remove();
   },
   actions : {
+    printBlank : function(e){
+      e.preventDefault();
+      var dataUrl = $("canvas")[2].toDataURL(); 
+      var windowContent = '<!DOCTYPE html>';
+      windowContent += '<html>'
+      windowContent += '<head><title>Sneak Board</title></head>';
+      windowContent += '<body>'
+      windowContent += '<img width="100%" src="' + dataUrl + '">';
+      windowContent += '</body>';
+      windowContent += '</html>';
+      var printWin = window.open('','');
+      printWin.document.open();
+      printWin.document.write(windowContent);
+      printWin.document.close();
+      printWin.focus();
+      printWin.print();
+      printWin.close();
+    },
+    printBoard : function(e){
+      e.preventDefault();
+      var dataUrl = $("canvas")[1].toDataURL(); 
+      var windowContent = '<!DOCTYPE html>';
+      windowContent += '<html>'
+      windowContent += '<head><title>Sneak Board</title></head>';
+      windowContent += '<body>'
+      windowContent += '<img width="100%" src="' + dataUrl + '">';
+      windowContent += '</body>';
+      windowContent += '</html>';
+      var printWin = window.open('','');
+      printWin.document.open();
+      printWin.document.write(windowContent);
+      printWin.document.close();
+      printWin.focus();
+      printWin.print();
+      printWin.close();
+    },
     next : function(e){
       e.preventDefault();
       Dog.goToRoute("setupCharacters");

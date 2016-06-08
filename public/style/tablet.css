@@ -118,6 +118,11 @@ p {
   color: #fff;
 }
 
+#blueprintInstructions a {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
 #blueprint {
   text-align: center;
 }
@@ -125,6 +130,7 @@ p {
 #blueprintInstructions {
   width: 90%;
   margin:0 auto;
+  text-align: center;
 }
 
 table {
