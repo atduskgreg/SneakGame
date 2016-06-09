@@ -249,7 +249,7 @@ Dog.route("/player", new Dog.Controller({
         PM.currentPlayer().dropItem(gun);
       } else if(move == "poison"){
         //do poisoning things
-        target = Game.characterWithAttribute("color", $("#poison input[name='targetColor']:checekd").val())
+        target = Game.characterWithAttribute("color", $("#poison input[name='targetColor']:checked").val())
         Game.poisonCharacter(target, {poisoner : PM.currentPlayer()});
 
         // TODO: should you be able to both poison and move on the same turn?
@@ -313,10 +313,16 @@ Dog.route("/gameOver", new Dog.Controller({
   template : "gameOver",
   getData : function(){
     Game.result.message = new Handlebars.SafeString(Game.result.message);
+   
+
     return {
       oneWinner: !Game.result.draw,
-      result : Game.result
+      result : Game.result,
+      deathCauses : Game.result.deathCauses
     }
+  },
+  afterRender : function(){
+    $("#losers").css("width", Game.result.deathCauses.length*252 + "px");
   },
   actions : {
 
@@ -405,6 +411,10 @@ Handlebars.registerHelper("everyX", function(index, x, options){
 
 Handlebars.registerHelper("formatCharacter", function(character,options){
   return character.presentationString();
+});
+
+Handlebars.registerHelper("formatPlayer", function(player, options){
+  return "Player " + (player.tablePosition + 1);
 });
 
 Handlebars.registerHelper('debug-view',function(){

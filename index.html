@@ -357,16 +357,28 @@
 
     <script type="text/x-handlebars" id="gameOver">
     <div id="gameOver" class="page">
-    <h3>Game Over</h3>
-    {{#if oneWinner }}
-      <h4>{{formatCharacter result.winner}} is the winner!</h4>
-      <p>{{result.message}}</p>
-    {{else}}
-      <h4>{{result.message}}</h4>
+      {{#if oneWinner }}
+          <h3>{{formatPlayer result.winner}} Wins!</h3>
+  
+        <div id="winner">
+          <img src="public/images/{{ result.winner.color }}.png" />
+          <h4>{{formatCharacter result.winner}} {{result.message}}.</h4>
+        </div>
+      {{else}}
+          <h3>{{result.message}}</h3>
+      {{/if}}
+  
+      <div id="losers">
+      {{#each deathCauses}}
+          <div class='loser candidateImage' style="background-image: url('public/images/{{ this.player.color }}.png');" >
+            <img class='marked' src='public/images/x.png' />
+            <p>{{this.description}}</p>
 
-    {{/if}}
+          </div>
+      {{/each}}
+      </div>
     </div>
-  </script>
+    </script>
 
     <script type="text/html" id="debug">
     <a class="toggle" href="#">toggle debug</a>

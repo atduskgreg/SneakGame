@@ -331,7 +331,7 @@ var Game = {
 
   shootingTargetsFor : function(character){
     var result = [];
-    charKeys = Object.keys(Game.characters);
+    charKeys = Util.shuffle(Object.keys(Game.characters));
 
     for(var i = 0; i < charKeys.length; i++){
       currChar = Game.characters[charKeys[i]];
@@ -377,19 +377,20 @@ var Game = {
       }
     }
 
-    if(numDeadPlayers == (this.nPlayers-1)){
+    if(numDeadPlayers >= (this.nPlayers-1)){
       deathCauses = [];
       for(var i = 0 ; i < Game.killings.length; i++){
         if(Game.killings[i].victim instanceof Player){
-          deathCauses.push(Game.deathDescription(Game.killings[i]));
+          description = new Handlebars.SafeString(Game.deathDescription(Game.killings[i]));
+          deathCauses.push({player : Game.killings[i].victim, description : description});
         }
       }
 
-      result = {winner : soleWinner, message : deathCauses.join(" ")};
-    }
-
-    if(numDeadPlayers == this.nPlayers){
-      result = {message : "Everyone is dead! It's a draw.", draw : true};
+      if(numDeadPlayers == this.nPlayers-1){
+        result = {winner : soleWinner, victory : "killing", message : "is the last survivor", deathCauses : deathCauses};
+      } else {
+        result = {message : "Everyone is dead! It's a draw.", draw : true, deathCauses: deathCauses};
+      }
     }
 
     // check for victory by plans
@@ -397,7 +398,7 @@ var Game = {
     for(var i = 0; i < charKeys.length; i++){
       currPlayer = Game.players[charKeys[i]];
       if(currPlayer.hasItem("plans") && Util.sameSquare(currPlayer.position, Game.exit)){
-        result = {winner : currPlayer, message : "They escaped with the plans"};
+        result = {winner : currPlayer, victory : "plans", message : "escaped with the plans"};
       }
     }
     return result;
