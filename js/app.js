@@ -17,9 +17,6 @@ Dog.route("/", new Dog.Controller({
     Game.setupCharacters();
     Game.drawDebug();
   },
-  afterRender : function(){
-        doBrim();
-  },
   getData : function(){
     playerCountOptions = [];
     for(var i = 2; i <= 4; i++){
