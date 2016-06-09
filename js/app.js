@@ -65,7 +65,9 @@ Dog.route("/setupMap", new Dog.Controller({
 
       blankSketch = new p5(blueprint, $("#blankBoardWrapper")[0]);
       blankSketch.drawBlankBoard();
-      console.log(printableSketch);
+      $("canvas").hide();
+      $("#blueprint canvas").show();
+
   },
   exit : function(){
     $("#blueprint").hide();
