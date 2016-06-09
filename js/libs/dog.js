@@ -32,6 +32,9 @@
       target.innerHTML = template();
     }
 
+    if(ctrl.afterRender){
+      ctrl.afterRender();
+    }
 
     console.log("binding actions for " + templateId ); 
     for(action in ctrl.actions){
