@@ -106,10 +106,10 @@ var Game = {
     h = Math.floor(Game.boardHeight/2);
 
     gunPositions = [];
-    gunPositions.push(Util.getRandomSquare({col : {start : 0,   width: w}, row : {start: 0,   width: h}}));
-    gunPositions.push(Util.getRandomSquare({col : {start : w+1, width: w}, row : {start: 0,   width: h}}));
-    gunPositions.push(Util.getRandomSquare({col : {start : 0,   width: w}, row : {start: h+1, width: h}}));
-    gunPositions.push(Util.getRandomSquare({col : {start : w+1, width: w}, row : {start: h+1, width: h}}));
+    gunPositions.push(Util.getRandomSquare({col : {start : 0, width: w-1}, row : {start: 0, width: h-1}}));
+    gunPositions.push(Util.getRandomSquare({col : {start : w, width: w-1}, row : {start: 0, width: h-1}}));
+    gunPositions.push(Util.getRandomSquare({col : {start : 0, width: w-1}, row : {start: h, width: h-1}}));
+    gunPositions.push(Util.getRandomSquare({col : {start : w, width: w-1}, row : {start: h, width: h-1}}));
 
     for(var i = 0; i < gunPositions.length; i++){
       Game.inventory.push({name : "gun", position : gunPositions[i]});

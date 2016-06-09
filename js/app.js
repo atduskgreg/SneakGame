@@ -235,8 +235,9 @@ Dog.route("/player", new Dog.Controller({
       move = $(this).attr("x-move");
       
       if(move == "shoot"){
+        console.log("shooting: " + $("#shoot input[name='targetColor']").val());
         // do shooting things
-        target = Game.characterWithAttribute("color", $("#shoot input[name='targetColor']").val())
+        target = Game.characterWithAttribute("color", $("#shoot input[name='targetColor']:checked").val())
         Game.killCharacter(target, {killer : PM.currentPlayer(), method : "shooting"});
 
         gun = PM.currentPlayer().itemWithAttribute("name", "gun");
@@ -248,7 +249,7 @@ Dog.route("/player", new Dog.Controller({
         PM.currentPlayer().dropItem(gun);
       } else if(move == "poison"){
         //do poisoning things
-        target = Game.characterWithAttribute("color", $("#poison input[name='targetColor']").val())
+        target = Game.characterWithAttribute("color", $("#poison input[name='targetColor']:checekd").val())
         Game.poisonCharacter(target, {poisoner : PM.currentPlayer()});
 
         // TODO: should you be able to both poison and move on the same turn?
