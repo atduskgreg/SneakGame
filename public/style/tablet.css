@@ -413,3 +413,16 @@ h3 {
   text-align: center;
   margin: 0 auto;
 }
+
+#playButton {
+  background: #fff;
+  border: 1px dotted #000;
+  font-size: 20px;
+  margin-top: -15px;
+}
+
+#playButtonWrapper {
+  text-align: center;
+  border-top: 1px dashed #000;
+  margin-top: 20px;
+}
