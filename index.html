@@ -112,10 +112,8 @@
     <script src="js/libs/Queue.js"></script>
     <script src="js/libs/p5.min.js"></script>
 
-    <script src="js/libs/brim.js"></script>
-    <script src="js/libs/platform.js"></script>
-    <script src="js/libs/scream.js"></script>
-
+    <script src="js/libs/howler.min.js"></script>
+  
 
     <script src="js/libs/dog.js"></script>
     <script src="js/map.js"></script>
@@ -333,7 +331,7 @@
         <table>
         <tr class='tableHeader'><td>Character</td><td>Move</td></tr>
         {{#each instructions}}
-          <tr><td class="character">{{ character }}</td><td class="move">{{ move }}</td></tr>
+          <tr class="moveInstruction"><td class="character">{{ character }}</td><td class="move">{{ move }}</td></tr>
         {{/each}}
         </table>
       <table id="victims">

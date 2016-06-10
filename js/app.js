@@ -11,6 +11,7 @@ Dog.route("/", new Dog.Controller({
   template : "start",
   enter : function(){
     Game.setupMap();
+    SoundManager.initSounds();
   },
   exit : function(){
     console.log("/.exit()");
@@ -42,10 +43,11 @@ Dog.route("/", new Dog.Controller({
   }
 }));
 
-var sketch;
+var sketches = [];
 Dog.route("/setupMap", new Dog.Controller({
   template : "setupMap",
   enter : function(){
+    SoundManager.sounds.openingTheme.play();
       var MutationObserver = window.MutationObserver || window.WebKitMutationObserver || window.MozMutationObserver;
       var observer = new MutationObserver(function(mutations) {
           mutations.forEach(function(mutation) {
@@ -58,20 +60,27 @@ Dog.route("/setupMap", new Dog.Controller({
       var config = { attributes: false, childList: true, characterData: false }
       target = $("#blueprint")[0];
       observer.observe(target, config);
-      sketch = new p5(blueprint, target);
+      var blueprintSketch = new p5(blueprint, target);
+      sketches.push(blueprintSketch);
 
       printableSketch = new p5(blueprint, $("#printableCanvasWrapper")[0]);
       printableSketch.drawPrintable();
+      sketches.push(printableSketch);
 
       blankSketch = new p5(blueprint, $("#blankBoardWrapper")[0]);
       blankSketch.drawBlankBoard();
+      sketches.push(blankSketch);
+
       $("canvas").hide();
       $("#blueprint canvas").show();
 
   },
   exit : function(){
     $("#blueprint").hide();
-    sketch.remove();
+    for(var i = 0; i < sketches.length; i++){
+      sketches[i].remove();
+    }
+    SoundManager.sounds.openingTheme.fadeOut(0, 2000);
   },
   actions : {
     printBlank : function(e){
@@ -281,10 +290,15 @@ Dog.route("/move", new Dog.Controller({
     }
 
   },
+
+  afterRender : function(){
+    InstructionPlayer.loadSounds();
+  },
+
   exit : function(){
     Game.endRound();
     Game.transferKnowledgeAndItems(Game.currentDialogs());
-
+    InstructionPlayer.stop();
   },
   getData : function(){
     anyVictims = (Game.newVictims().length > 0);
@@ -298,6 +312,12 @@ Dog.route("/move", new Dog.Controller({
     }
   },
   actions : {
+    playInstructions : function(e){
+      $("#playButton").attr('disabled', true);
+      InstructionPlayer.playInstructions($(".moveInstruction"),function(){
+        $("#playButton").attr('disabled', false);
+      });
+    },
     next : function(e){
       e.preventDefault();
       PM = new PassManager({
@@ -390,6 +410,29 @@ PassManager.prototype.actionRoute = function(){
     return this.nextRoute;
   } else {
     return "pass";
+  }
+}
+
+SoundManager = {
+  sounds : {},
+  initSounds : function(){
+    console.log("initSounds");
+    this.sounds.openingTheme = new Howl({
+      urls : ["public/sounds/opening_theme.mp3"],
+      volume : 0.5
+    });
+
+    // No place to use this right now
+    // this.sounds.chatter = new Howl({
+    //   urls : ["public/sounds/crowd_noise.mp3"],
+    //   volume : 0.5,
+    //   loop : true
+    // });
+  },
+  mute : function(){
+    for(key in this.sounds){
+      this.sounds[key].mute();
+    }
   }
 }
 

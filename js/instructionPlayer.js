@@ -50,26 +50,16 @@ var InstructionPlayer = {
   },
 
   parseInstructions : function(elems){
-    return $("#moveInstructions li").map(function(){
+    return elems.map(function(){
       return InstructionPlayer.parseInstruction($(this))
     });
   },
 
-  stop : function(fadeOutDuration){
-    if(this.currentSound){
-      this.currentSound.fadeOut(0, fadeOutDuration);
-    }
-    this.stopped = true;
-  },
-
   parseInstruction : function(e){
-    words = e.text().split(".")[0].split(" ");
+    color = e.find(".character").text().split(" ")[1].toLowerCase();
+    move = e.find(".move").text().split(".")[0].toLowerCase();
 
-    move = words[words.length - 1];
-    color = words[words.length - 2].toLowerCase();
-    if(move == "gun"){
-      color = words[words.length - 4].toLowerCase();
-    }
+    console.log(color + " " + move);
 
     return {move :  move, color : color};
   },
@@ -81,9 +71,16 @@ var InstructionPlayer = {
     }
   },
 
+  stop : function(fadeOutDuration){
+    if(this.currentSound){
+      this.currentSound.fadeOut(0, fadeOutDuration);
+    }
+    this.stopped = true;
+  },
+
   playInstruction : function(opts, callback){
     console.log("instruction: " + opts.move);
-    if(opts.move == "holds" || opts.move == "gun"){
+    if(opts.move == "hold" || opts.move == "gun"){
       this.sounds[opts.color].holds._onend = [];
       this.sounds[opts.color].holds._onend.push(function(){
         if(callback){
